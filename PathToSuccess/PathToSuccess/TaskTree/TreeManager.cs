@@ -4,15 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathToSuccess.Models
+namespace PathToSuccess.TaskTree
 {
-    public enum Importance
+    class TreeManager
     {
- 
-    }
-
-    public enum Urgency
-    {
- 
     }
 }

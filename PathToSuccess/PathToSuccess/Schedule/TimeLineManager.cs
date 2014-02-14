@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathToSuccess.Models
+namespace PathToSuccess.Schedule
 {
-    public class Deal//Цель
+    class TimeLineManager
     {
     }
 }

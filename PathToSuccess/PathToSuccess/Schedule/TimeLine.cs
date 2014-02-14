@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathToSuccess.DealTree
+namespace PathToSuccess.Schedule
 {
-    public class DealTree //Структура данных с методами.
+    class TimeLine
     {
     }
 }

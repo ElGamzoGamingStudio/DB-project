@@ -53,6 +53,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CompletionCriteria.cs" />
+    <Compile Include="Models\ICompletable.cs" />
+    <Compile Include="Models\TimeRule.cs" />
     <Compile Include="PhoneSync\InfoSender.cs" />
     <Compile Include="PhoneSync\Serializer.cs" />
     <Compile Include="Schedule\Schedule.cs" />
@@ -103,12 +106,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Deal.cs" />
     <Compile Include="Models\Enums.cs" />
-    <Compile Include="Models\Interval.cs" />
     <Compile Include="Models\Step.cs" />
     <Compile Include="Models\Task.cs" />
-    <Compile Include="Models\TimeLines.cs" />
     <Compile Include="ModuleConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

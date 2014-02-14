@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.Models
 {
-    public class Task//задача
+    public class Task : ICompletable//задача
     {
     }
 }

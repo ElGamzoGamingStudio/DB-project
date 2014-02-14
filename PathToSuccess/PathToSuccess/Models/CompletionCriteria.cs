@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.Models
 {
-    public enum Importance
+    public class CompletionCriteria
     {
- 
-    }
+        private string Description;
+        private bool Completed;
 
-    public enum Urgency
-    {
- 
+        public CompletionCriteria()
+        {
+
+        }
     }
 }

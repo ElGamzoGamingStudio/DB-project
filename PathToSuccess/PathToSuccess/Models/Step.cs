@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.Models
 {
-    public class Step
+    public class Step : ICompletable
     {
     }
 }
