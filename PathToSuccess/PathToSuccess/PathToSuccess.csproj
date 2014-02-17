@@ -63,15 +63,12 @@
     <Compile Include="Schedule\ScheduleVisualizer.xaml.cs">
       <DependentUpon>ScheduleVisualizer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Schedule\TimeLine.cs" />
+    <Compile Include="Schedule\TimeLineManager.cs" />
+    <Compile Include="TaskTree\NTree.cs" />
+    <Compile Include="TaskTree\TaskTree.cs" />
+    <Compile Include="TaskTree\TreeManager.cs" />
     <Page Include="CreateLoadTreeDiaolg.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DealTree\DealSlot.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DealTree\TaskSlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -88,14 +85,6 @@
     </Compile>
     <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\SqlRepository.cs" />
-    <Compile Include="DealTree\DealManager.cs" />
-    <Compile Include="DealTree\DealSlot.xaml.cs">
-      <DependentUpon>DealSlot.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DealTree\DealTree.cs" />
-    <Compile Include="DealTree\TaskSlot.xaml.cs">
-      <DependentUpon>TaskSlot.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

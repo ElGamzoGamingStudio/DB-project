@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.TaskTree
 {
-    class TreeManager
+    static class TreeManager
     {
     }
 }
