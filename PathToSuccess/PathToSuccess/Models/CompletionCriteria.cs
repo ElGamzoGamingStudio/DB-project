@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace PathToSuccess.Models
 {
     public class CompletionCriteria
     {
-        private string Description;
-        private bool Completed;
+        public string Description;
+        public bool Completed;
 
-        public CompletionCriteria()
+        public CompletionCriteria(string description)
         {
-
+            Description = description;
         }
     }
 }

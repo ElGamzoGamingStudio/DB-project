@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathToSuccess.TaskTree
+namespace PathToSuccess.Models
 {
-    static class TreeManager
+    class User
     {
+        
     }
 }

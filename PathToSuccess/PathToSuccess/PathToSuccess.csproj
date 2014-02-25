@@ -56,6 +56,7 @@
     <Compile Include="Models\CompletionCriteria.cs" />
     <Compile Include="Models\ICompletable.cs" />
     <Compile Include="Models\TimeRule.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="PhoneSync\InfoSender.cs" />
     <Compile Include="PhoneSync\Serializer.cs" />
     <Compile Include="Schedule\Schedule.cs" />
@@ -65,9 +66,9 @@
     </Compile>
     <Compile Include="Schedule\TimeLine.cs" />
     <Compile Include="Schedule\TimeLineManager.cs" />
-    <Compile Include="TaskTree\NTree.cs" />
+    <Compile Include="TaskTree\MultichildTree.cs" />
     <Compile Include="TaskTree\TaskTree.cs" />
-    <Compile Include="TaskTree\TreeManager.cs" />
+    <Compile Include="TaskTree\TaskManager.cs" />
     <Page Include="CreateLoadTreeDiaolg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.TaskTree
 {
-    class NTree//структура данных
+    static class TaskManager//task factory
     {
+        
     }
 }
