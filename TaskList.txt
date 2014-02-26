@@ -1,0 +1,14 @@
+Notes: If class will have some methods - Create Interface
+Avaliable tasks:
+User class 
+TimeRule + ICompletionCriteria class and interface
+Task+TaskInitializer only after Step and StepInitializer
+Step+StepInitializer
+GUI design
+Vlad U:
+
+Vlad H:
+
+Choovuck:
+
+Lobster:

@@ -55,6 +55,9 @@
     </ApplicationDefinition>
     <Compile Include="Models\CompletionCriteria.cs" />
     <Compile Include="Models\ICompletable.cs" />
+    <Compile Include="Models\IInitializer.cs" />
+    <Compile Include="Models\StepInitializer.cs" />
+    <Compile Include="Models\TaskInitializer.cs" />
     <Compile Include="Models\TimeRule.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="PhoneSync\InfoSender.cs" />
