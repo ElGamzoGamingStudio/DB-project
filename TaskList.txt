@@ -1,10 +1,11 @@
 Notes: If class will have some methods - Create Interface
+IMPORTANT - Please do not make GUI, only logic and backend. 
+SUGGESTION - Make ICompletable an abstract class
 
 Avaliable tasks:
 
 User class 
 Task+TaskInitializer only after Step and StepInitializer
-Step+StepInitializer
 GUI design
 
 
@@ -18,7 +19,7 @@ Vlad H:
 
 Choovuck: TimeRule + ICompletionCriteria class and interface
 
-Lobster:
+Lobster: Step+StepInitializer
 
 
 
