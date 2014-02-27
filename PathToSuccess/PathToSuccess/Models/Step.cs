@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.Models
 {
-    public class Step : ICompletable
+    public class Step : CompletableItem
     {
         #region Fields
         public bool Completed { get; private set; }

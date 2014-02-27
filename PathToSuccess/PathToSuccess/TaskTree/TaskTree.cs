@@ -10,7 +10,7 @@ namespace PathToSuccess.TaskTree
     public class TaskTree
     {
         User user;
-        MultichildTree<ICompletable> tree;
+        MultichildTree<CompletableItem> tree;
 
         //...//
     }

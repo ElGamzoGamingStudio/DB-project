@@ -17,7 +17,7 @@ Vlad U:
 
 Vlad H:
 
-Choovuck: TimeRule + ICompletionCriteria class and interface
+Choovuck: Urgency, Importance classes
 
 Lobster: Step+StepInitializer
 
@@ -25,3 +25,6 @@ Lobster: Step+StepInitializer
 
 
 Done:
+
+
+TimeRule + CompletionCriteria class + CompletableItem abstract class (Choovuck)

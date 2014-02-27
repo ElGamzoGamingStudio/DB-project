@@ -8,5 +8,6 @@ namespace PathToSuccess.DAL
 {
     interface IRepository
     {
+        static int GetNextID();
     }
 }

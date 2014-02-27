@@ -8,17 +8,19 @@ namespace PathToSuccess.Models
 {
     public abstract class TimeRule//правило, по которому задача или шаг вносится в дерево (одноразовое, ежедневное, еженедельное и т.д.)
     {
+        public readonly string ID;
         public TimeRule()
         {
+            ID = Guid.NewGuid().ToString();
             //...//
         }
 
         /// <summary>
         /// Generates tasks using some hidden rule descripted by the class name of a subclass.
         /// </summary>
-        /// <param name="TimePeriod">Hours</param>
+        /// <param name="TimePeriod">Depends on particular rule. May be days, weeks, month etc.</param>
         /// <returns></returns>
-        public virtual List<Task> GenerateTasks(int TimePeriod)
+        public virtual List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
         {
             //to override;
             return null;
@@ -28,35 +30,93 @@ namespace PathToSuccess.Models
     //example:
     public static class EverydayTimeRule : TimeRule
     {
-        public override List<Task> GenerateTasks(int TimePeriod)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TimePeriod">Days</param>
+        /// <returns></returns>
+        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
         {
-            int count = TimePeriod / 24;
-            var list = new List<Task>();
+            var result = new List<Task>();
+            var today = DateTime.Now;
 
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < TimePeriod; i++)
             {
+                var day = today.AddDays(i);
                 //create tasks
             }
 
-            return list;
+            return result;
         }
     }
 
-    public class WeeklyTimeRule : TimeRule
+    public static class DaysOfWeekTimeRule : TimeRule
     {
-        public List<Day> AcceptableDays;
-
-        public WeeklyTimeRule(params Day[] days)
+        public List<DayOfWeek> AcceptableDays;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TimePeriod">Days</param>
+        /// <returns></returns>
+        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend, params DayOfWeek[] days)
         {
-            AcceptableDays = days.ToList<Day>();
-        }
-
-        public override List<Task> GenerateTasks(int TimePeriod)
-        {
-            //...//
+            var result = new List<Task>();
+            var today = DateTime.Now;
+            for (int i = 0; i < TimePeriod; i++)
+            {
+                if (AcceptableDays.Contains(
+                    today.AddDays(i)
+                    .DayOfWeek))
+                    //... create task ...//
+            }
+            return result;
         }
     }
 
+    public static class WeeklyTimeRule : TimeRule
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TimePeriod">Weeks</param>
+        /// <param name="TaskToExtend"></param>
+        /// <returns></returns>
+        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
+        {
+            var result = new List<Task>();
+            var today = DateTime.Now;
+            for (int i = 0; i < TimePeriod; i++)
+            {
+                var day = today.AddDays(i * 7);
+                //... create task ...//
+            }
+            return result;
+        }
+    }
+
+    public static class MonthlyTimeRule : TimeRule
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="TimePeriod">Months</param>
+        /// <param name="TaskToExtend"></param>
+        /// <returns></returns>
+        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
+        {
+            var today = DateTime.Now.Date;
+            var result = new List<Task>();
+            for (int i = 0; i < TimePeriod; i++)
+            {
+                var nextOne = today.AddMonths(i);
+                if (nextOne.Day == today.Day) // ... create task ... //
+            }
+            return result;
+        }
+    }
+
+
+    /*
     timerules
 
         id
@@ -65,4 +125,5 @@ namespace PathToSuccess.Models
         params
 
     days:{Monday,Tuesday};
+     */
 }

@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.DAL
 {
-    class SqlRepository
+    public static class SqlRepository : IRepository
     {
+        public static int GetNextID()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

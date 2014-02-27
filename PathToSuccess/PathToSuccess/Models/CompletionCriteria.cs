@@ -14,6 +14,7 @@ namespace PathToSuccess.Models
 
         public CompletionCriteria(string description)
         {
+            Completed = false;
             Description = description;
         }
     }

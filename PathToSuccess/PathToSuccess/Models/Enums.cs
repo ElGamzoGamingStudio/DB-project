@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.Models
 {
-    public enum Importance
+    /*public enum Importance
     {
         
     }
@@ -19,7 +19,7 @@ namespace PathToSuccess.Models
     public enum Day
     {
 
-    }
+    }*/
 
    /* public static class importance //todo
     {

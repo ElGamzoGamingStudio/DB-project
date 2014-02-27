@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PathToSuccess.Models
 {
-    public class Task : ICompletable//задача
+    public class Task : CompletableItem//задача
     {
         public DateTime DeadLine;
         public int ID
