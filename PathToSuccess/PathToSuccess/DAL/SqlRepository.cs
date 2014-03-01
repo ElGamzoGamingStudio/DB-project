@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PathToSuccess.Models;
 
 namespace PathToSuccess.DAL
 {
-    public static class SqlRepository : IRepository
+    public class SqlRepository : IRepository
     {
         public static int GetNextID()
         {
-            throw new NotImplementedException();
+
         }
+        public static List<Unit> GetImportanceUnits()
+        {
+
+        }
+        public static List<Unit> GetUrgencyUnits()
+        {
+
+        }
+        
     }
 }

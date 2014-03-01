@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\ComparableNumeric.cs" />
     <Compile Include="Models\CompletionCriteria.cs" />
     <Compile Include="Models\CompletableItem.cs" />
     <Compile Include="Models\IInitializer.cs" />

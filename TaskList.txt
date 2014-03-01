@@ -17,7 +17,7 @@ Vlad U:
 
 Vlad H:
 
-Choovuck: Urgency, Importance classes
+Choovuck: MultiChildTree
 
 Lobster: Step+StepInitializer
 
@@ -28,3 +28,4 @@ Done:
 
 
 TimeRule + CompletionCriteria class + CompletableItem abstract class (Choovuck)
+Urgency, Importance classes (Choovuck)
