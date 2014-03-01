@@ -22,12 +22,14 @@ namespace PathToSuccess.Models
             }
         }
 
-        public Urgency(Unit unit)
+        public Urgency(string unitName)
             : base()
         {
-            Value =
-                _availableUnits.Contains(unit) ?
-                unit : Unit.NonExistingUnit;
+            var unit = _availableUnits.FirstOrDefault(x => x.name == unitName);
+            if (!unit.Equals(default(Unit)))
+                Value = unit;
+            else
+                Value = Unit.NonExistingUnit;
         }
 
         public static override void Initialize()
