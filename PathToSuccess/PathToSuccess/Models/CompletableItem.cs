@@ -17,7 +17,7 @@ namespace PathToSuccess.Models
         public DateTime DeadLine;
         public TimeSpan TimeToDo;
         public readonly int ID;
-
+       
         private Importance _importance;
         public Importance Importance
         {
@@ -45,10 +45,11 @@ namespace PathToSuccess.Models
         public event CompletableItemEvent OnImportanceChanged;
         public event CompletableItemEvent OnUrgencyChanged;
 
-        public CompletableItem(CompletionCriteria criteria, DateTime deadLine, TimeSpan timeToDo, Importance i, Urgency u)
+        public CompletableItem(CompletionCriteria criteria, DateTime startTime, DateTime deadLine, TimeSpan timeToDo, Importance i, Urgency u)
         {
             ID = SqlRepository.GetNextID();
             completionCriteria = criteria;
+            StartTime = startTime;
             DeadLine = deadLine;
             TimeToDo = timeToDo;
             Importance = i;
