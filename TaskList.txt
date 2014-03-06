@@ -15,11 +15,12 @@ GUI design
 
 Vlad U:
 
-Vlad H:
+Vlad H: USER class
 
 Choovuck: MultiChildTree
 
 Lobster: Step+StepInitializer
+
 
 
 
