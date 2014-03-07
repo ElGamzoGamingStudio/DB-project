@@ -9,8 +9,8 @@ namespace PathToSuccess.DAL
 {
     public interface IRepository
     {
-        static int GetNextID();
-        static List<Unit> GetImportanceUnits();
-        static List<Unit> GetUrgencyUnits();
+        int GetNextID();
+        List<Unit> GetImportanceUnits();
+        List<Unit> GetUrgencyUnits();
     }
 }

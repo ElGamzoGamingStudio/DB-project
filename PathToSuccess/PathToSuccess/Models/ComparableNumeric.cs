@@ -8,14 +8,14 @@ namespace PathToSuccess.Models
 {
     public struct Unit
     {
-        string name;
-        int numericValue;
+        public string Name;
+        public int NumericValue;
 
-        public static Unit NonExistingUnit = new Unit { name = "empty", numericValue = -1 };
+        public static Unit NonExistingUnit = new Unit { Name = "empty", NumericValue = -1 };
     }
     public abstract class ComparableNumeric
     {
-        public static virtual void Initialize()
+        public virtual void Initialize()
         {
             //...//
         }

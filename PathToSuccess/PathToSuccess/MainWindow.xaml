@@ -1,14 +1,28 @@
 ﻿<Window x:Class="PathToSuccess.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="600" Width="1024">
+        Title="MainWindow" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024" SizeChanged="Update" >
     <Grid Background="Gainsboro">
-        <Canvas Width="850" Background="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="520"> 
+        <Canvas MinWidth="850" Name="TreeField" Background="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" >
             <TextBlock FontSize="48" TextWrapping="Wrap" Foreground="Red">Здесь будет отображаться дерево!!!11</TextBlock>
         </Canvas>
         <StackPanel Width="150" Height="260" Background="DarkGray" HorizontalAlignment="Right" Margin="0,49,0,260">
-            <TextBlock TextWrapping="Wrap" FontSize="18">Функциональная панель. В идеале, панелька с графическими элементами ,которые потом надо перетаскивать на канвас.</TextBlock>
+            
         </StackPanel>
-        <Label VerticalAlignment="Top" HorizontalAlignment="Left" Height="50" FontSize="32" Foreground="Crimson">Здесь расположим менюшки</Label>
+        <StackPanel Orientation="Horizontal" Width="200" Margin="10,0,0,0" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top">
+            <StackPanel.Resources>
+                <Style TargetType="Ellipse">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Fill" Value="Cyan"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
+        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
+        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
+        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
+        </StackPanel>
     </Grid>
 </Window>

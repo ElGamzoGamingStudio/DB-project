@@ -25,16 +25,13 @@ namespace PathToSuccess.Models
         public Importance(string unitName)
             : base()
         {
-            var unit = _availableUnits.FirstOrDefault(x => x.name == unitName);
-            if (!unit.Equals(default(Unit)))
-                Value = unit;
-            else
-                Value = Unit.NonExistingUnit;
+            var unit = _availableUnits.FirstOrDefault(x => x.Name == unitName);
+            Value = !unit.Equals(default(Unit)) ? unit : Unit.NonExistingUnit;
         }
 
-        public static override void Initialize()
+        public override void Initialize()
         {
-            Importance.AvailableUnits = SqlRepository.GetImportanceUnits();
+            AvailableUnits = ModuleConnector.Repository.GetImportanceUnits();
         }
     }
 }

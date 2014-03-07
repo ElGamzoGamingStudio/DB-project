@@ -4,8 +4,6 @@ SUGGESTION - Make ICompletable an abstract class
 
 Avaliable tasks:
 
-User class 
-Task+TaskInitializer only after Step and StepInitializer
 GUI design
 
 

@@ -47,7 +47,7 @@ namespace PathToSuccess.Models
 
         public CompletableItem(CompletionCriteria criteria, DateTime startTime, DateTime deadLine, TimeSpan timeToDo, Importance i, Urgency u)
         {
-            ID = SqlRepository.GetNextID();
+            ID = ModuleConnector.Repository.GetNextID();
             completionCriteria = criteria;
             StartTime = startTime;
             DeadLine = deadLine;

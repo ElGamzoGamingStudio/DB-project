@@ -18,9 +18,10 @@ namespace PathToSuccess.Models
         /// <summary>
         /// Generates tasks using some hidden rule descripted by the class name of a subclass.
         /// </summary>
-        /// <param name="TimePeriod">Depends on particular rule. May be days, weeks, month etc.</param>
+        /// <param name="timePeriod">Depends on particular rule. May be days, weeks, month etc.</param>
+        /// <param name="taskToExtend"></param>
         /// <returns></returns>
-        public virtual List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
+        public virtual List<Task> GenerateTasks(int timePeriod, Task taskToExtend)
         {
             //to override;
             return null;
@@ -28,19 +29,20 @@ namespace PathToSuccess.Models
     }
 
     //example:
-    public static class EverydayTimeRule : TimeRule
+    public class EverydayTimeRule : TimeRule
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="TimePeriod">Days</param>
+        /// <param name="timePeriod">Days</param>
+        /// <param name="taskToExtend"></param>
         /// <returns></returns>
-        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
+        public override List<Task> GenerateTasks(int timePeriod, Task taskToExtend)
         {
             var result = new List<Task>();
             var today = DateTime.Now;
 
-            for (int i = 0; i < TimePeriod; i++)
+            for (int i = 0; i < timePeriod; i++)
             {
                 var day = today.AddDays(i);
                 //create tasks
@@ -50,42 +52,45 @@ namespace PathToSuccess.Models
         }
     }
 
-    public static class DaysOfWeekTimeRule : TimeRule
+    public class DaysOfWeekTimeRule : TimeRule
     {
         public List<DayOfWeek> AcceptableDays;
+
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="TimePeriod">Days</param>
+        /// <param name="timePeriod">Days</param>
+        /// <param name="taskToExtend"></param>
+        /// <param name="days"></param>
         /// <returns></returns>
-        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend, params DayOfWeek[] days)
+        public List<Task> GenerateTasks(int timePeriod, Task taskToExtend, params DayOfWeek[] days)
         {
             var result = new List<Task>();
             var today = DateTime.Now;
-            for (int i = 0; i < TimePeriod; i++)
+            for (int i = 0; i < timePeriod; i++)
             {
                 if (AcceptableDays.Contains(
                     today.AddDays(i)
-                    .DayOfWeek))
+                    .DayOfWeek)){}
                     //... create task ...//
             }
             return result;
         }
     }
 
-    public static class WeeklyTimeRule : TimeRule
+    public class WeeklyTimeRule : TimeRule
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="TimePeriod">Weeks</param>
-        /// <param name="TaskToExtend"></param>
+        /// <param name="timePeriod">Weeks</param>
+        /// <param name="taskToExtend"></param>
         /// <returns></returns>
-        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
+        public override List<Task> GenerateTasks(int timePeriod, Task taskToExtend)
         {
             var result = new List<Task>();
             var today = DateTime.Now;
-            for (int i = 0; i < TimePeriod; i++)
+            for (int i = 0; i < timePeriod; i++)
             {
                 var day = today.AddDays(i * 7);
                 //... create task ...//
@@ -94,22 +99,25 @@ namespace PathToSuccess.Models
         }
     }
 
-    public static class MonthlyTimeRule : TimeRule
+    public  class MonthlyTimeRule : TimeRule
     {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="TimePeriod">Months</param>
-        /// <param name="TaskToExtend"></param>
+        /// <param name="timePeriod">Months</param>
+        /// <param name="taskToExtend"></param>
         /// <returns></returns>
-        public override List<Task> GenerateTasks(int TimePeriod, Task TaskToExtend)
+        public override List<Task> GenerateTasks(int timePeriod, Task taskToExtend)
         {
             var today = DateTime.Now.Date;
             var result = new List<Task>();
-            for (int i = 0; i < TimePeriod; i++)
+            for (int i = 0; i < timePeriod; i++)
             {
                 var nextOne = today.AddMonths(i);
-                if (nextOne.Day == today.Day) // ... create task ... //
+                if (nextOne.Day == today.Day)
+                {
+                    
+                }// ... create task ... //
             }
             return result;
         }

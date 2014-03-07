@@ -9,17 +9,17 @@ namespace PathToSuccess.DAL
 {
     public class SqlRepository : IRepository
     {
-        public static int GetNextID()
+        public int GetNextID()
         {
-
+            return 0;
         }
-        public static List<Unit> GetImportanceUnits()
+        public List<Unit> GetImportanceUnits()
         {
-
+            return null;
         }
-        public static List<Unit> GetUrgencyUnits()
+        public List<Unit> GetUrgencyUnits()
         {
-
+            return null;
         }
         
     }

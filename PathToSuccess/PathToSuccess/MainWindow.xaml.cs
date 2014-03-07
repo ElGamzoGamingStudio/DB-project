@@ -20,9 +20,28 @@ namespace PathToSuccess
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
+           
+        }
+
+        private void Update(object sender, EventArgs e)
+        {
+            double widthDifference,heightDifference;
+            if (WindowState == WindowState.Maximized)
+            {
+                widthDifference = SystemParameters.PrimaryScreenWidth - MinWidth ;
+                heightDifference = SystemParameters.PrimaryScreenHeight - MinHeight - 40;
+            }
+            else
+            {
+                widthDifference = Width - MinWidth;
+                heightDifference = Height - MinHeight;
+            }
+            TreeField.Width = TreeField.MinWidth + widthDifference;
+            TreeField.Height = TreeField.MinHeight + heightDifference;
         }
     }
 }
