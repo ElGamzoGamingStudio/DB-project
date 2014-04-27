@@ -3,26 +3,79 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024" SizeChanged="Update" >
     <Grid Background="Gainsboro">
-        <Canvas MinWidth="850" Name="TreeField" Background="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" >
-            <TextBlock FontSize="48" TextWrapping="Wrap" Foreground="Red">Здесь будет отображаться дерево!!!11</TextBlock>
+        <ScrollViewer MinWidth="830" HorizontalScrollBarVisibility="Auto" Name="TreeField" MinHeight="520" MaxHeight="520" MaxWidth="830" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <Canvas   Background="White" Name="TreeCanvas" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" Width="830">
+            <Canvas.Resources>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.2" Duration="0:0:0:0.1" AutoReverse="False"/>
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.2" Duration="0:0:0:0.1" AutoReverse="False"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.0" Duration="0:0:0:0.1" AutoReverse="False"/>
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.0" Duration="0:0:0:0.1" AutoReverse="False"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Canvas.Resources>
+            <Ellipse Height="100" Width="100" Fill="Black" Canvas.Top="1000"/>
         </Canvas>
+        </ScrollViewer>
         <StackPanel Width="150" Height="260" Background="DarkGray" HorizontalAlignment="Right" Margin="0,49,0,260">
-            
+            <Button Height="125" BorderThickness="0"></Button>
+            <Button Height="125" BorderThickness="0" Margin="0,5,0,0"></Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Width="200" Margin="10,0,0,0" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top">
             <StackPanel.Resources>
-                <Style TargetType="Ellipse">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Fill" Value="Cyan"></Setter>
-                        </Trigger>
-                    </Style.Triggers>
+                <Style TargetType="Button">
+                    <Setter Property="SnapsToDevicePixels" Value="true"/>
+                    <Setter Property="OverridesDefaultStyle" Value="true"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ButtonFocusVisual}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border 
+          x:Name="Border"  
+          CornerRadius="20" 
+          BorderThickness="1"
+          BorderBrush="Black"
+          Background="Beige">
+                                    <ContentPresenter 
+            Margin="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            RecognizesAccessKey="True"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="Border" Property="Background" Value="LightGoldenrodYellow" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="true">
+                                        <Setter TargetName="Border" Property="Background" Value="Gold" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter TargetName="Border" Property="Visibility" Value="Hidden" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </StackPanel.Resources>
-        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
-        <Ellipse Fill="#FFF4F4F5"  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="35"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35">
+            </Button>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35"/>
         </StackPanel>
     </Grid>
 </Window>

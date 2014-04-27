@@ -20,11 +20,24 @@ namespace PathToSuccess
     /// </summary>
     public partial class MainWindow : Window
     {
-        
+        private double _realCanvasHeight;
+        private double _realCanvasWidth;
         public MainWindow()
         {
             InitializeComponent();
-           
+            _realCanvasWidth = 0;
+            _realCanvasHeight = 0;
+            var t = new TaskTree.TaskTree();
+        }
+
+        private void OverflowCanvas()
+        {
+            TreeCanvas.Width += _realCanvasWidth >= TreeCanvas.Width
+                                    ? 300
+                                    : _realCanvasWidth + 300 < TreeCanvas.Width ? -300 : 0;
+            TreeCanvas.Height += _realCanvasHeight >= TreeCanvas.Height
+                                    ? 170
+                                    : _realCanvasHeight + 170 < TreeCanvas.Height ? -170 : 0;
         }
 
         private void Update(object sender, EventArgs e)
@@ -40,8 +53,9 @@ namespace PathToSuccess
                 widthDifference = Width - MinWidth;
                 heightDifference = Height - MinHeight;
             }
-            TreeField.Width = TreeField.MinWidth + widthDifference;
-            TreeField.Height = TreeField.MinHeight + heightDifference;
+            TreeField.MaxWidth = TreeField.MinWidth + widthDifference;
+            TreeField.MaxHeight = TreeField.MinHeight + heightDifference;
+
         }
     }
 }
