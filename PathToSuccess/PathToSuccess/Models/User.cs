@@ -1,69 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PathToSuccess.Models
 {
+    [Table("users",Schema = "public")]
     class User
     {
-        private string _login;
-        public string Login
-        {
-            get 
-            {
-                return _login;
-            }
-        }
-        private string _name;
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-        }
-        private string _surname;
-        public string Surname
-        {
-            get 
-            {
-                return _surname;
-            }
-        }
-        private DateTime _dateOfBirth;
-        public DateTime DateOfBirth
-        {
-            get 
-            {
-                return _dateOfBirth;
-            }
-        }
-        private DateTime _dateOfRegistration;
-        private int _password;
+        [Key]
+        [Column("login")]
+        public string Login { get; set; }
+
+        [Column("name")]
+        public string Name { get; set; }
+
+        [Column("surname")]
+        public string Surname { get; set; }
+
+        [Column("birthday")]
+        public DateTime DateOfBirth { get; set; }
+
+        [Column("password")]
+        public int Password { get; set; }
+
+        public User()
+        {}
 
         public User(string login, string name, string sname, DateTime birth, string pass)
         {
-            this._login = login;
-            this._name = name;
-            this._surname = sname;
-            this._dateOfBirth = birth;
-            this._dateOfRegistration = DateTime.Now;
-            this._password = pass.GetHashCode();
-        }
-        public User(string login, string name, string sname, DateTime birth, DateTime registration, int pass)
-        {
-            this._login = login;
-            this._name = name;
-            this._surname = sname;
-            this._dateOfBirth = birth;
-            this._dateOfRegistration = registration;
-            this._password = pass;
+            Login = login;
+            Name = name;
+            Surname = sname;
+            DateOfBirth = birth;
+            Password = pass.GetHashCode();
         }
         public bool ComparePass(string pass)
         {
-            return _password == pass.GetHashCode();
+            return Password == pass.GetHashCode();
         }
     }
 }
