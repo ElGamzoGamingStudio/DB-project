@@ -27,7 +27,7 @@ namespace PathToSuccess
             InitializeComponent();
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
-            var t = new TaskTree.TaskTree();
+            DAL.SqlRepository.Initialize();
         }
 
         private void OverflowCanvas()
