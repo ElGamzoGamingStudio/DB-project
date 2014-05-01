@@ -9,7 +9,7 @@ using System.Data.OleDb;
 
 namespace PathToSuccess.DAL
 {
-    class Context:DbContext
+    public class Context : DbContext
     {
         public Context(System.Data.Common.DbConnection connection)
             :base(connection,true)

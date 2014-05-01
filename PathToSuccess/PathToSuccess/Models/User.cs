@@ -18,9 +18,6 @@ namespace PathToSuccess.Models
         [Column("name")]
         public string Name { get; set; }
 
-        [Column("surname")]
-        public string Surname { get; set; }
-
         [Column("birthday")]
         public DateTime DateOfBirth { get; set; }
 
@@ -30,11 +27,10 @@ namespace PathToSuccess.Models
         public User()
         {}
 
-        public User(string login, string name, string sname, DateTime birth, string pass)
+        public User(string login, string name, DateTime birth, string pass)
         {
             Login = login;
             Name = name;
-            Surname = sname;
             DateOfBirth = birth;
             Password = pass.GetHashCode();
         }

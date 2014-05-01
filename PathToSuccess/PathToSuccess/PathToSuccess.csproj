@@ -99,27 +99,23 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DAL\Context.cs" />
-    <Compile Include="Models\ComparableNumeric.cs" />
-    <Compile Include="Models\CompletionCriteria.cs" />
-    <Compile Include="Models\CompletableItem.cs" />
-    <Compile Include="Models\IInitializer.cs" />
+    <Compile Include="Models\Criteria.cs" />
     <Compile Include="Models\Importance.cs" />
-    <Compile Include="Models\StepInitializer.cs" />
-    <Compile Include="Models\TaskInitializer.cs" />
+    <Compile Include="Models\Interval.cs" />
+    <Compile Include="Models\Schedule.cs" />
+    <Compile Include="Models\TimeBinding.cs" />
     <Compile Include="Models\TimeRule.cs" />
+    <Compile Include="Models\Tree.cs" />
     <Compile Include="Models\Urgency.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="PhoneSync\InfoSender.cs" />
     <Compile Include="PhoneSync\Serializer.cs" />
-    <Compile Include="Schedule\Schedule.cs" />
     <Compile Include="Schedule\ScheduleManager.cs" />
     <Compile Include="Schedule\ScheduleVisualizer.xaml.cs">
       <DependentUpon>ScheduleVisualizer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Schedule\TimeLine.cs" />
     <Compile Include="Schedule\TimeLineManager.cs" />
-    <Compile Include="TaskTree\MultichildTree.cs" />
-    <Compile Include="TaskTree\TaskTree.cs" />
     <Compile Include="TaskTree\TaskManager.cs" />
     <Page Include="CreateLoadTreeDiaolg.xaml">
       <SubType>Designer</SubType>
@@ -136,7 +132,6 @@
     <Compile Include="CreateLoadTreeDiaolg.xaml.cs">
       <DependentUpon>CreateLoadTreeDiaolg.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DAL\IRepository.cs" />
     <Compile Include="DAL\SqlRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -148,7 +143,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\Step.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="ModuleConnector.cs" />
@@ -227,6 +221,9 @@
       <ProductName>SQL Server Compact 4.0 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

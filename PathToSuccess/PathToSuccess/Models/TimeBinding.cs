@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PathToSuccess.Schedule
+namespace PathToSuccess.Models
 {
-    class Schedule//Структура данных с методами
+    public class TimeBinding
     {
     }
 }

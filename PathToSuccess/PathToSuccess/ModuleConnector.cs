@@ -9,10 +9,9 @@ namespace PathToSuccess
 {
     public static class ModuleConnector//Через этот класс формы будут общаться с логикой.
     {
-        public static IRepository Repository;
         static ModuleConnector()
         {
-            Repository=new SqlRepository();
+              
         }
     }
 
