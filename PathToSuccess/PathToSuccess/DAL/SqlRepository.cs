@@ -23,7 +23,7 @@ namespace PathToSuccess.DAL
         public static void Initialize()
         {
             var conn = new NpgsqlConnection(
-                    "Server=127.0.0.1;Port=3306;User Id=postgres;Password=root;Database=PathToSuccess;"); //5432
+                    "Server=127.0.0.1;Port=5432;User Id=postgres;Password=1;Database=PathToSuccess;"); //5432
             conn.Open();
 
             DBContext = new Context(conn);
