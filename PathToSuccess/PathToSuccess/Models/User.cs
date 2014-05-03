@@ -45,5 +45,28 @@ namespace PathToSuccess.Models
         {
             return Password == pass.GetHashCode();
         }
+
+        public static void CreateUser(User user)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
+            if (set.Find(new object[] {user.Login}) == null)
+            {
+                set.Add(user);
+                DAL.SqlRepository.DBContext.SaveChanges();
+            }
+        }
+
+        public void ResetPass(string newPass)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
+            this.Password = newPass.GetHashCode();
+            DAL.SqlRepository.DBContext.SaveChanges();
+        }
+
+        public static bool CheckLoginIsUnique(string login)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
+            return set.Find(new object[] { login }) == null;
+        }
     }
 }
