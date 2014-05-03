@@ -37,7 +37,7 @@ namespace PathToSuccess.DAL
             //modelBuilder.Entity<Models.Schedule>().ToTable("public.schedule");
             //modelBuilder.Entity<Interval>().ToTable("public.interval");
             //modelBuilder.Entity<Importance>().ToTable("public.importance");
-            //modelBuilder.Entity<Criteria>().ToTable("public.criteria");
+            modelBuilder.Entity<Criteria>().ToTable("public.criteria");
         }
     }
 }

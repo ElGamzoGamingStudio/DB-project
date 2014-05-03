@@ -23,6 +23,7 @@ namespace PathToSuccess.Models
         [Column("birthdate")]
         public DateTime DateOfBirth { get; set; }
 
+        [Required]
         [Column("password")]
         public int Password { get; set; }
 
@@ -50,9 +51,20 @@ namespace PathToSuccess.Models
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
 
-            if (set.Find(new object[] {user.Login}) == null)
+            if (set.Find(user.Login) == null)
             {
                 set.Add(user);
+                DAL.SqlRepository.DBContext.SaveChanges();
+            }
+        }
+
+        public static void DeleteUser(User user)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
+            var usr = set.Find(user.Login);
+            if (usr != null)
+            {
+                set.Remove(usr);
                 DAL.SqlRepository.DBContext.SaveChanges();
             }
         }
