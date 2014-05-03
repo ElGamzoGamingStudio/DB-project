@@ -5,11 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
+using Npgsql;
 
 namespace PathToSuccess.Models
 {
-    [Table("users",Schema = "public")]
-    class User
+    [Table("users", Schema="public")]
+    public class User
     {
         [Key]
         [Column("login")]
@@ -18,22 +20,27 @@ namespace PathToSuccess.Models
         [Column("name")]
         public string Name { get; set; }
 
-        [Column("birthday")]
+        [Column("birthdate")]
         public DateTime DateOfBirth { get; set; }
 
         [Column("password")]
         public int Password { get; set; }
 
+        [Column("date_reg")]
+        public DateTime DateReg { get; set; }
+
         public User()
         {}
 
-        public User(string login, string name, DateTime birth, string pass)
+        public User(string login, string name, DateTime birth, string pass, DateTime dateReg)
         {
             Login = login;
             Name = name;
             DateOfBirth = birth;
             Password = pass.GetHashCode();
+            DateReg = dateReg;
         }
+
         public bool ComparePass(string pass)
         {
             return Password == pass.GetHashCode();

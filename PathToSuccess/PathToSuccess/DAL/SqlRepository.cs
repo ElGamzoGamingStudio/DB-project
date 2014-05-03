@@ -12,6 +12,8 @@ using PathToSuccess.Models;
 using Npgsql;
 using NpgsqlTypes;
 
+using System.Data.Entity;
+
 namespace PathToSuccess.DAL
 {
     public static class SqlRepository
@@ -21,8 +23,9 @@ namespace PathToSuccess.DAL
         public static void Initialize()
         {
             var conn = new NpgsqlConnection(
-                    "Server=127.0.0.1;Port=3306;User Id=postgres;Password=root;Database=PathToSuccess;");
+                    "Server=127.0.0.1;Port=3306;User Id=postgres;Password=root;Database=PathToSuccess;"); //5432
             conn.Open();
+
             DBContext = new Context(conn);
         }
     }
