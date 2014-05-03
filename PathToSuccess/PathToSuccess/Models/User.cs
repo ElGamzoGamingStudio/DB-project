@@ -49,6 +49,7 @@ namespace PathToSuccess.Models
         public static void CreateUser(User user)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
+
             if (set.Find(new object[] {user.Login}) == null)
             {
                 set.Add(user);
