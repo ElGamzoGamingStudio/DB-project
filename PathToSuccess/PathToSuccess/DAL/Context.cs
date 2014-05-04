@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Npgsql;
-using System.Data.OleDb;
+﻿using System.Data.Entity;
 using PathToSuccess.Models;
 
 namespace PathToSuccess.DAL
@@ -32,7 +25,7 @@ namespace PathToSuccess.DAL
             modelBuilder.Entity<Tree>().ToTable("public.tree");
             //modelBuilder.Entity<TimeRule>().ToTable("public.timerule");
             //modelBuilder.Entity<TimeBinding>().ToTable("public.time_binding");
-            modelBuilder.Entity<Models.Task>().ToTable("public.task");
+            modelBuilder.Entity<Task>().ToTable("public.task");
             modelBuilder.Entity<Step>().ToTable("public.step");
             //modelBuilder.Entity<Models.Schedule>().ToTable("public.schedule");
             //modelBuilder.Entity<Interval>().ToTable("public.interval");

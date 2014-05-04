@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -63,7 +60,6 @@ namespace PathToSuccess.Models
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="beginDate"></param>
         /// <param name="endDate">please USE !!DATETIME.MIN_VALUE!! if is not finished</param>
         /// <param name="urgencyName"></param>
@@ -74,6 +70,8 @@ namespace PathToSuccess.Models
         /// <param name="timeRuleId"></param>
         /// <param name="timeRule"></param>
         /// <param name="description">actual text of the step</param>
+        /// <param name="parentTask"></param>
+        /// <param name="taskId"></param>
         public Step(DateTime beginDate, DateTime endDate, string urgencyName,
                     string importanceName, Importance importance, int criteriaId, Criteria criteria, 
                     int timeRuleId, TimeRule timeRule, string description, Task parentTask, int taskId)

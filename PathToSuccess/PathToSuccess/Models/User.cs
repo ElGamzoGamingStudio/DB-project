@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using Npgsql;
 
 namespace PathToSuccess.Models
 {
@@ -71,8 +65,8 @@ namespace PathToSuccess.Models
 
         public void ResetPass(string newPass)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
-            this.Password = newPass.GetHashCode();
+            //var set = DAL.SqlRepository.DBContext.GetDbSet<User>(); //not really needed
+            Password = newPass.GetHashCode();
             DAL.SqlRepository.DBContext.SaveChanges();
         }
 

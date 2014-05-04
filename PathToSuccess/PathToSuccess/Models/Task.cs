@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Linq.Expressions;
-using LinqToDB;
-using PathToSuccess.TaskTree;
 
 namespace PathToSuccess.Models
 {
@@ -59,7 +56,6 @@ namespace PathToSuccess.Models
         /// <summary>
         /// Main constructor
         /// </summary>
-        /// <param name="id"></param>
         /// <param name="beginDate"></param>
         /// <param name="endDate">please USE !!DATETIME.MIN_VALUE!! if is not finished</param>
         /// <param name="urgencyName"></param>
@@ -68,6 +64,8 @@ namespace PathToSuccess.Models
         /// <param name="criteriaId"></param>
         /// <param name="criteria"></param>
         /// <param name="description">Actual text ot the task</param>
+        /// <param name="parent"></param>
+        /// <param name="parentId"></param>
         public Task(DateTime beginDate, DateTime endDate, string urgencyName, string importanceName, 
                     Importance importance, int criteriaId, Criteria criteria, string description, Task parent, int parentId)
         {
