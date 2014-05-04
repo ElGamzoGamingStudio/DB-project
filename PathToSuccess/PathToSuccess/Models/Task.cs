@@ -37,6 +37,10 @@ namespace PathToSuccess.Models
         [ForeignKey ("Id")]
         public Criteria Criteria { get; set; }
 
+        [Required]
+        [Column("description")]
+        public string Description { get; set; }
+
 
 
         //methods
@@ -49,17 +53,22 @@ namespace PathToSuccess.Models
         /// <param name="endDate">please USE !!DATETIME.MIN_VALUE!! if is not finished</param>
         /// <param name="urgencyName"></param>
         /// <param name="importanceName"></param>
+        /// <param name="importance"></param>
         /// <param name="criteriaId"></param>
         /// <param name="criteria"></param>
-        public Task(int id, DateTime beginDate, DateTime endDate, string urgencyName, string importanceName, int criteriaId, Criteria criteria)
+        /// <param name="description">Actual text ot the task</param>
+        public Task(int id, DateTime beginDate, DateTime endDate, string urgencyName, string importanceName, 
+                    Importance importance, int criteriaId, Criteria criteria, string description)
         {
             Id = id;
             BeginDate = beginDate;
             EndDate = endDate;
             UrgencyName = urgencyName;
             ImportanceName = importanceName;
+            Importance = importance;
             CriteriaId = criteriaId;
             Criteria = criteria;
+            Description = description;
         }
 
         /// <summary>
