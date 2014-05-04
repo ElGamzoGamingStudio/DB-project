@@ -16,8 +16,11 @@ namespace PathToSuccess.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public int Id { get; set; }
 
+        [Required]
         [Column("step_id")]
         public int StepId { get; set; }
+        [ForeignKey("Name")]
+        public Step Step { get; set; }
 
         [Column("time")]
         public DateTime Time { get; set; }
@@ -31,10 +34,11 @@ namespace PathToSuccess.Models
         [Column("year")]
         public int Year { get; set; }
 
-        public TimeBinding(int id,int stepId,DateTime time, int day, int month, int year)
+        public TimeBinding(int id,int stepId,Step step,DateTime time, int day, int month, int year)
         {
             Id = id;
             StepId = stepId;
+            Step = step;
             Time = time;
             Day = day;
             Month = month;
