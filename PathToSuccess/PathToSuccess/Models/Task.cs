@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Linq.Expressions;
+using LinqToDB;
+using PathToSuccess.TaskTree;
 
 namespace PathToSuccess.Models
 {
@@ -110,5 +115,43 @@ namespace PathToSuccess.Models
             //need importance + urgency to be done
             return int.MinValue;
         }
+
+        public static List<Task> Select(Func<Task, bool> predicate)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
+            return set.Cast<Task>().Where(predicate).ToList();
+        }
+
+        public List<Task> SelectChildrenTasks()
+        {
+            //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
+            //var childrenSet = set.Cast<Task>().Where(x => x.Parent == this);
+            return DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this).ToList();
+        }
+        public List<Task> SelectChildrenTask(Func<Task, bool> predicate)
+        {
+            //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
+            var childrenSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
+            return childrenSet.Where(predicate).ToList();
+        }
+        
+        public List<Step> SelectChildrenSteps()
+        {
+            return DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().Where(x => x.ParentTask == this).ToList();
+        }
+        public List<Step> SelectChildrenStep(Func<Step, bool> predicate)
+        {
+            //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
+            var childrenSet = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().Where(x => x.ParentTask == this);
+            return childrenSet.Where(predicate).ToList();
+        }
+
+        public bool ChildrenAreSteps()
+        {
+            var childrenStepSet = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().Where(x => x.ParentTask == this);
+            //var childrenTaskSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
+            return childrenStepSet.Any();
+        }
+       
     }
 }

@@ -125,5 +125,11 @@ namespace PathToSuccess.Models
             return int.MinValue;
         }
 
+        public static List<Step> Select(Func<Step, bool> predicate)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
+            return set.Cast<Step>().Where(predicate).ToList();
+        }
+ 
     }
 }
