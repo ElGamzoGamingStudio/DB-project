@@ -29,6 +29,15 @@ namespace PathToSuccess.Models
         [Column("unit")]
         public string Unit { get; set; }
 
+        public Criteria() { }
+
+        public Criteria(int currentValue, int targetValue, string unit)
+        {
+            CurrentValue = currentValue;
+            TargetValue = targetValue;
+            Unit = unit;
+        }
+
         public static void CreateCriteria(Criteria criteria)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<Criteria>();

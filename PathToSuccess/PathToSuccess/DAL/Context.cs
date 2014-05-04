@@ -29,11 +29,11 @@ namespace PathToSuccess.DAL
         {
             modelBuilder.Entity<User>().ToTable("public.users");
             //modelBuilder.Entity<Urgency>().ToTable("public.ugrency");
-            //modelBuilder.Entity<Tree>().ToTable("public.tree");
+            modelBuilder.Entity<Tree>().ToTable("public.tree");
             //modelBuilder.Entity<TimeRule>().ToTable("public.timerule");
             //modelBuilder.Entity<TimeBinding>().ToTable("public.time_binding");
-            //modelBuilder.Entity<Models.Task>().ToTable("public.task");
-            //modelBuilder.Entity<Step>().ToTable("public.step");
+            modelBuilder.Entity<Models.Task>().ToTable("public.task");
+            modelBuilder.Entity<Step>().ToTable("public.step");
             //modelBuilder.Entity<Models.Schedule>().ToTable("public.schedule");
             //modelBuilder.Entity<Interval>().ToTable("public.interval");
             //modelBuilder.Entity<Importance>().ToTable("public.importance");

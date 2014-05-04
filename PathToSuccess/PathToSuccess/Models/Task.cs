@@ -41,6 +41,12 @@ namespace PathToSuccess.Models
         [Column("description")]
         public string Description { get; set; }
 
+        [Column("parent_id")]
+        public int ParentId { get; set; }
+
+        [ForeignKey("Id")]
+        public Task Parent { get; set; }
+
 
 
         //methods
@@ -57,10 +63,9 @@ namespace PathToSuccess.Models
         /// <param name="criteriaId"></param>
         /// <param name="criteria"></param>
         /// <param name="description">Actual text ot the task</param>
-        public Task(int id, DateTime beginDate, DateTime endDate, string urgencyName, string importanceName, 
-                    Importance importance, int criteriaId, Criteria criteria, string description)
+        public Task(DateTime beginDate, DateTime endDate, string urgencyName, string importanceName, 
+                    Importance importance, int criteriaId, Criteria criteria, string description, Task parent, int parentId)
         {
-            Id = id;
             BeginDate = beginDate;
             EndDate = endDate;
             UrgencyName = urgencyName;
@@ -69,6 +74,8 @@ namespace PathToSuccess.Models
             CriteriaId = criteriaId;
             Criteria = criteria;
             Description = description;
+            Parent = parent;
+            ParentId = parentId;
         }
 
         /// <summary>
