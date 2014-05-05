@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace PathToSuccess.Models
 {
@@ -65,7 +66,7 @@ namespace PathToSuccess.Models
 
         public void ResetPass(string newPass)
         {
-            //var set = DAL.SqlRepository.DBContext.GetDbSet<User>(); //not really needed
+            var set = DAL.SqlRepository.DBContext.GetDbSet<User>(); //not really needed
             Password = newPass.GetHashCode();
             DAL.SqlRepository.DBContext.SaveChanges();
         }
@@ -74,6 +75,12 @@ namespace PathToSuccess.Models
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
             return set.Find(new object[] { login }) == null;
+        }
+
+        public static User Find(string login)
+        {
+            return (User) DAL.SqlRepository.DBContext.GetDbSet<User>()
+                .Find(login);
         }
     }
 }
