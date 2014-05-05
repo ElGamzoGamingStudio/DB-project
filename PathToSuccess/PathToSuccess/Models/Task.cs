@@ -99,6 +99,7 @@ namespace PathToSuccess.Models
         /// </summary>
         public void EndTask()
         {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
             if(!DateTime.MinValue.Equals(EndDate)) return; //is finished or broken
             EndDate = DateTime.Now;
             DAL.SqlRepository.DBContext.SaveChanges();
