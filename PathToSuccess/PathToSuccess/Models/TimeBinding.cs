@@ -19,7 +19,7 @@ namespace PathToSuccess.Models
         [Required]
         [Column("step_id")]
         public int StepId { get; set; }
-        [ForeignKey("Name")]
+        [ForeignKey("StepId")]
         public Step Step { get; set; }
 
         [Column("time")]
@@ -76,15 +76,14 @@ namespace PathToSuccess.Models
             var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
             return set.Cast<TimeBinding>().Where(x => x.Year == year && x.Month == month && x.Day == day).ToList();
         }
-        public static TimeBinding GetTBbyStepID(int stepid)
+        public static List<TimeBinding> GetTBbyStepID(int stepid)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
             List<TimeBinding> tbl = set.Cast<TimeBinding>().Where(x => x.StepId == stepid).ToList();
-            //if (tbl.Count > 1) //totally unexpexted
             if (tbl.Count == 0)
                 return null;
             else
-                return tbl[0];
+                return tbl;
         }
     }
 }

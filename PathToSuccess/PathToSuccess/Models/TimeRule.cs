@@ -22,8 +22,11 @@ namespace PathToSuccess.Models
 
         [Column("schedule_id")]
         public int ScheduleId { get; set; }
-        [ForeignKey("Name")]
+        [ForeignKey("ScheduleId")]
         public Schedule Schedule { get; set; }
+
+        [Column("is_user_approved")]
+        public bool IsUserApproved { get; set; }
 
         public TimeRule(int id, bool isPeriodic, int scheduleId, Schedule schedule)
         {
@@ -31,6 +34,7 @@ namespace PathToSuccess.Models
             IsPeriodic = isPeriodic;
             ScheduleId = scheduleId;
             Schedule = schedule;
+            IsUserApproved = false;
         }
         public static void CreateTimeRule(TimeRule timeRule)
         {
@@ -67,6 +71,11 @@ namespace PathToSuccess.Models
                 return null;
             else
                 return trl[0];
+        }
+        public static List<TimeRule> GetApproved()
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
+            return set.Cast<TimeRule>().Where(x => x.IsUserApproved == true).ToList();
         }
     }
 }
