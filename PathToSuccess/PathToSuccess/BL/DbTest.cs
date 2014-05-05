@@ -55,6 +55,7 @@ namespace PathToSuccess.BL
             //var steps = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().ToList<Step>();
             
             trees = DAL.SqlRepository.DBContext.GetDbSet<Tree>().Cast<Tree>().ToList<Tree>().ToArray();
+
         }
 
         private static void addUsers()
