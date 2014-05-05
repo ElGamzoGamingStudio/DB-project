@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8" ?> 
-<Info ip="127.0.0.1" port="3306" id="postgres" pass="root" dbname="PathToSuccess"/>
+<Info ip="127.0.0.1" port="5432" id="postgres" pass="prosracia123" dbname="PathToSuccess"/>
