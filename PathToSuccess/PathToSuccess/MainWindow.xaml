@@ -72,7 +72,7 @@
                 </Style>
             </StackPanel.Resources>
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Content="New" VerticalAlignment="Top" Width="35"/>
-            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Open" Width="35"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Open" Width="35" Click="TestCreateLoadTreeDialog"/>
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Save" Width="35"/>
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Opt" Width="35"/>
         </StackPanel>

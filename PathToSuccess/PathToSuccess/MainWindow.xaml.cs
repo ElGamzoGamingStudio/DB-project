@@ -69,5 +69,11 @@ namespace PathToSuccess
             TreeField.MaxHeight = TreeField.MinHeight + heightDifference;
 
         }
+
+        private void TestCreateLoadTreeDialog(object sender, RoutedEventArgs e)
+        {
+            var dial = new CreateLoadTreeDialog();
+            dial.Show();
+        }
     }
 }

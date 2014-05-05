@@ -124,7 +124,7 @@
     <Compile Include="Schedule\TimeLine.cs" />
     <Compile Include="Schedule\TimeLineManager.cs" />
     <Compile Include="TaskTree\TaskManager.cs" />
-    <Page Include="CreateLoadTreeDiaolg.xaml">
+    <Page Include="CreateLoadTreeDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -140,8 +140,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CreateLoadTreeDiaolg.xaml.cs">
-      <DependentUpon>CreateLoadTreeDiaolg.xaml</DependentUpon>
+    <Compile Include="CreateLoadTreeDialog.xaml.cs">
+      <DependentUpon>CreateLoadTreeDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="DAL\SqlRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">

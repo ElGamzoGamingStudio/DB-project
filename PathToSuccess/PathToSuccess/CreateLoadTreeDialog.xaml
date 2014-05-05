@@ -1,8 +1,9 @@
-﻿<Window x:Class="PathToSuccess.CreateLoadTreeDiaolg"
+﻿<Window x:Class="PathToSuccess.CreateLoadTreeDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="CreateLoadTreeDiaolg" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024" SizeChanged="Update">
     <Grid>
+        <Grid Name="MainGrid">
         <Grid.Resources>
             <Style TargetType="Button">
                 <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -44,5 +45,6 @@
         <Button Name="Back" Click="BackClick" Content="B" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Hidden"/>
+        </Grid>
     </Grid>
 </Window>
