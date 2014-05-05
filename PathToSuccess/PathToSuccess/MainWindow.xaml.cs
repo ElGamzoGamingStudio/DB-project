@@ -28,6 +28,8 @@ namespace PathToSuccess
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
             DAL.SqlRepository.Initialize();
+            var wind = new CreateLoadTreeDiaolg();
+            wind.Show();
         }
 
         private void OverflowCanvas()
