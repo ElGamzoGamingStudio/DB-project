@@ -9,7 +9,7 @@ namespace PathToSuccess.Models
     {
         [Key]
         [Column("id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

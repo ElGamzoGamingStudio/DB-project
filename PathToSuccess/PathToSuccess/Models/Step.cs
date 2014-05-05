@@ -11,7 +11,7 @@ namespace PathToSuccess.Models
     {
         [Key]
         [Column ("id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
         [Required]
@@ -89,6 +89,8 @@ namespace PathToSuccess.Models
             ParentTask = parentTask;
             TaskId = taskId;
         }
+
+        public Step() { }
 
         /// <summary>
         /// Method to add new step to the database

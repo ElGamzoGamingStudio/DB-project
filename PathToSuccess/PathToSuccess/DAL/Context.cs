@@ -21,7 +21,7 @@ namespace PathToSuccess.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("public.users");
-            modelBuilder.Entity<Urgency>().ToTable("public.ugrency");
+            modelBuilder.Entity<Urgency>().ToTable("public.urgency");
             modelBuilder.Entity<Tree>().ToTable("public.tree");
             modelBuilder.Entity<TimeRule>().ToTable("public.timerule");
             modelBuilder.Entity<TimeBinding>().ToTable("public.time_binding");

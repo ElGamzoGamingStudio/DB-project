@@ -7,7 +7,8 @@ namespace PathToSuccess.Models
     public class Criteria
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
 
         [Required]

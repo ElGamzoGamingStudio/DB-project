@@ -11,7 +11,7 @@ namespace PathToSuccess.Models
     {
         [Key]
         [Column("id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -67,19 +67,22 @@ namespace PathToSuccess.Models
         /// <param name="parent"></param>
         /// <param name="parentId"></param>
         public Task(DateTime beginDate, DateTime endDate, string urgencyName, string importanceName, 
-                    Importance importance, int criteriaId, Criteria criteria, string description, Task parent, int parentId)
+                    Importance importance, Urgency urgency, int criteriaId, Criteria criteria, string description, Task parent, int parentId)
         {
             BeginDate = beginDate;
             EndDate = endDate;
             UrgencyName = urgencyName;
             ImportanceName = importanceName;
             Importance = importance;
+            Urgency = urgency;
             CriteriaId = criteriaId;
             Criteria = criteria;
             Description = description;
             Parent = parent;
             ParentId = parentId;
         }
+
+        public Task() { }
 
         /// <summary>
         /// Method to add new task to the database

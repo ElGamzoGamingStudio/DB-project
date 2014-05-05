@@ -8,7 +8,7 @@ namespace PathToSuccess.Models
     {
         [Key]
         [Column("id")]
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Column("monday")]
@@ -28,7 +28,7 @@ namespace PathToSuccess.Models
 
         [Column("thirsday")]
         public int ThirsdayIntervalId { get; set; }
-        [ForeignKey("ThirsdayIntervalIId")]
+        [ForeignKey("ThirsdayIntervalId")]
         public Interval ThirsdayInterval { get; set; }
 
         [Column("friday")]

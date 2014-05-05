@@ -11,7 +11,7 @@ namespace PathToSuccess.Models
     {
         [Key]
         [Column("tree_id")]
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Computed)]
+        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
         public int TreeId { get; set; }
 
         [Column("user_login")]
@@ -37,12 +37,12 @@ namespace PathToSuccess.Models
 
         public Tree() { }
 
-        public Tree(User user, Task mainTask, string name, string description)
+        public Tree(User user, string userLogin,Task mainTask, int mainTaskId, string name, string description)
         {
             TreeUser = user;
-            TreeUserLogin = user.Login;
+            TreeUserLogin = userLogin;
             MainTask = mainTask;
-            MainTaskId = mainTask.Id;
+            MainTaskId = mainTaskId;
             Name = name;
             Description = description;
             LastChangesTime = DateTime.Now;
