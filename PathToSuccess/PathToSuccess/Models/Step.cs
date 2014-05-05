@@ -102,6 +102,14 @@ namespace PathToSuccess.Models
             set.Add(step);
             DAL.SqlRepository.DBContext.SaveChanges();
         }
+        public static void DeleteStep(Step step)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
+            var toDelete = set.Find(step.Id);
+            if (toDelete == null) return;
+            set.Remove(toDelete);
+            DAL.SqlRepository.DBContext.SaveChanges();
+        }
 
         /// <summary>
         /// Writes DateTime.Now to EndDate parameter
@@ -117,11 +125,10 @@ namespace PathToSuccess.Models
         /// <summary>
         /// Such pro wow
         /// </summary>
-        /// <returns>integer-based rating representing position in the querry</returns>
-        public int CalculateScheduleRating() //todo
+        /// <returns>double-based rating representing position in the querry</returns>
+        public double CalculateScheduleRating()
         {
-            //need importance + urgency to be done
-            return int.MinValue;
+            return Importance.Value * Math.Exp(Urgency.Value);
         }
 
         public static List<Step> Select(Func<Step, bool> predicate)
@@ -129,6 +136,7 @@ namespace PathToSuccess.Models
             var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
             return set.Cast<Step>().Where(predicate).ToList();
         }
- 
+
+        
     }
 }

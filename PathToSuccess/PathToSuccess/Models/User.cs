@@ -66,7 +66,7 @@ namespace PathToSuccess.Models
 
         public void ResetPass(string newPass)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<User>(); //not really needed
+            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
             Password = newPass.GetHashCode();
             DAL.SqlRepository.DBContext.SaveChanges();
         }

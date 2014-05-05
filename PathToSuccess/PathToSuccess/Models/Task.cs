@@ -94,6 +94,15 @@ namespace PathToSuccess.Models
             DAL.SqlRepository.DBContext.SaveChanges();
         }
 
+        public static void DeleteTask(Task task)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
+            var toDelete = set.Find(task.Id);
+            if (toDelete == null) return;
+            set.Remove(toDelete);
+            DAL.SqlRepository.DBContext.SaveChanges();
+        }
+
         /// <summary>
         /// Writes DateTime.Now to EndDate parameter
         /// </summary>
@@ -108,11 +117,10 @@ namespace PathToSuccess.Models
         /// <summary>
         /// Veri gut methisdsda
         /// </summary>
-        /// <returns>integer-based rating representing position in the querry</returns>
-        public int CalculateScheduleRating() //todo
+        /// <returns>double-based rating representing position in the querry</returns>
+        public double CalculateScheduleRating()
         {
-            //need importance + urgency to be done
-            return int.MinValue;
+            return Importance.Value * Math.Exp(Urgency.Value);
         }
 
         public static List<Task> Select(Func<Task, bool> predicate)
