@@ -49,5 +49,24 @@ namespace PathToSuccess.Models
                 DAL.SqlRepository.DBContext.SaveChanges();
             }
         }
+        public static List<TimeRule> GetAll()
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
+            return set.Cast<TimeRule>().ToList();
+        }
+        public static List<TimeRule> GetPeriodic()
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
+            return set.Cast<TimeRule>().Where(x => x.IsPeriodic == true).ToList();
+        }
+        public static TimeRule GetByID(int id)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            var trl = set.Cast<TimeRule>().Where(x => x.Id == id).ToList();
+            if (trl.Count == 0)
+                return null;
+            else
+                return trl[0];
+        }
     }
 }
