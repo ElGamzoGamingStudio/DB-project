@@ -17,13 +17,13 @@ namespace PathToSuccess.Models
         [Column("user_login")]
         public string TreeUserLogin { get; set; }
 
-        [ForeignKey("Login")]
+        [ForeignKey("TreeUserLogin")]
         public User TreeUser { get; set; }
 
         [Column("main_task_id")]
         public int MainTaskId { get; set; }
 
-        [ForeignKey("Id")]
+        [ForeignKey("MainTaskId")]
         public Task MainTask { get; set; }
 
         [Column("name")]

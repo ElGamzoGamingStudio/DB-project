@@ -99,7 +99,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BL\Application.cs" />
-    <Compile Include="BL\Authentification.cs" />
+    <Compile Include="BL\Authentication.cs" />
+    <Compile Include="BL\DbTest.cs" />
     <Compile Include="BL\Settings.cs" />
     <Compile Include="DAL\Context.cs" />
     <Compile Include="Models\Criteria.cs" />

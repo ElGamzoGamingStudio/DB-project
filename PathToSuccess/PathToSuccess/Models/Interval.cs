@@ -12,6 +12,7 @@ namespace PathToSuccess.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public int Id { get; set; }
 
+        [Required]
         [Column("begin_time")]
         public DateTime BeginTime { get; set; }
 
@@ -46,12 +47,13 @@ namespace PathToSuccess.Models
 
         public TimeSpan GetIntervalLength()
         {
-            return EndTime - BeginTime;
+            return EndTime == null ? new TimeSpan(0) : EndTime - BeginTime;
         }
 
         public void Postpone(TimeSpan time)
         {
-            EndTime += time;
+            if (EndTime != null)
+                EndTime += time;
         }
     }
 }

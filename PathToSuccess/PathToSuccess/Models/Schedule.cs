@@ -13,37 +13,37 @@ namespace PathToSuccess.Models
 
         [Column("monday")]
         public int MondayIntervalId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("MondayIntervalId")]
         public Interval MondayInterval { get; set; }
 
         [Column("tuesday")]
         public int TuesdayIntervalId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("TuesdayIntervalId")]
         public Interval TuesdayInterval { get; set; }
 
         [Column("wednesday")]
         public int WednesdayIntervalId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("WednesdayIntervalId")]
         public Interval WednesdayInterval { get; set; }
 
         [Column("thirsday")]
         public int ThirsdayIntervalId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("ThirsdayIntervalIId")]
         public Interval ThirsdayInterval { get; set; }
 
         [Column("friday")]
         public int FridayIntervalId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("FridayIntervalId")]
         public Interval FridayInterval { get; set; }
 
         [Column("saturday")]
         public int SaturdayIntervalId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("SaturdayIntervalId")]
         public Interval SaturdayInterval { get; set; }
 
         [Column("sunday")]
         public int SundayIntervalId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("SundayIntervalId")]
         public Interval SundayInterval { get; set; }
 
 

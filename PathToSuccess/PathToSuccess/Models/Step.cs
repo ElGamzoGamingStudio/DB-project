@@ -24,24 +24,24 @@ namespace PathToSuccess.Models
         [Required]
         [Column("urgency_name")]
         public string UrgencyName { get; set; }
-        [ForeignKey("Name")]
+        [ForeignKey("UrgencyName")]
         public Urgency Urgency { get; set; }
 
         [Required]
         [Column("importance_name")]
         public string ImportanceName { get; set; }
-        [ForeignKey("Name")]
+        [ForeignKey("ImportanceName")]
         public Importance Importance { get; set; }
 
         [Required]
         [Column("criteria_id")]
         public int CriteriaId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("CriteriaId")]
         public Criteria Criteria { get; set; }
 
         [Column("timerule_id")]
         public int TimeRuleId { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("TimeRuleId")]
         public TimeRule TimeRule { get; set; }
 
         [Required]
@@ -51,7 +51,7 @@ namespace PathToSuccess.Models
         [Column("task_id")]
         public int TaskId { get; set; }
 
-        [ForeignKey("Id")]
+        [ForeignKey("TaskId")]
         public Task ParentTask { get; set; }
 
         
