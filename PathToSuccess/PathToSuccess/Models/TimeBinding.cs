@@ -61,5 +61,30 @@ namespace PathToSuccess.Models
                 DAL.SqlRepository.DBContext.SaveChanges();
             }
         }
+        public static List<TimeBinding> Select(Func<TimeBinding, bool> predicate)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            return set.Cast<TimeBinding>().Where(predicate).ToList();
+        }
+        public static List<TimeBinding> GetAll()
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            return set.Cast<TimeBinding>().ToList();
+        }
+        public static List<TimeBinding> GetTBofDay(int day, int month, int year)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            return set.Cast<TimeBinding>().Where(x => x.Year == year && x.Month == month && x.Day == day).ToList();
+        }
+        public static TimeBinding GetTBbyStepID(int stepid)
+        {
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            List<TimeBinding> tbl = set.Cast<TimeBinding>().Where(x => x.StepId == stepid).ToList();
+            //if (tbl.Count > 1) //totally unexpexted
+            if (tbl.Count == 0)
+                return null;
+            else
+                return tbl[0];
+        }
     }
 }
