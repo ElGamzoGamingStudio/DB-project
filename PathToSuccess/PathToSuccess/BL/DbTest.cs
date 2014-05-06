@@ -63,12 +63,10 @@ namespace PathToSuccess.BL
 
             addTimeRules();
 
-            var timerules = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>().Cast<TimeRule>().ToList<TimeRule>();
-            //addTreeAndTask();
-            
+            timeRules = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>().Cast<TimeRule>().ToList<TimeRule>().ToArray();
             
 
-            
+
             //var timebindings = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>().Cast<TimeBinding>().ToList<TimeBinding>();
 
             //var steps = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().ToList<Step>();
@@ -198,6 +196,13 @@ namespace PathToSuccess.BL
 
             DAL.SqlRepository.DBContext.SaveChanges();
 
+        }
+
+        private void addSteps()
+        {
+            steps = new Step[] {
+                //new Step()
+            };
         }
     }
 }

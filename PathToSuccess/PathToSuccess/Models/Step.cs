@@ -56,6 +56,9 @@ namespace PathToSuccess.Models
         [ForeignKey("TaskId")]
         public Task ParentTask { get; set; }
 
+        [Column("order")]
+        public int Order { get; set; }
+
         
         //methods
 
@@ -76,7 +79,7 @@ namespace PathToSuccess.Models
         /// <param name="taskId"></param>
         public Step(DateTime beginDate, DateTime endDate, string urgencyName,
                     string importanceName, Importance importance, int criteriaId, Criteria criteria, 
-                    int timeRuleId, TimeRule timeRule, string description, Task parentTask, int taskId)
+                    int timeRuleId, TimeRule timeRule, string description, Task parentTask, int taskId, int order)
         {
             BeginDate = beginDate;
             EndDate = endDate;
@@ -90,6 +93,7 @@ namespace PathToSuccess.Models
             Description = description;
             ParentTask = parentTask;
             TaskId = taskId;
+            Order = order;
         }
 
         public Step() { }
