@@ -117,7 +117,6 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="PhoneSync\InfoSender.cs" />
     <Compile Include="PhoneSync\Serializer.cs" />
-    <Compile Include="Schedule\ScheduleManager.cs" />
     <Compile Include="Schedule\ScheduleVisualizer.xaml.cs">
       <DependentUpon>ScheduleVisualizer.xaml</DependentUpon>
     </Compile>

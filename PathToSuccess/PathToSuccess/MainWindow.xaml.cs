@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PathToSuccess.Models;
 
 namespace PathToSuccess
 {
@@ -28,10 +29,14 @@ namespace PathToSuccess
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
             DAL.SqlRepository.Initialize();
-            var log = new LoginWindow();
-            log.ShowDialog();
-            if(log.RightPass==null) 
-                Application.Current.Shutdown();
+
+            //var log = new LoginWindow();
+            //log.ShowDialog();
+            //if(log.RightPass==null) 
+            //    Application.Current.Shutdown();
+
+            var treeDialog = new CreateLoadTreeDialog();
+            treeDialog.ShowDialog();
         }
 
         private void OverflowCanvas()
