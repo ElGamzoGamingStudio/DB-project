@@ -87,11 +87,9 @@ namespace PathToSuccess
             }
         }
 
-        private void LeftClick(object sender, EventArgs e)
+        private void CreateClick(object sender, EventArgs e)
         {
-            MarkAllUiElementsWithTags(); //to delete it later
-
-
+           
             var but = sender as Button;
             var move = new TranslateTransform(0, 0);
             var anim = new DoubleAnimation()
@@ -100,7 +98,7 @@ namespace PathToSuccess
                 To = -but.Margin.Left-but.Width -5,
                 AccelerationRatio = 0.5,
             };
-            anim.Completed += PanelinoStackerino;
+            anim.Completed += MoveToCreate2;
             but.RenderTransform = move;
             move.BeginAnimation(TranslateTransform.XProperty, anim);
 
@@ -118,9 +116,9 @@ namespace PathToSuccess
             
         }
 
-        private void RightClick(object sender, EventArgs e)
+        private void LoadClick(object sender, EventArgs e)
         {
-            MarkAllUiElementsWithTags(); //to delete it later
+            //MarkAllUiElementsWithTags(); //to delete it later
 
             var but = sender as Button;
             var move = new TranslateTransform(0, 0);
@@ -130,7 +128,7 @@ namespace PathToSuccess
                 To = but.Margin.Left + Load.Width + 5,
                 AccelerationRatio = 0.5,
             };
-            anim.Completed += PanelinoStackerino;
+            anim.Completed += MoveToLoad;
             but.RenderTransform = move;
             move.BeginAnimation(TranslateTransform.XProperty, anim);
 
@@ -145,6 +143,11 @@ namespace PathToSuccess
             moveOther.BeginAnimation(TranslateTransform.XProperty, animOther);
 
             
+        }
+
+        private void MoveToLoad(object sender, EventArgs e)
+        {
+            StepChanger.SelectedItem = LoadTabItem;
         }
 
         private void BackClick(object sender, EventArgs e)
@@ -162,19 +165,10 @@ namespace PathToSuccess
             storyboard.Begin();
             
         }
-
-        private void NextClick(object sender, EventArgs e)
-        {
-            var panel = (StackPanel)FirstStep.Children.Cast<UIElement>().FirstOrDefault(x => x is StackPanel);
-            var anim = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(1)), FillBehavior.Stop);
-            panel.BeginAnimation(OpacityProperty, anim);
-            
-        }
+        
 
         private void RollBack(object sender, EventArgs e)
         {
-            //really sorry costelino de la bidlo
-            RemoveAllNonPreviousItems();
             SetUpButtons(true);
             //Back.SetValue(OpacityProperty, 1.0);  //ITS NOT FUCKING WORKING 1.0 or 1 or 100.0 or Integer.1dwfkdlkwlgwddglg!!!!!!!
             var anim = new DoubleAnimation()
@@ -194,60 +188,41 @@ namespace PathToSuccess
         private void PanelinoStackerino(object sender, EventArgs e)
         {
             
-            var rectangelino = new Rectangle()
-            {
-                Fill = new SolidColorBrush(Colors.ForestGreen),
-                Width = 500,
-                Height = 500
-            };
-            var namePanel = new StackPanel()
-            {
-                Width = Width/4,
-                Height = Height/4,
-                Name = "TreeName",
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            var nameText = new TextBlock()
-            {
-                Text = "Choose your destiny",
-                Name = "nameText",
-                HorizontalAlignment = HorizontalAlignment.Center,
-            };
-            var inputText = new TextBox();
-            namePanel.Children.Add(nameText);
-            namePanel.Children.Add(inputText);
-            FirstStep.Children.Add(namePanel);
-
-            var next = new Button()
-            {
-                Name = "Next", 
-                Content = "N", 
-                Width = 50, 
-                Height = 50,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom
-            };
-            next.Click += NextClick;
-            FirstStep.Children.Add(next);
-
+            TreeNamePanel.Width = Width/4;
+            TreeNamePanel.Height = Height/4;
         }
 
-        private void MarkAllUiElementsWithTags()
+        private void MoveToCreate2(object sender, EventArgs e)
         {
-            foreach (FrameworkElement child in this.FirstStep.Children)
+            StepChanger.SelectedItem = SecondTabItem;
+        }
+
+
+        private void BackToChoosing(object sender, RoutedEventArgs e)
+        {
+            StepChanger.SelectedItem = ChoosingTabItem;
+            RollBack(sender, e);
+        }
+
+        private void NextSecondClick(object sender, RoutedEventArgs e)
+        {
+            if (NameBox.Text.Trim() == "")
             {
-                child.Tag = "previous";
+                var anim = new DoubleAnimation()
+                {
+                    To = 0,
+                    Duration = new Duration(TimeSpan.FromSeconds(.3)),
+                    AutoReverse = true,
+                };
+                Storyboard.SetTarget(anim, TreeNamePanel);
+                Storyboard.SetTargetProperty(anim, new PropertyPath(OpacityProperty));
+                var storyboard = new Storyboard();
+                storyboard.Children.Add(anim);
+                storyboard.Begin();
             }
-        }
-
-        private void RemoveAllNonPreviousItems()
-        {
-            for (int index = FirstStep.Children.Count - 1; index >= 0; index--)
+            else
             {
-                var child = (FrameworkElement)this.FirstStep.Children[index];
-                if ((string) child.Tag != "previous")
-                    FirstStep.Children.RemoveAt(index);
+                Tree.Text = "GRATZ";
             }
         }
     }

@@ -40,19 +40,33 @@
                     </Setter>
                 </Style>
             </Grid.Resources>
-            <TabControl Name="StepChanger">
-                <TabItem Name="FirsTabItem">
-                    <Grid Name ="FirstStep">
-
-                        <Button Name="Create" Click="LeftClick" Content="Create"/>
-                        <Button Name="Load" Click="RightClick" Content="Load"/>
+            <TabControl Name="StepChanger" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TabItem Name="ChoosingTabItem" Visibility="Collapsed">
+                    <Grid Name ="Choose">
+                        <Button Name="Create" Click="CreateClick" Content="Create"/>
+                        <Button Name="Load" Click="LoadClick" Content="Load"/>
                     </Grid>
                 </TabItem>
-                <TabItem Name="SecondTabItem">
+                <TabItem Name="SecondTabItem" Loaded="PanelinoStackerino" Visibility="Collapsed">
                     <Grid Name="SecondStep">
-                        <Button Name="BackSecond" Click="BackClick" Content="B" 
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Name="TreeNamePanel">
+                            <TextBlock Text="Tree Name" Name="Tree" HorizontalAlignment="Center"/>
+                            <TextBox Name="NameBox"/>
+                        </StackPanel>
+                        <Button Name="BackSecond" Click="BackToChoosing" Content="B" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
-                VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Hidden"/>
+                VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
+                        <Button Name="NextSecond" Click="NextSecondClick" Content="N" 
+                Width="50" Height="50" HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" Margin="5,5,0,0" Visibility="Visible"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Name="LoadTabItem" Visibility="Collapsed">
+                    <Grid Name ="LoadStep">
+                        <Button Name="BackFromLoad" Click="BackToChoosing" Content="B" 
+                Width="50" Height="50" HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
+                        <TextBlock Text="COMING SOON..." FontSize="42" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                 </TabItem>
 
