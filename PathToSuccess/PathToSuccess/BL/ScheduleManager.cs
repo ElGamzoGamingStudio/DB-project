@@ -13,7 +13,7 @@ namespace PathToSuccess.BL
         public static List<Step> withoutTB = new List<Step>();
         public static List<Step> withTB = new List<Step>();
         public ScheduleManager()
-        {}
+        { }
 
         public static void Initialize()
         {
@@ -45,47 +45,47 @@ namespace PathToSuccess.BL
                 int counter = 0;
                 DateTime dateCounter = DateTime.Today;
                 dateCounter.AddDays(1);
-                    if (!step.TimeRule.IsPeriodic)
+                if (!step.TimeRule.IsPeriodic)
+                {
+                    while (!flag)
                     {
-                        while (!flag)
+                        if (dateCounter.DayOfWeek == avlIntervals[counter].dayOfWeek)
                         {
-                            if (dateCounter.DayOfWeek == avlIntervals[counter].dayOfWeek)
+                            var currInterv = Interval.GetIntervalByID(avlIntervals[counter].intervalID);
+                            var tbs = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year);
+                            tbs.Sort();
+                            DateTime timeCounter = new DateTime(dateCounter.Year, dateCounter.Month, dateCounter.Day,
+                                currInterv.BeginTime.Hour, currInterv.BeginTime.Minute, currInterv.BeginTime.Second);
+                            if (step.TimeRule.IsUserApproved)
                             {
-                                var currInterv= Interval.GetIntervalByID(avlIntervals[counter].intervalID);
-                                var tbs = TimeBinding.GetTBofDay(dateCounter.Day,dateCounter.Month,dateCounter.Year);
-                                tbs.Sort();
-                                DateTime timeCounter = new DateTime(dateCounter.Year,dateCounter.Month,dateCounter.Day,
-                                    currInterv.BeginTime.Hour,currInterv.BeginTime.Minute,currInterv.BeginTime.Second);
-                                if (step.TimeRule.IsUserApproved)
+                                bool isFine = true;
+                                foreach (var tb in tbs)
                                 {
-                                    bool isFine = true;
-                                    foreach (var tb in tbs)
-                                    {
-                                            TimeSpan ts = tb.GetNormalTime() - timeCounter;
-                                            if (Math.Abs(ts.Hours) < 1)
-                                                isFine = false;
-                                    }
-                                    if (isFine)
-                                    {
-                                        var stTB = new TimeBinding(1225236,step.Id,step,timeCounter,timeCounter.Day,timeCounter.Month,timeCounter.Year);
-                                        TimeBinding.CreateTimeBinding(stTB);
-                                    }
+                                    TimeSpan ts = tb.GetNormalTime() - timeCounter;
+                                    if (Math.Abs(ts.Hours) < 1)
+                                        isFine = false;
                                 }
-
-
+                                if (isFine)
+                                {
+                                    var stTB = new TimeBinding(1225236, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
+                                    TimeBinding.CreateTimeBinding(stTB);
+                                }
                             }
+
+
+                        }
+                        else
+                        {
+                            if (dateCounter.DayOfWeek < avlIntervals[counter].dayOfWeek)
+                                dateCounter.AddDays(1);
                             else
                             {
-                                if (dateCounter.DayOfWeek < avlIntervals[counter].dayOfWeek)
-                                    dateCounter.AddDays(1);
-                                else
-                                {
-                                    counter++;
-                                    counter %= avlIntervals.Count();
-                                }
+                                counter++;
+                                counter %= avlIntervals.Count();
                             }
                         }
                     }
+                }
 
 
                 while (!flag)
