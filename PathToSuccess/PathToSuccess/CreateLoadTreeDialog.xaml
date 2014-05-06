@@ -56,10 +56,10 @@
                             <TextBox Name="DescriptionBox" Height="40"/>
 
                         </StackPanel>
-                        <Button Name="BackSecond" Click="BackToChoosing" Content="B" 
+                        <Button Name="BackSecond" Click="BackToChoosing" Content="{StaticResource BackArrow}" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
-                        <Button Name="NextSecond" Click="NextSecondClick" Content="N" 
+                        <Button Name="NextSecond" Click="NextSecondClick" Content="{StaticResource ForwardArrow}" 
                 Width="50" Height="50" HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom" Margin="5,5,0,0" Visibility="Visible"/>
                     </Grid>
@@ -67,7 +67,7 @@
                 <TabItem Name="TreeTabItem" Visibility="Collapsed">
                     <Grid Name="ThirdStep">
                         <StackPanel Name="WholePanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Background="Salmon">
-                            <Button Name="BackFromTree" Click="BackToTreeNameTabFromTreeAdd" Content="B" 
+                            <Button Name="BackFromTree" Click="BackToTreeNameTabFromTreeAdd" Content="{StaticResource BackArrow}" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
                             <Grid Name="TreeVisualisingGrid" VerticalAlignment="Center" HorizontalAlignment="Right" Background="Tomato">
@@ -86,7 +86,7 @@
                 </TabItem>
                 <TabItem Name="LoadTabItem" Visibility="Collapsed">
                     <Grid Name ="LoadStep">
-                        <Button Name="BackFromLoad" Click="BackToChoosing" Content="B" 
+                        <Button Name="BackFromLoad" Click="BackToChoosing" Content="{StaticResource BackArrow}" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
                         <TextBlock Text="COMING SOON..." FontSize="42" HorizontalAlignment="Center" VerticalAlignment="Center"/>
