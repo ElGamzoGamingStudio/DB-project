@@ -87,7 +87,7 @@ namespace PathToSuccess
             }
         }
 
-        private void CreateClick(object sender, EventArgs e)
+        public void CreateClick(object sender, EventArgs e)
         {
            
             var but = sender as Button;
@@ -116,7 +116,7 @@ namespace PathToSuccess
             
         }
 
-        private void LoadClick(object sender, EventArgs e)
+        public void LoadClick(object sender, EventArgs e)
         {
             //MarkAllUiElementsWithTags(); //to delete it later
 

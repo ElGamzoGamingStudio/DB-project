@@ -118,11 +118,17 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="PhoneSync\InfoSender.cs" />
     <Compile Include="PhoneSync\Serializer.cs" />
+    <Compile Include="QueryDialog.xaml.cs">
+      <DependentUpon>QueryDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Schedule\ScheduleVisualizer.xaml.cs">
       <DependentUpon>ScheduleVisualizer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Schedule\TimeLine.cs" />
     <Compile Include="Schedule\TimeLineManager.cs" />
+    <Compile Include="SearchEngine.xaml.cs">
+      <DependentUpon>SearchEngine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TaskTree\TaskManager.cs" />
     <Page Include="CreateLoadTreeDialog.xaml">
       <SubType>Designer</SubType>
@@ -148,7 +154,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="QueryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Schedule\ScheduleVisualizer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SearchEngine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

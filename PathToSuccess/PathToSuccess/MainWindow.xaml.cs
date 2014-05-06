@@ -30,13 +30,12 @@ namespace PathToSuccess
             _realCanvasHeight = 0;
             DAL.SqlRepository.Initialize();
 
-            //var log = new LoginWindow();
-            //log.ShowDialog();
-            //if(log.RightPass==null) 
-            //    Application.Current.Shutdown();
+            var log = new LoginWindow();
+            log.ShowDialog();
+            if (log.RightPass == null)
+                Application.Current.Shutdown();
 
-            var treeDialog = new CreateLoadTreeDialog();
-            treeDialog.ShowDialog();
+            UserInfo.Content = "Вы вошли как " + BL.Application.CurrentUser.Name;
         }
 
         private void OverflowCanvas()
@@ -77,10 +76,57 @@ namespace PathToSuccess
 
         }
 
-        private void TestCreateLoadTreeDialog(object sender, RoutedEventArgs e)
+        private void CreateTree(object sender, RoutedEventArgs e)
         {
-            var dial = new CreateLoadTreeDialog();
-            dial.Show();
+            var treeDialog = new CreateLoadTreeDialog();
+            treeDialog.CreateClick(treeDialog.Create, new EventArgs());
+            treeDialog.ShowDialog();
+            
+        }
+
+        private void LoadTree(object sender, RoutedEventArgs e)
+        {
+            var treeDialog = new CreateLoadTreeDialog();
+            treeDialog.CreateClick(treeDialog.Load, new EventArgs());
+            treeDialog.ShowDialog();
+        }
+
+        private void SaveChanges(object sender, RoutedEventArgs e)
+        {
+            if(BL.Application.CurrentTree==null) return;
+        }
+
+        private void All_OnSelected(object sender, RoutedEventArgs e)
+        {
+            UpdateTree(null);
+        }
+
+        private void UpdateTree(bool? filter)
+        {
+            if (filter != true)
+            {
+                
+            }
+            if (filter != false)
+            {
+                
+            }
+        }
+
+        private void Tasks_OnSelected(object sender, RoutedEventArgs e)
+        {
+            UpdateTree(true);
+        }
+
+        private void TaskSt_OnSelected(object sender, RoutedEventArgs e)
+        {
+            UpdateTree(false);
+        }
+
+        private void OpenQuery(object sender, RoutedEventArgs e)
+        {
+            var q = new QueryDialog();
+            q.ShowDialog();
         }
     }
 }
