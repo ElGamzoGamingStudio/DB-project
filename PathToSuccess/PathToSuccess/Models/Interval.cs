@@ -66,5 +66,10 @@ namespace PathToSuccess.Models
                     );
             }
         }
+        public static Interval GetIntervalByID(int id)
+        {
+            //TODO: should return interval by ID
+            return null;
+        }
     }
 }

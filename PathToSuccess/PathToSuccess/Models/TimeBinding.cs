@@ -94,5 +94,9 @@ namespace PathToSuccess.Models
             DateTime second = new DateTime(toCompare.Year, toCompare.Month, toCompare.Day, toCompare.Time.Hour, toCompare.Time.Minute, 0);
             return first.CompareTo(second);
         }
+        public DateTime GetNormalTime()
+        {
+            return new DateTime(Year,Month,Day,Time.Hour,Time.Minute,Time.Second);
+        }
     }
 }
