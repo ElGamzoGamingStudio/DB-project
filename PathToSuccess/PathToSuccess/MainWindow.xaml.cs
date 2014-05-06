@@ -87,7 +87,7 @@ namespace PathToSuccess
         private void LoadTree(object sender, RoutedEventArgs e)
         {
             var treeDialog = new CreateLoadTreeDialog();
-            treeDialog.CreateClick(treeDialog.Load, new EventArgs());
+            treeDialog.LoadClick(treeDialog.Load, new EventArgs());
             treeDialog.ShowDialog();
         }
 
