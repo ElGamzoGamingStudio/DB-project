@@ -30,6 +30,8 @@ namespace PathToSuccess
             DAL.SqlRepository.Initialize();
             var log = new LoginWindow();
             log.ShowDialog();
+            if(log.RightPass==null) 
+                Application.Current.Shutdown();
         }
 
         private void OverflowCanvas()

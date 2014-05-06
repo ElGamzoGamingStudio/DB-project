@@ -37,6 +37,10 @@
                 <Label HorizontalAlignment="Left" Content="Birthday:" Height="30" VerticalAlignment="Top" Width="120"/>
                 <DatePicker Name="Birth" Width="188"/>
             </StackPanel>
+            <StackPanel Name="S4" IsEnabled="False" Orientation="Horizontal">
+                <Label HorizontalAlignment="Left" Content="Surname:" Height="30" VerticalAlignment="Top" Width="120"/>
+                <TextBox Height="22" Name="Surname" TextWrapping="Wrap" Width="190"/>
+            </StackPanel>
         </StackPanel>
         <Button Name="LogButton" Content="Login" Opacity="0" IsEnabled="False" Background="ForestGreen" HorizontalAlignment="Center" Margin="77,0,277,32" VerticalAlignment="Bottom" Width="120" Click="LoginClick"/>
         <Button Name="RegButton" Content="Register" Opacity="0" IsEnabled="False" Background="CadetBlue" HorizontalAlignment="Center" Margin="292,0,60,32" VerticalAlignment="Bottom" Width="122" Click="RegisterClick"/>
