@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,15 +14,16 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using LinqToDB;
 
 namespace PathToSuccess
 {
     /// <summary>
     /// Interaction logic for CreateLoadTreeDiaolg.xaml
     /// </summary>
-    public partial class CreateLoadTreeDiaolg : Window
+    public partial class CreateLoadTreeDialog : Window
     {
-        public CreateLoadTreeDiaolg()
+        public CreateLoadTreeDialog()
         {
             InitializeComponent();
             SetUpButtons();
@@ -89,6 +91,9 @@ namespace PathToSuccess
 
         private void LeftClick(object sender, EventArgs e)
         {
+            MarkAllUiElementsWithTags(); //to delete it later
+
+
             var but = sender as Button;
             var move = new TranslateTransform(0, 0);
             var anim = new DoubleAnimation()
@@ -97,6 +102,7 @@ namespace PathToSuccess
                 To = -but.Margin.Left-but.Width -5,
                 AccelerationRatio = 0.5,
             };
+            anim.Completed += PanelinoStackerino;
             but.RenderTransform = move;
             move.BeginAnimation(TranslateTransform.XProperty, anim);
 
@@ -111,10 +117,13 @@ namespace PathToSuccess
             moveOther.BeginAnimation(TranslateTransform.XProperty, animOther);
 
             Back.Visibility = Visibility.Visible;
+            
         }
 
-        private void RightClick(object sender, RoutedEventArgs e)
+        private void RightClick(object sender, EventArgs e)
         {
+            MarkAllUiElementsWithTags(); //to delete it later
+
             var but = sender as Button;
             var move = new TranslateTransform(0, 0);
             var anim = new DoubleAnimation()
@@ -123,6 +132,7 @@ namespace PathToSuccess
                 To = but.Margin.Left + Load.Width + 5,
                 AccelerationRatio = 0.5,
             };
+            anim.Completed += PanelinoStackerino;
             but.RenderTransform = move;
             move.BeginAnimation(TranslateTransform.XProperty, anim);
 
@@ -137,9 +147,10 @@ namespace PathToSuccess
             moveOther.BeginAnimation(TranslateTransform.XProperty, animOther);
 
             Back.Visibility = Visibility.Visible;
+            
         }
 
-        private void BackClick(object sender, RoutedEventArgs e)
+        private void BackClick(object sender, EventArgs e)
         {
             var anim = new DoubleAnimation()
             {
@@ -150,13 +161,23 @@ namespace PathToSuccess
             Storyboard.SetTargetProperty(anim, new PropertyPath(OpacityProperty));
             var storyboard = new Storyboard();
             storyboard.Children.Add(anim);
-            storyboard.Completed += SORRY_FOR_THREAD_GUYS;
+            storyboard.Completed += RollBack;
             storyboard.Begin();
             
         }
 
-        private void SORRY_FOR_THREAD_GUYS(object sender, EventArgs e)
+        private void NextClick(object sender, EventArgs e)
         {
+            var panel = (StackPanel) MainGrid.Children.Cast<UIElement>().FirstOrDefault(x => x is StackPanel);
+            var anim = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(1)), FillBehavior.Stop);
+            panel.BeginAnimation(OpacityProperty, anim);
+            
+        }
+
+        private void RollBack(object sender, EventArgs e)
+        {
+            //really sorry costelino de la bidlo
+            RemoveAllNonPreviousItems();
             SetUpButtons(true);
             //Back.SetValue(OpacityProperty, 1.0);  //ITS NOT FUCKING WORKING 1.0 or 1 or 100.0 or Integer.1dwfkdlkwlgwddglg!!!!!!!
             var anim = new DoubleAnimation()
@@ -169,7 +190,68 @@ namespace PathToSuccess
             var storyboard = new Storyboard();
             storyboard.Children.Add(anim);
             storyboard.Begin();
-            //really sorry
+            
+            
+        }
+
+        private void PanelinoStackerino(object sender, EventArgs e)
+        {
+            
+            var rectangelino = new Rectangle()
+            {
+                Fill = new SolidColorBrush(Colors.ForestGreen),
+                Width = 500,
+                Height = 500
+            };
+            var namePanel = new StackPanel()
+            {
+                Width = Width/4,
+                Height = Height/4,
+                Name = "TreeName",
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            var nameText = new TextBlock()
+            {
+                Text = "Choose your destiny",
+                Name = "nameText",
+                HorizontalAlignment = HorizontalAlignment.Center,
+            };
+            var inputText = new TextBox();
+            namePanel.Children.Add(nameText);
+            namePanel.Children.Add(inputText);
+            MainGrid.Children.Add(namePanel);
+
+            var next = new Button()
+            {
+                Name = "Next", 
+                Content = "N", 
+                Width = 50, 
+                Height = 50,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom
+            };
+            next.Click += NextClick;
+            MainGrid.Children.Add(next);
+
+        }
+
+        private void MarkAllUiElementsWithTags()
+        {
+            foreach (FrameworkElement child in this.MainGrid.Children)
+            {
+                child.Tag = "previous";
+            }
+        }
+
+        private void RemoveAllNonPreviousItems()
+        {
+            for (int index = MainGrid.Children.Count-1; index >= 0; index--)
+            {
+                var child = (FrameworkElement) this.MainGrid.Children[index];
+                if ((string) child.Tag != "previous")
+                    MainGrid.Children.RemoveAt(index);
+            }
         }
     }
 }

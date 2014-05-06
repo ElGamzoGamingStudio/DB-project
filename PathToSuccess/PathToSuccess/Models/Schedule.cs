@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PathToSuccess.Models
@@ -68,5 +70,16 @@ namespace PathToSuccess.Models
             SaturdayIntervalId  = saturday == null  ? -1 : saturday.Id;
             SundayIntervalId    = sunday == null    ? -1 : sunday.Id;
         }
+        public static List<IntervalInfo> GetNotEmptyIntervals()
+        {
+            //TODO: should return not null intervals with dayOfWeek accepted by DateTime.DayOfWeek
+            return null;
+        }
+    }
+
+    public struct IntervalInfo
+    {
+        public DayOfWeek dayOfWeek;
+        public int intervalID;
     }
 }

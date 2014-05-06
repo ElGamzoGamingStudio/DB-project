@@ -31,8 +31,8 @@
         </Canvas>
         </ScrollViewer>
         <StackPanel Width="150" Height="260" Background="DarkGray" HorizontalAlignment="Right" Margin="0,49,0,260">
-            <Button Height="125" BorderThickness="0"></Button>
-            <Button Height="125" BorderThickness="0" Margin="0,5,0,0"></Button>
+            <Button Height="125" BorderThickness="0">Task</Button>
+            <Button Height="125" BorderThickness="0" Margin="0,5,0,0">Step</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Width="200" Margin="10,0,0,0" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top">
             <StackPanel.Resources>
@@ -71,10 +71,10 @@
                     </Setter>
                 </Style>
             </StackPanel.Resources>
-            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35"/>
-            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35"/>
-            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35"/>
-            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Width="35"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" Content="New" VerticalAlignment="Top" Width="35"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Open" Width="35" Click="TestCreateLoadTreeDialog"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Save" Width="35"/>
+            <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Opt" Width="35"/>
         </StackPanel>
     </Grid>
 </Window>

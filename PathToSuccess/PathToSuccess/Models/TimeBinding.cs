@@ -34,6 +34,8 @@ namespace PathToSuccess.Models
         [Column("year")]
         public int Year { get; set; }
 
+        public TimeBinding()
+        {}
         public TimeBinding(int id,int stepId,Step step,DateTime time, int day, int month, int year)
         {
             Id = id;
@@ -79,11 +81,12 @@ namespace PathToSuccess.Models
         public static List<TimeBinding> GetTBbyStepID(int stepid)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
-            List<TimeBinding> tbl = set.Cast<TimeBinding>().Where(x => x.StepId == stepid).ToList();
-            if (tbl.Count == 0)
-                return null;
-            else
-                return tbl;
+            return set.Cast<TimeBinding>().Where(x => x.StepId == stepid).ToList();           
+        }
+        public bool TimeCheck()
+        {
+            DateTime d = new DateTime(Year, Month, Day, Time.Hour, Time.Minute, Time.Second);
+            return DateTime.Compare(DateTime.Now, d) > 0;
         }
     }
 }

@@ -36,13 +36,20 @@ namespace PathToSuccess.BL
             
             urgencies = DAL.SqlRepository.DBContext.GetDbSet<Urgency>().Cast<Urgency>().ToList<Urgency>().ToArray();
             
+
             importancies = DAL.SqlRepository.DBContext.GetDbSet<Importance>().Cast<Importance>().ToList<Importance>().ToArray();
 
             //Interval.Seed();
 
             intervals = DAL.SqlRepository.DBContext.GetDbSet<Interval>().Cast<Interval>().ToList<Interval>().ToArray();
 
+            importancies = DAL.SqlRepository.DBContext.GetDbSet<Importance>().Cast<Importance>().ToList<Importance>().ToArray();
+            
+            intervals = DAL.SqlRepository.DBContext.GetDbSet<Interval>().Cast<Interval>().ToList<Interval>().ToArray();
+
+
             criterias = DAL.SqlRepository.DBContext.GetDbSet<Criteria>().Cast<Criteria>().ToList<Criteria>().ToArray();
+
 
             //addTreeAndTask();
 
@@ -57,13 +64,14 @@ namespace PathToSuccess.BL
             addTimeRules();
 
             var timerules = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>().Cast<TimeRule>().ToList<TimeRule>();
-            
-            //var timebindings = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>().Cast<TimeBinding>().ToList<TimeBinding>();
-            
-            //var steps = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().ToList<Step>();
+            //addTreeAndTask();
             
             
 
+            
+            //var timebindings = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>().Cast<TimeBinding>().ToList<TimeBinding>();
+
+            //var steps = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().ToList<Step>();
         }
 
         private static void addUsers()

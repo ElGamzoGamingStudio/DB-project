@@ -18,7 +18,7 @@ namespace PathToSuccess.DAL
 
             DBContext = new Context(conn);
 
-            BL.DbTest.Seed();
+            //BL.DbTest.Seed();
         }
     }
 }

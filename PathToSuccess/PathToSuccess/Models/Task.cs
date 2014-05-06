@@ -162,6 +162,10 @@ namespace PathToSuccess.Models
             //var childrenTaskSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
             return childrenStepSet.Any();
         }
-       
+        public static List<Task> GetLowestTasks()
+        {
+            //TODO: should return all tasks with uncompleted steps
+            return null;
+        }
     }
 }

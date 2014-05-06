@@ -18,7 +18,7 @@ namespace PathToSuccess.BL
         public static bool Authenticate(string login, string pass)
         {
             var user = User.Find(login);
-            if (user.ComparePass(pass))
+            if (user!=null && user.ComparePass(pass))
             {
                 Application.CurrentUser = user;
                 return true;

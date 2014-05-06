@@ -28,8 +28,10 @@ namespace PathToSuccess
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
             DAL.SqlRepository.Initialize();
-            var wind = new CreateLoadTreeDiaolg();
-            wind.Show();
+            var log = new LoginWindow();
+            log.ShowDialog();
+            if(log.RightPass==null) 
+                Application.Current.Shutdown();
         }
 
         private void OverflowCanvas()
@@ -40,6 +42,16 @@ namespace PathToSuccess
             TreeCanvas.Height += _realCanvasHeight >= TreeCanvas.Height
                                     ? 170
                                     : _realCanvasHeight + 170 < TreeCanvas.Height ? -170 : 0;
+        }
+
+        private void AddTask(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void AddStep(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private void Update(object sender, EventArgs e)
@@ -58,6 +70,12 @@ namespace PathToSuccess
             TreeField.MaxWidth = TreeField.MinWidth + widthDifference;
             TreeField.MaxHeight = TreeField.MinHeight + heightDifference;
 
+        }
+
+        private void TestCreateLoadTreeDialog(object sender, RoutedEventArgs e)
+        {
+            var dial = new CreateLoadTreeDialog();
+            dial.Show();
         }
     }
 }
