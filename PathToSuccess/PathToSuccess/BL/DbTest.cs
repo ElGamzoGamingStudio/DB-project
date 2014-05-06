@@ -21,6 +21,7 @@ namespace PathToSuccess.BL
         private static Step[] steps;
         private static Tree[] trees;
 
+        //PLEASE DO NOT CALL THIS METHOD IT IS TOTALLY BAD.
         public static void Seed()
         {
             //addUsers();
@@ -32,7 +33,7 @@ namespace PathToSuccess.BL
 
             //add all the stuff above
 
-            users = DAL.SqlRepository.DBContext.GetDbSet<User>().Cast<User>().ToList<User>().ToArray();
+            users = DAL.SqlRepository.Users.Cast<User>().ToList<User>().ToArray();
             
             urgencies = DAL.SqlRepository.DBContext.GetDbSet<Urgency>().Cast<Urgency>().ToList<Urgency>().ToArray();
             
@@ -42,11 +43,6 @@ namespace PathToSuccess.BL
             //Interval.Seed();
 
             intervals = DAL.SqlRepository.DBContext.GetDbSet<Interval>().Cast<Interval>().ToList<Interval>().ToArray();
-
-            importancies = DAL.SqlRepository.DBContext.GetDbSet<Importance>().Cast<Importance>().ToList<Importance>().ToArray();
-            
-            intervals = DAL.SqlRepository.DBContext.GetDbSet<Interval>().Cast<Interval>().ToList<Interval>().ToArray();
-
 
             criterias = DAL.SqlRepository.DBContext.GetDbSet<Criteria>().Cast<Criteria>().ToList<Criteria>().ToArray();
 
