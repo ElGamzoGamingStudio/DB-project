@@ -1,11 +1,17 @@
 using Npgsql;
 using System.Xml.Linq;
+using System.Data.Entity;
+using PathToSuccess.Models;
 
 namespace PathToSuccess.DAL
 {
     public static class SqlRepository
     {
         public static Context DBContext { get; private set; }
+
+        public static DbSet Users { get; private set; }
+
+        
 
         public static void Initialize()
         {
@@ -18,7 +24,9 @@ namespace PathToSuccess.DAL
 
             DBContext = new Context(conn);
 
-            //BL.DbTest.Seed();
+            Users = DBContext.GetDbSet<User>();
+
+            BL.DbTest.Seed();
         }
     }
 }

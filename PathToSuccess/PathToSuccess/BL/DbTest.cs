@@ -16,7 +16,7 @@ namespace PathToSuccess.BL
         private static Criteria[] criterias;
         private static Models.Schedule[] schedules;
         private static TimeRule[] timeRules;
-        private static TimeBinding[] timeBindingds;
+        private static TimeBinding[] timeBindings;
         private static Models.Task[] tasks;
         private static Step[] steps;
         private static Tree[] trees;
@@ -64,12 +64,14 @@ namespace PathToSuccess.BL
             addTimeRules();
 
             timeRules = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>().Cast<TimeRule>().ToList<TimeRule>().ToArray();
-            
 
+            //addSteps();
 
-            //var timebindings = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>().Cast<TimeBinding>().ToList<TimeBinding>();
+            steps = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().ToList<Step>().ToArray();
 
-            //var steps = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().ToList<Step>();
+            //addTimebindings();
+
+            timeBindings = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>().Cast<TimeBinding>().ToList<TimeBinding>().ToArray();
         }
 
         private static void addUsers()
@@ -198,11 +200,26 @@ namespace PathToSuccess.BL
 
         }
 
-        private void addSteps()
+        private static void addSteps()
         {
             steps = new Step[] {
-                //new Step()
+                new Step(DateTime.Now, DateTime.Now, urgencies[0].UrgencyName, urgencies[0], importancies[0].ImportanceName, importancies[0], criterias[0].Id, criterias[0], timeRules[0].Id, timeRules[0], "first step",
+                    trees[0].MainTask, trees[0].MainTask.Id, 0)
             };
+            var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
+            set.Add(steps[0]);
+            DAL.SqlRepository.DBContext.SaveChanges();
+        }
+
+        private static void addTimebindings()
+        {
+            timeBindings = new TimeBinding[] {
+                new TimeBinding(0, steps[0].Id, steps[0], DateTime.Now, DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year)
+            };
+
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            set.Add(timeBindings[0]);
+            DAL.SqlRepository.DBContext.SaveChanges();
         }
     }
 }
