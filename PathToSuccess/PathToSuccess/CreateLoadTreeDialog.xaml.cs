@@ -68,9 +68,9 @@ namespace PathToSuccess
                 var moveC = new TranslateTransform(-Create.Margin.Left - Create.Width - 5, 0);
                 var animC = new DoubleAnimation()
                 {
-                    Duration = new Duration(TimeSpan.FromSeconds(0.3)),
+                    Duration = new Duration(TimeSpan.FromSeconds(0.5)),
                     To = Create.Margin.Left,
-                    AccelerationRatio = 0.5,
+                    DecelerationRatio = 0.7,
                 };
                 Create.RenderTransform = moveC;
                 moveC.BeginAnimation(TranslateTransform.XProperty, animC);
@@ -78,9 +78,9 @@ namespace PathToSuccess
                 var moveL = new TranslateTransform(Load.Margin.Left + Load.Width + 5, 0);
                 var animL = new DoubleAnimation()
                 {
-                    Duration = new Duration(TimeSpan.FromSeconds(0.3)),
+                    Duration = new Duration(TimeSpan.FromSeconds(0.5)),
                     To = Load.Margin.Left,
-                    AccelerationRatio = 0.5,
+                    DecelerationRatio = 0.7,
                 };
                 Load.RenderTransform = moveL;
                 moveL.BeginAnimation(TranslateTransform.XProperty, animL);
@@ -94,7 +94,7 @@ namespace PathToSuccess
             var move = new TranslateTransform(0, 0);
             var anim = new DoubleAnimation()
             {
-                Duration = new Duration(TimeSpan.FromSeconds(1)),
+                Duration = new Duration(TimeSpan.FromSeconds(0.7)),
                 To = -but.Margin.Left-but.Width -5,
                 AccelerationRatio = 0.5,
             };
@@ -105,7 +105,7 @@ namespace PathToSuccess
             var moveOther = new TranslateTransform(0, 0);
             var animOther = new DoubleAnimation()
             {
-                Duration = new Duration(TimeSpan.FromSeconds(0.7)),
+                Duration = new Duration(TimeSpan.FromSeconds(0.5)),
                 To = Load.Margin.Left + Load.Width + 5,
                 AccelerationRatio = 0.5,
             };
@@ -124,7 +124,7 @@ namespace PathToSuccess
             var move = new TranslateTransform(0, 0);
             var anim = new DoubleAnimation()
             {
-                Duration = new Duration(TimeSpan.FromSeconds(1)),
+                Duration = new Duration(TimeSpan.FromSeconds(0.7)),
                 To = but.Margin.Left + Load.Width + 5,
                 AccelerationRatio = 0.5,
             };
@@ -135,7 +135,7 @@ namespace PathToSuccess
             var moveOther = new TranslateTransform(0, 0);
             var animOther = new DoubleAnimation()
             {
-                Duration = new Duration(TimeSpan.FromSeconds(0.7)),
+                Duration = new Duration(TimeSpan.FromSeconds(0.5)),
                 To = -Create.Width - 5,
                 AccelerationRatio = 0.5,
             };
@@ -144,30 +144,8 @@ namespace PathToSuccess
 
             
         }
-
-        private void MoveToLoad(object sender, EventArgs e)
-        {
-            StepChanger.SelectedItem = LoadTabItem;
-        }
-
-        private void BackClick(object sender, EventArgs e)
-        {
-            var anim = new DoubleAnimation()
-            {
-                To = 0,
-                Duration = new Duration(TimeSpan.FromSeconds(.3)),
-            };
-            Storyboard.SetTarget(anim, BackSecond); 
-            Storyboard.SetTargetProperty(anim, new PropertyPath(OpacityProperty));
-            var storyboard = new Storyboard();
-            storyboard.Children.Add(anim);
-            storyboard.Completed += RollBack;
-            storyboard.Begin();
-            
-        }
         
-
-        private void RollBack(object sender, EventArgs e)
+        private void RollBackFirstTab(object sender, EventArgs e)
         {
             SetUpButtons(true);
             //Back.SetValue(OpacityProperty, 1.0);  //ITS NOT FUCKING WORKING 1.0 or 1 or 100.0 or Integer.1dwfkdlkwlgwddglg!!!!!!!
@@ -192,21 +170,31 @@ namespace PathToSuccess
             TreeNamePanel.Height = Height/4;
         }
 
+        #region MOVE TO TAB
         private void MoveToCreate2(object sender, EventArgs e)
         {
             StepChanger.SelectedItem = SecondTabItem;
         }
 
+        private void MoveToCreate3(object sender, EventArgs e)
+        {
+            StepChanger.SelectedItem = TreeTabItem;
+        }
 
+        private void MoveToLoad(object sender, EventArgs e)
+        {
+            StepChanger.SelectedItem = LoadTabItem;
+        }
+        #endregion
         private void BackToChoosing(object sender, RoutedEventArgs e)
         {
             StepChanger.SelectedItem = ChoosingTabItem;
-            RollBack(sender, e);
+            RollBackFirstTab(sender, e);
         }
 
         private void NextSecondClick(object sender, RoutedEventArgs e)
         {
-            if (NameBox.Text.Trim() == "")
+            if (!FuckedTreeValidation())
             {
                 var anim = new DoubleAnimation()
                 {
@@ -222,8 +210,77 @@ namespace PathToSuccess
             }
             else
             {
+                //TODO
+                //MR USHAKOV HERE FIELDS ARE NEEDED TO BE PROCEEDED
+                //SIKASIKA
+                //NameBox.Text
+                //DescriptionBox.Text
                 Tree.Text = "GRATZ";
+
+                var move = new TranslateTransform(0, 0);
+                var anim = new DoubleAnimation()
+                {
+                    Duration = new Duration(TimeSpan.FromSeconds(0.5)),
+                    To = -Width,
+                    AccelerationRatio = 0.1,
+                };
+                SecondStep.RenderTransform = move;
+                anim.Completed += MoveToCreate3;
+                anim.Completed += RollBackSecondTab;
+                move.BeginAnimation(TranslateTransform.XProperty, anim);
+                ThirdStep.RenderTransform = null;
             }
+        }
+
+        private bool FuckedTreeValidation()
+        {
+            return NameBox.Text.Trim().Count() > 3 && DescriptionBox.Text.Trim().Count() > 6;
+        }
+
+        private void RollBackSecondTab(object sender, EventArgs e)
+        {
+            RollBack(SecondStep);
+        }
+
+        private void BackToTreeNameTabFromTreeAdd(object sender, EventArgs e)
+        {
+            RollForward(ThirdStep, MoveToCreate2);
+        }
+        
+
+
+
+
+
+        //use it pls later STIL WIK AVTOBUS
+        private void RollBack(UIElement toRoll, EventHandler toDoAfter = null)
+        {
+            var moveBack = new TranslateTransform(-Width, 0);
+            var anim = new DoubleAnimation()
+            {
+                To = 0,
+                Duration = new Duration(TimeSpan.FromSeconds(0.5)),
+                DecelerationRatio = 0.3
+            };
+            toRoll.RenderTransform = moveBack;
+            if (toDoAfter != null)
+                anim.Completed += toDoAfter;
+            moveBack.BeginAnimation(TranslateTransform.XProperty, anim);
+        }
+        
+        private void RollForward(UIElement toRoll, EventHandler toDoAfter = null)
+        {
+            var moveForward = new TranslateTransform(0, 0);
+            var anim = new DoubleAnimation()
+            {
+                To = Width,
+                Duration = new Duration(TimeSpan.FromSeconds(0.7)),
+                AccelerationRatio = 0.2
+            };
+            toRoll.RenderTransform = moveForward;
+            if (toDoAfter != null)
+                anim.Completed += toDoAfter;
+            moveForward.BeginAnimation(TranslateTransform.XProperty, anim);
         }
     }
 }

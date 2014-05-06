@@ -49,9 +49,12 @@
                 </TabItem>
                 <TabItem Name="SecondTabItem" Loaded="PanelinoStackerino" Visibility="Collapsed">
                     <Grid Name="SecondStep">
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Name="TreeNamePanel">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Name="TreeNamePanel" Width="300">
                             <TextBlock Text="Tree Name" Name="Tree" HorizontalAlignment="Center"/>
                             <TextBox Name="NameBox"/>
+                            <TextBlock Text="Description" Name="Description" HorizontalAlignment="Center"/>
+                            <TextBox Name="DescriptionBox" Height="40"/>
+
                         </StackPanel>
                         <Button Name="BackSecond" Click="BackToChoosing" Content="B" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
@@ -59,6 +62,26 @@
                         <Button Name="NextSecond" Click="NextSecondClick" Content="N" 
                 Width="50" Height="50" HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom" Margin="5,5,0,0" Visibility="Visible"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Name="TreeTabItem" Visibility="Collapsed">
+                    <Grid Name="ThirdStep">
+                        <StackPanel Name="WholePanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Background="Salmon">
+                            <Button Name="BackFromTree" Click="BackToTreeNameTabFromTreeAdd" Content="B" 
+                Width="50" Height="50" HorizontalAlignment="Left" 
+                VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
+                            <Grid Name="TreeVisualisingGrid" VerticalAlignment="Center" HorizontalAlignment="Right" Background="Tomato">
+                                <TextBlock Text="NO FOCKING IDEA"/>
+                            </Grid>
+                            <StackPanel Name="AddPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="SteelBlue">
+                                <StackPanel Name="AddStepPanel" VerticalAlignment="Bottom" Background="SlateBlue">
+                                    <TextBlock Text="SIKASIKASIKASCICEYCAS"/>
+                                </StackPanel>
+                                <StackPanel Name="AddTaskPanel" VerticalAlignment="Top" Background="SeaGreen">
+                                    <TextBlock Text="PISIOSIOPSISOSPOISPIOS"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem Name="LoadTabItem" Visibility="Collapsed">
