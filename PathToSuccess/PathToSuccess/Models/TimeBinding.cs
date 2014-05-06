@@ -88,5 +88,11 @@ namespace PathToSuccess.Models
             DateTime d = new DateTime(Year, Month, Day, Time.Hour, Time.Minute, Time.Second);
             return DateTime.Compare(DateTime.Now, d) > 0;
         }
+        public int CompareTo(TimeBinding toCompare)
+        {
+            DateTime first = new DateTime(Year,Month,Day,Time.Hour,Time.Minute,0);
+            DateTime second = new DateTime(toCompare.Year, toCompare.Month, toCompare.Day, toCompare.Time.Hour, toCompare.Time.Minute, 0);
+            return first.CompareTo(second);
+        }
     }
 }
