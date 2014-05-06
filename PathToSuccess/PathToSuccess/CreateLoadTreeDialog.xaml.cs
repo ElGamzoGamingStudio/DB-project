@@ -42,7 +42,6 @@ namespace PathToSuccess
                 widthDifference = Width - MinWidth;
                 heightDifference = Height - MinHeight;
             }
-
         }
 
         private void SetUpButtons(bool rollBack = false)
@@ -186,6 +185,7 @@ namespace PathToSuccess
             StepChanger.SelectedItem = LoadTabItem;
         }
         #endregion
+
         private void BackToChoosing(object sender, RoutedEventArgs e)
         {
             StepChanger.SelectedItem = ChoosingTabItem;

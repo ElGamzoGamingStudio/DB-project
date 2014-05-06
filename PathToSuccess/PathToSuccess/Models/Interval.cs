@@ -48,7 +48,7 @@ namespace PathToSuccess.Models
 
         public TimeSpan GetIntervalLength()
         {
-            return EndTime == null ? new TimeSpan(0) : EndTime - BeginTime;
+            return EndTime == DateTime.MinValue ? new TimeSpan(0) : EndTime - BeginTime;
         }
 
         public void Postpone(TimeSpan time)
@@ -68,8 +68,7 @@ namespace PathToSuccess.Models
         }
         public static Interval GetIntervalByID(int id)
         {
-            //TODO: should return interval by ID
-            return null;
+            return (Interval) DAL.SqlRepository.Intervals.Find(id);
         }
     }
 }

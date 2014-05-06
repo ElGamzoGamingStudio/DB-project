@@ -67,17 +67,14 @@ namespace PathToSuccess.Models
         }
         public static TimeRule GetByID(int id)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
-            var trl = set.Cast<TimeRule>().Where(x => x.Id == id).ToList();
-            if (trl.Count == 0)
-                return null;
-            else
-                return trl[0];
+            return (TimeRule) DAL.SqlRepository.TimeRules.Find(id);
         }
         public static List<TimeRule> GetApproved()
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
-            return set.Cast<TimeRule>().Where(x => x.IsUserApproved == true).ToList();
+            return DAL.SqlRepository.DBContext.GetDbSet<TimeRule>()
+                .Cast<TimeRule>()
+                .Where(x => x.IsUserApproved == true)
+                .ToList();
         }
     }
 }

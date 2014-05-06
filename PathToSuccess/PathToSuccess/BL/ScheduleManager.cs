@@ -64,15 +64,15 @@ namespace PathToSuccess.BL
                                     TimeSpan ts = tb.GetNormalTime() - timeCounter;
                                     if (Math.Abs(ts.Hours) < 1)
                                         isFine = false;
+                                    //todo: check end of term
                                 }
                                 if (isFine)
                                 {
                                     var stTB = new TimeBinding(1225236, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
                                     TimeBinding.CreateTimeBinding(stTB);
+                                    flag = true;
                                 }
                             }
-
-
                         }
                         else
                         {
@@ -88,22 +88,22 @@ namespace PathToSuccess.BL
                 }
 
 
-                while (!flag)
-                {
-                    if (dateCounter.DayOfWeek == avlIntervals[counter].dayOfWeek)
-                    {
-                    }
-                    else
-                    {
-                        if (dateCounter.DayOfWeek < avlIntervals[counter].dayOfWeek)
-                            dateCounter.AddDays(1);
-                        else
-                        {
-                            counter++;
-                            counter %= avlIntervals.Count();
-                        }
-                    }
-                }
+                //while (!flag)
+                //{
+                //    if (dateCounter.DayOfWeek == avlIntervals[counter].dayOfWeek)
+                //    {
+                //    }
+                //    else
+                //    {
+                //        if (dateCounter.DayOfWeek < avlIntervals[counter].dayOfWeek)
+                //            dateCounter.AddDays(1);
+                //        else
+                //        {
+                //            counter++;
+                //            counter %= avlIntervals.Count();
+                //        }
+                //    }
+                //}
             }
         }
     }
