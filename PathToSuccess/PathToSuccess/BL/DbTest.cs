@@ -198,7 +198,7 @@ namespace PathToSuccess.BL
 
         }
 
-        private void addSteps()
+        private static void addSteps()
         {
             steps = new Step[] {
                 //new Step()
