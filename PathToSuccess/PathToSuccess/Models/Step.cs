@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Devart.Common;
+using LinqToDB.Common;
 
 namespace PathToSuccess.Models
 {
     [Table("step", Schema = "public")]
-    public class Step //todo
+    public class Step
     {
         [Key]
         [Column ("id")]
@@ -114,13 +116,13 @@ namespace PathToSuccess.Models
         }
 
         /// <summary>
-        /// Writes DateTime.Now to EndDate parameter
+        /// Esli potsik vipolnil step
         /// </summary>
-        public void EndTask()
+        public void Do()
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
-            if(!DateTime.MinValue.Equals(EndDate)) return; //is finished or broken
-            EndDate = DateTime.Now;
+            if (Criteria.IsCompleted()) return;
+            Criteria.Inc();
             DAL.SqlRepository.DBContext.SaveChanges();
         }
 
@@ -138,9 +140,11 @@ namespace PathToSuccess.Models
             var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
             return set.Cast<Step>().Where(predicate).ToList();
         }
-        public static Step GetFirstUndoneStepByTaskID(int taskID)
+        public Step GetFirstUndoneStepByTaskID(int taskID)
         {
             //TODO: Should return the first ndone step of this task
+            var steps = ParentTask.SelectChildrenStep(st => !(st.Criteria.IsCompleted()));
+            return steps.IsNullOrEmpty() ? null : steps[0];
             return null;
         }
         

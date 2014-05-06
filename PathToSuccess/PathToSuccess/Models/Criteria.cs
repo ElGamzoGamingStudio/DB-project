@@ -49,6 +49,10 @@ namespace PathToSuccess.Models
             }
         }
 
+        public void Inc()
+        {
+            CurrentValue++;
+        }
         public bool IsCompleted()
         {
             return CurrentValue >= TargetValue;
