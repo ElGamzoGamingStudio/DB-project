@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Devart.Common;
 
 namespace PathToSuccess.Models
 {
@@ -57,7 +58,7 @@ namespace PathToSuccess.Models
         /// Main constructor
         /// </summary>
         /// <param name="beginDate"></param>
-        /// <param name="endDate">please USE !!DATETIME.MIN_VALUE!! if is not finished</param>
+        /// <param name="endDate"></param>
         /// <param name="urgencyName"></param>
         /// <param name="importanceName"></param>
         /// <param name="importance"></param>
@@ -107,13 +108,13 @@ namespace PathToSuccess.Models
         }
 
         /// <summary>
-        /// Writes DateTime.Now to EndDate parameter
+        /// Esli potsik vipolnil task
         /// </summary>
-        public void EndTask()
+        public void Do()
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
-            if(!DateTime.MinValue.Equals(EndDate)) return; //is finished or broken
-            EndDate = DateTime.Now;
+            if (Criteria.IsCompleted()) return;
+            Criteria.Inc();
             DAL.SqlRepository.DBContext.SaveChanges();
         }
 
@@ -138,7 +139,7 @@ namespace PathToSuccess.Models
             //var childrenSet = set.Cast<Task>().Where(x => x.Parent == this);
             return DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this).ToList();
         }
-        public List<Task> SelectChildrenTask(Func<Task, bool> predicate)
+        public List<Task> SelectChildrenTasks(Func<Task, bool> predicate)
         {
             //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
             var childrenSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
@@ -162,10 +163,17 @@ namespace PathToSuccess.Models
             //var childrenTaskSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
             return childrenStepSet.Any();
         }
+
+        public bool HasUncompletedSteps()
+        {
+            var childrenStepSet = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().Where(x => x.ParentTask == this);
+            return childrenStepSet.Count(x => !x.Criteria.IsCompleted()) == 0;
+        }
         public static List<Task> GetLowestTasks()
         {
             //TODO: should return all tasks with uncompleted steps
-            return null;
+            var tasksWithStepsChildren = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(t => t.ChildrenAreSteps());
+            return tasksWithStepsChildren.Where(t => t.HasUncompletedSteps()).ToList();
         }
     }
 }
