@@ -23,7 +23,7 @@ namespace PathToSuccess.Models
             Value = value;
         }
 
-        public List<Importance> GetViableUrgencyLevels()
+        public List<Importance> GetViableImportanceLevels()
         {
             return DAL.SqlRepository.DBContext.GetDbSet<Importance>()
                 .Cast<Importance>()

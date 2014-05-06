@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Sql;
 
 namespace PathToSuccess.Models
 {
@@ -54,6 +55,16 @@ namespace PathToSuccess.Models
         {
             if (EndTime != null)
                 EndTime += time;
+        }
+
+        public static void Seed()
+        {
+            if (DAL.SqlRepository.DBContext.GetDbSet<Interval>().Find(-1) == null)
+            {
+                DAL.SqlRepository.DBContext.Database.ExecuteSqlCommand(
+                    "insert into public.interval values (-1, @date, @date);", new Npgsql.NpgsqlParameter("date", DateTime.Now)
+                    );
+            }
         }
     }
 }

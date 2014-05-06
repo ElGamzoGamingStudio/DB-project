@@ -37,24 +37,32 @@ namespace PathToSuccess.BL
             urgencies = DAL.SqlRepository.DBContext.GetDbSet<Urgency>().Cast<Urgency>().ToList<Urgency>().ToArray();
             
             importancies = DAL.SqlRepository.DBContext.GetDbSet<Importance>().Cast<Importance>().ToList<Importance>().ToArray();
-            
+
+            //Interval.Seed();
+
             intervals = DAL.SqlRepository.DBContext.GetDbSet<Interval>().Cast<Interval>().ToList<Interval>().ToArray();
 
             criterias = DAL.SqlRepository.DBContext.GetDbSet<Criteria>().Cast<Criteria>().ToList<Criteria>().ToArray();
 
             //addTreeAndTask();
-            
-            //var schedules = DAL.SqlRepository.DBContext.GetDbSet<Models.Schedule>().Cast<Models.Schedule>().ToList<Models.Schedule>();
-            
-            //var timerules = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>().Cast<TimeRule>().ToList<TimeRule>();
+
+            trees = DAL.SqlRepository.DBContext.GetDbSet<Tree>().Cast<Tree>().ToList<Tree>().ToArray();
+
+            tasks = DAL.SqlRepository.DBContext.GetDbSet<Models.Task>().Cast<Models.Task>().ToList<Models.Task>().ToArray();
+
+            //addSchedule();
+
+            schedules = DAL.SqlRepository.DBContext.GetDbSet<Models.Schedule>().Cast<Models.Schedule>().ToList<Models.Schedule>().ToArray();
+
+            addTimeRules();
+
+            var timerules = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>().Cast<TimeRule>().ToList<TimeRule>();
             
             //var timebindings = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>().Cast<TimeBinding>().ToList<TimeBinding>();
             
-            tasks = DAL.SqlRepository.DBContext.GetDbSet<Models.Task>().Cast<Models.Task>().ToList<Models.Task>().ToArray();
-            
             //var steps = DAL.SqlRepository.DBContext.GetDbSet<Step>().Cast<Step>().ToList<Step>();
             
-            trees = DAL.SqlRepository.DBContext.GetDbSet<Tree>().Cast<Tree>().ToList<Tree>().ToArray();
+            
 
         }
 
@@ -116,6 +124,7 @@ namespace PathToSuccess.BL
                 set.Add(i);
             }
             DAL.SqlRepository.DBContext.SaveChanges();
+           
         }
 
         private static void addCriterias()
@@ -149,6 +158,35 @@ namespace PathToSuccess.BL
 
             treeset.Add(trees[0]);
             taskset.Add(tasks[0]);
+
+            DAL.SqlRepository.DBContext.SaveChanges();
+
+        }
+
+        private static void addSchedule()
+        {
+            schedules = new Models.Schedule[] {
+                new Models.Schedule(intervals[0], intervals[0], intervals[1], intervals[2], null, null, null)
+            };
+
+            var set = DAL.SqlRepository.DBContext.GetDbSet<Models.Schedule>();
+
+            set.Add(schedules[0]);
+            
+            DAL.SqlRepository.DBContext.SaveChanges();
+        }
+
+        private static void addTimeRules()
+        {
+            timeRules = new TimeRule[] {
+                new TimeRule(0, true, schedules[0].Id, schedules[0]),
+                new TimeRule(0, false, schedules[0].Id, schedules[0])
+            };
+
+            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
+
+            set.Add(timeRules[0]);
+            set.Add(timeRules[1]);
 
             DAL.SqlRepository.DBContext.SaveChanges();
 

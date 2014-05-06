@@ -31,6 +31,7 @@ namespace PathToSuccess.DAL
             modelBuilder.Entity<Interval>().ToTable("public.interval");
             modelBuilder.Entity<Importance>().ToTable("public.importance");
             modelBuilder.Entity<Criteria>().ToTable("public.criteria");
+
         }
     }
 }

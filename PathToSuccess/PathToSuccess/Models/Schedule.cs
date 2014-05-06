@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PathToSuccess.Models
 {
+    
     [Table("schedule", Schema="public")]
     public class Schedule
     {
@@ -12,7 +13,7 @@ namespace PathToSuccess.Models
         public int Id { get; set; }
 
         [Column("monday")]
-        public int MondayIntervalId { get; set; }
+        public int MondayIntervalId { get; set; } 
         [ForeignKey("MondayIntervalId")]
         public Interval MondayInterval { get; set; }
 
@@ -59,13 +60,13 @@ namespace PathToSuccess.Models
             SaturdayInterval = saturday;
             SundayInterval = sunday;
 
-            MondayIntervalId    = monday == null    ? 0 : monday.Id;
-            TuesdayIntervalId   = tuesday == null   ? 0 : tuesday.Id;
-            WednesdayIntervalId = wednesday == null ? 0 : wednesday.Id;
-            ThirsdayIntervalId  = thirsday == null  ? 0 : thirsday.Id;
-            FridayIntervalId    = friday == null    ? 0 : friday.Id;
-            SaturdayIntervalId  = saturday == null  ? 0 : saturday.Id;
-            SundayIntervalId    = sunday == null    ? 0 : sunday.Id;
+            MondayIntervalId    = monday == null    ? -1 : monday.Id;
+            TuesdayIntervalId   = tuesday == null   ? -1 : tuesday.Id;
+            WednesdayIntervalId = wednesday == null ? -1 : wednesday.Id;
+            ThirsdayIntervalId  = thirsday == null  ? -1 : thirsday.Id;
+            FridayIntervalId    = friday == null    ? -1 : friday.Id;
+            SaturdayIntervalId  = saturday == null  ? -1 : saturday.Id;
+            SundayIntervalId    = sunday == null    ? -1 : sunday.Id;
         }
     }
 }
