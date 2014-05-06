@@ -138,7 +138,11 @@ namespace PathToSuccess.Models
             var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
             return set.Cast<Step>().Where(predicate).ToList();
         }
-
+        public static Step GetFirstUndoneStepByTaskID(int taskID)
+        {
+            //TODO: Should return the first ndone step of this task
+            return null;
+        }
         
     }
 }

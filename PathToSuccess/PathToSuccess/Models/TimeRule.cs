@@ -28,6 +28,8 @@ namespace PathToSuccess.Models
         [Column("is_user_approved")]
         public bool IsUserApproved { get; set; }
 
+        public TimeRule()
+        { }
         public TimeRule(int id, bool isPeriodic, int scheduleId, Schedule schedule)
         {
             Id = id;

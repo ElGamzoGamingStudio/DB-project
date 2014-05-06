@@ -80,11 +80,6 @@ namespace PathToSuccess.Models
                 .Cast<Tree>()
                 .FirstOrDefault(x => x.MainTaskId == mainTask.Id);
         }
-        public static List<Step> GetAllChildrenSteps()
-        {
-            //TODO: should return children steps of all levels of this tree
-            return null;
-        }
 
     }
 }
