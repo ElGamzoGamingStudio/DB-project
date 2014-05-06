@@ -4,47 +4,59 @@
         Title="CreateLoadTreeDiaolg" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024" SizeChanged="Update">
     <Grid>
         <Grid Name="MainGrid">
-        <Grid.Resources>
-            <Style TargetType="Button">
-                <Setter Property="SnapsToDevicePixels" Value="true"/>
-                <Setter Property="OverridesDefaultStyle" Value="true"/>
-                <Setter Property="FocusVisualStyle" Value="{DynamicResource ButtonFocusVisual}"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border 
+            <Grid.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="SnapsToDevicePixels" Value="true"/>
+                    <Setter Property="OverridesDefaultStyle" Value="true"/>
+                    <Setter Property="FocusVisualStyle" Value="{DynamicResource ButtonFocusVisual}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border 
           x:Name="Border"  
           CornerRadius="20" 
           BorderThickness="1"
           BorderBrush="Black"
           Background="Beige">
-                                <ContentPresenter 
+                                    <ContentPresenter 
             Margin="3"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             RecognizesAccessKey="True"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter TargetName="Border" Property="Background" Value="LightGoldenrodYellow" />
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="true">
-                                    <Setter TargetName="Border" Property="Background" Value="Gold" />
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="false">
-                                    <Setter TargetName="Border" Property="Visibility" Value="Hidden" />
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-        </Grid.Resources>
-        <Button Name="Create" Click="LeftClick" Content="Create"/>
-        <Button Name="Load" Click="RightClick" Content="Load"/>
-        <Button Name="Back" Click="BackClick" Content="B" 
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter TargetName="Border" Property="Background" Value="LightGoldenrodYellow" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="true">
+                                        <Setter TargetName="Border" Property="Background" Value="Gold" />
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter TargetName="Border" Property="Visibility" Value="Hidden" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Grid.Resources>
+            <TabControl Name="StepChanger">
+                <TabItem Name="FirsTabItem">
+                    <Grid Name ="FirstStep">
+
+                        <Button Name="Create" Click="LeftClick" Content="Create"/>
+                        <Button Name="Load" Click="RightClick" Content="Load"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Name="SecondTabItem">
+                    <Grid Name="SecondStep">
+                        <Button Name="BackSecond" Click="BackClick" Content="B" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Hidden"/>
+                    </Grid>
+                </TabItem>
+
+            </TabControl>
         </Grid>
     </Grid>
 </Window>

@@ -85,8 +85,6 @@ namespace PathToSuccess
                 Load.RenderTransform = moveL;
                 moveL.BeginAnimation(TranslateTransform.XProperty, animL);
             }
-            Back.RenderTransform = null;
-            Back.Visibility = Visibility.Hidden;
         }
 
         private void LeftClick(object sender, EventArgs e)
@@ -116,7 +114,7 @@ namespace PathToSuccess
             Load.RenderTransform = moveOther;
             moveOther.BeginAnimation(TranslateTransform.XProperty, animOther);
 
-            Back.Visibility = Visibility.Visible;
+            
             
         }
 
@@ -146,7 +144,6 @@ namespace PathToSuccess
             Create.RenderTransform = moveOther;
             moveOther.BeginAnimation(TranslateTransform.XProperty, animOther);
 
-            Back.Visibility = Visibility.Visible;
             
         }
 
@@ -157,7 +154,7 @@ namespace PathToSuccess
                 To = 0,
                 Duration = new Duration(TimeSpan.FromSeconds(.3)),
             };
-            Storyboard.SetTarget(anim, Back); 
+            Storyboard.SetTarget(anim, BackSecond); 
             Storyboard.SetTargetProperty(anim, new PropertyPath(OpacityProperty));
             var storyboard = new Storyboard();
             storyboard.Children.Add(anim);
@@ -168,7 +165,7 @@ namespace PathToSuccess
 
         private void NextClick(object sender, EventArgs e)
         {
-            var panel = (StackPanel) MainGrid.Children.Cast<UIElement>().FirstOrDefault(x => x is StackPanel);
+            var panel = (StackPanel)FirstStep.Children.Cast<UIElement>().FirstOrDefault(x => x is StackPanel);
             var anim = new DoubleAnimation(0, 1, new Duration(TimeSpan.FromSeconds(1)), FillBehavior.Stop);
             panel.BeginAnimation(OpacityProperty, anim);
             
@@ -185,7 +182,7 @@ namespace PathToSuccess
                 To = 1,
                 Duration = new Duration(TimeSpan.FromSeconds(0)),
             };
-            Storyboard.SetTarget(anim, Back);
+            Storyboard.SetTarget(anim, BackSecond);
             Storyboard.SetTargetProperty(anim, new PropertyPath(OpacityProperty));
             var storyboard = new Storyboard();
             storyboard.Children.Add(anim);
@@ -220,7 +217,7 @@ namespace PathToSuccess
             var inputText = new TextBox();
             namePanel.Children.Add(nameText);
             namePanel.Children.Add(inputText);
-            MainGrid.Children.Add(namePanel);
+            FirstStep.Children.Add(namePanel);
 
             var next = new Button()
             {
@@ -232,13 +229,13 @@ namespace PathToSuccess
                 VerticalAlignment = VerticalAlignment.Bottom
             };
             next.Click += NextClick;
-            MainGrid.Children.Add(next);
+            FirstStep.Children.Add(next);
 
         }
 
         private void MarkAllUiElementsWithTags()
         {
-            foreach (FrameworkElement child in this.MainGrid.Children)
+            foreach (FrameworkElement child in this.FirstStep.Children)
             {
                 child.Tag = "previous";
             }
@@ -246,11 +243,11 @@ namespace PathToSuccess
 
         private void RemoveAllNonPreviousItems()
         {
-            for (int index = MainGrid.Children.Count-1; index >= 0; index--)
+            for (int index = FirstStep.Children.Count - 1; index >= 0; index--)
             {
-                var child = (FrameworkElement) this.MainGrid.Children[index];
+                var child = (FrameworkElement)this.FirstStep.Children[index];
                 if ((string) child.Tag != "previous")
-                    MainGrid.Children.RemoveAt(index);
+                    FirstStep.Children.RemoveAt(index);
             }
         }
     }
