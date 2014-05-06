@@ -105,7 +105,7 @@ namespace PathToSuccess.Models
         /// <param name="step">Create using a simple constructor</param>
         public static void CreateStep(Step step)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
+            var set = DAL.SqlRepository.Steps;
 
             //if (set.Find(step.Id) != null) return;
             set.Add(step);
@@ -113,7 +113,7 @@ namespace PathToSuccess.Models
         }
         public static void DeleteStep(Step step)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
+            var set = DAL.SqlRepository.Steps;
             var toDelete = set.Find(step.Id);
             if (toDelete == null) return;
             set.Remove(toDelete);
@@ -125,7 +125,6 @@ namespace PathToSuccess.Models
         /// </summary>
         public void Do()
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
             if (Criteria.IsCompleted()) return;
             Criteria.Inc();
             DAL.SqlRepository.DBContext.SaveChanges();
@@ -142,7 +141,7 @@ namespace PathToSuccess.Models
 
         public static List<Step> Select(Func<Step, bool> predicate)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Step>();
+            var set = DAL.SqlRepository.Steps;
             return set.Cast<Step>().Where(predicate).ToList();
         }
         public static Step GetFirstUndoneStepByTaskID(int taskID)

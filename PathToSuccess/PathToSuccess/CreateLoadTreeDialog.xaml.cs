@@ -86,7 +86,7 @@ namespace PathToSuccess
             }
         }
 
-        private void CreateClick(object sender, EventArgs e)
+        public void CreateClick(object sender, EventArgs e)
         {
            
             var but = sender as Button;
@@ -115,7 +115,7 @@ namespace PathToSuccess
             
         }
 
-        private void LoadClick(object sender, EventArgs e)
+        public void LoadClick(object sender, EventArgs e)
         {
             //MarkAllUiElementsWithTags(); //to delete it later
 
@@ -201,6 +201,9 @@ namespace PathToSuccess
                     To = 0,
                     Duration = new Duration(TimeSpan.FromSeconds(.3)),
                     AutoReverse = true,
+                    FillBehavior = FillBehavior.Stop,
+                    IsCumulative = false,
+                    IsAdditive = false
                 };
                 Storyboard.SetTarget(anim, TreeNamePanel);
                 Storyboard.SetTargetProperty(anim, new PropertyPath(OpacityProperty));
