@@ -77,13 +77,14 @@ namespace PathToSuccess.Models
         /// <param name="description">actual text of the step</param>
         /// <param name="parentTask"></param>
         /// <param name="taskId"></param>
-        public Step(DateTime beginDate, DateTime endDate, string urgencyName,
+        public Step(DateTime beginDate, DateTime endDate, string urgencyName, Urgency urgency,
                     string importanceName, Importance importance, int criteriaId, Criteria criteria, 
                     int timeRuleId, TimeRule timeRule, string description, Task parentTask, int taskId, int order)
         {
             BeginDate = beginDate;
             EndDate = endDate;
             UrgencyName = urgencyName;
+            Urgency = urgency;
             ImportanceName = importanceName;
             Importance = importance;
             CriteriaId = criteriaId;
