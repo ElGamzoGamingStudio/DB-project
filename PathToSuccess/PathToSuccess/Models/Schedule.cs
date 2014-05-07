@@ -31,7 +31,7 @@ namespace PathToSuccess.Models
 
         [Column("thursday")]
         public int ThursdayIntervalId { get; set; }
-        [ForeignKey("ThirsdayIntervalId")]
+        [ForeignKey("ThursdayIntervalId")]
         public Interval ThursdayInterval { get; set; }
 
         [Column("friday")]

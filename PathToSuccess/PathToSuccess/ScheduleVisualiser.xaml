@@ -4,48 +4,49 @@
         Title="ScheduleVisualiser" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024">
     <Grid>
         <StackPanel Name="MainPanel" Orientation="Horizontal">
-            <StackPanel Name="VisualPanel">
+            <StackPanel Name="VisualPanel" VerticalAlignment="Bottom">
+                <TextBlock Text="Set up intervals or die" HorizontalAlignment="Center"/>
                 <StackPanel Name="IntervalPanel" Orientation="Horizontal">
-                    <StackPanel Name="MondayPanel">
+                    <StackPanel Name="MondayPanel" Background="BurlyWood">
                         <TextBox Name="ModnayFrom"/>
                         <TextBox Name="MondayTo"/>
-                        <TextBlock Text="Monday"/>
+                        <TextBlock Text="Monday" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Name="TuesdayPanel">
+                    <StackPanel Name="TuesdayPanel" Background="BurlyWood">
                         <TextBox Name="TuesdayFrom"/>
                         <TextBox Name="TuesdayTo"/>
-                        <TextBlock Text="Monday"/>
+                        <TextBlock Text="Tuesday" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Name="WednesdayPanel">
+                    <StackPanel Name="WednesdayPanel" Background="BurlyWood">
                         <TextBox Name="WednesdayFrom"/>
                         <TextBox Name="WednesdayTo"/>
-                        <TextBlock Text="Sunday"/>
+                        <TextBlock Text="Wednesday" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Name="ThursdayPanel">
+                    <StackPanel Name="ThursdayPanel" Background="BurlyWood">
                         <TextBox Name="ThursdayFrom"/>
                         <TextBox Name="ThursdayTo"/>
-                        <TextBlock Text="Sunday"/>
+                        <TextBlock Text="Thursday" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Name="FridayPanel">
+                    <StackPanel Name="FridayPanel" Background="BurlyWood">
                         <TextBox Name="FridayFrom"/>
                         <TextBox Name="FridayTo"/>
-                        <TextBlock Text="Sunday"/>
+                        <TextBlock Text="Friday" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Name="SaturdayPanel">
+                    <StackPanel Name="SaturdayPanel" Background="Teal">
                         <TextBox Name="SaturdayFrom"/>
                         <TextBox Name="SaturdayTo"/>
-                        <TextBlock Text="Sunday"/>
+                        <TextBlock Text="Saturday" HorizontalAlignment="Center"/>
                     </StackPanel>
-                    <StackPanel Name="SundayPanel">
+                    <StackPanel Name="SundayPanel" Background="Teal">
                         <TextBox Name="SundayFrom"/>
                         <TextBox Name="SundayTo"/>
-                        <TextBlock Text="Sunday"/>
+                        <TextBlock Text="Sunday" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
                 <ListView Name="ScheduleListView" Width="300"/>
             </StackPanel>
 
-            <StackPanel Name="ControlPanel" HorizontalAlignment="Stretch">
+            <StackPanel Name="ControlPanel" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
                 <Button Name="Remove" Content="Remove"/>
                 <Button Name="Add" Content="Add"/>
                 <Button Name="Edit" Content="Edit"/>

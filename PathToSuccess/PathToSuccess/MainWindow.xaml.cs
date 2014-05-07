@@ -30,8 +30,8 @@ namespace PathToSuccess
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
 
-            //var sc = new ScheduleVisualiser();
-            //sc.ShowDialog();
+            var sc = new ScheduleVisualiser();
+            sc.ShowDialog();
 
             //var log = new LoginWindow();
             //log.ShowDialog();
