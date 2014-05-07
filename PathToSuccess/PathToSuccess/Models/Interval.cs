@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Sql;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PathToSuccess.Models
 {
@@ -72,6 +74,23 @@ namespace PathToSuccess.Models
         public override string ToString()
         {
             return "From = " + BeginTime.ToString() + " To" + EndTime.ToString();
+        }
+        public static void RemoveTrash()
+        {
+            var allInts = DAL.SqlRepository.Intervals.Cast<Interval>().ToList();
+            var allSch = DAL.SqlRepository.Schedules.Cast<Schedule>().ToList();
+            foreach (var sch in allSch)
+            {
+                foreach (var intervinf in PathToSuccess.Models.Schedule.GetNotEmptyIntervals(sch.Id))
+                {
+                    if (allInts.Contains(Interval.GetIntervalByID(intervinf.intervalID)))
+                        allInts.Remove(Interval.GetIntervalByID(intervinf.intervalID));
+                }
+            }
+            foreach (var interv in allInts)
+            {
+                DeleteInterval(interv);
+            }
         }
     }
 }
