@@ -130,9 +130,18 @@ namespace PathToSuccess.Models
         }
         public static Step GetFirstUndoneStepByTaskID(int taskID)
         {
-            //TODO: Should return the first ndone step of this task
+            var allSteps = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.TaskId == taskID).ToList();
+            allSteps.Sort();
+            foreach (var st in allSteps)
+            {
+                if (!st.Criteria.IsCompleted())
+                    return st;
+            }
             return null;
         }
-        
+        public int CompareTo(Step st)
+        {
+            return Order.CompareTo(st.Order);
+        }
     }
 }

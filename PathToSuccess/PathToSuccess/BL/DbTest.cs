@@ -28,6 +28,8 @@ namespace PathToSuccess.BL
             //var user = DAL.SqlRepository.Users.Cast<User>().ToList().First();
 
             //var tree = Tree.CreateTree(user, user.Login, "test", "new way of creating trees");
+
+            
         }
     }
 }
