@@ -123,42 +123,42 @@ namespace PathToSuccess.Models
         {
             //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
             //var childrenSet = set.Cast<Task>().Where(x => x.Parent == this);
-            return DAL.SqlRepository.Tasks.Cast<Task>().Where(x => x.Parent == this).ToList();
+            return DAL.SqlRepository.Tasks.Cast<Task>().Where(x => x.ParentId == this.Id).ToList();
         }
         public List<Task> SelectChildrenTasks(Func<Task, bool> predicate)
         {
             //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
-            var childrenSet = DAL.SqlRepository.Tasks.Cast<Task>().Where(x => x.Parent == this);
+            var childrenSet = DAL.SqlRepository.Tasks.Cast<Task>().Where(x => x.ParentId == this.Id);
             return childrenSet.Where(predicate).ToList();
         }
         
         public List<Step> SelectChildrenSteps()
         {
-            return DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask == this).ToList();
+            return DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask.Id == this.Id).ToList();
         }
         public List<Step> SelectChildrenStep(Func<Step, bool> predicate)
         {
             //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
-            var childrenSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask == this);
+            var childrenSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask.Id == this.Id);
             return childrenSet.Where(predicate).ToList();
         }
 
         public bool ChildrenAreSteps()
         {
-            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask == this);
+            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().ToList().Where(x => x.ParentTask.Id == this.Id);
             //var childrenTaskSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
             return childrenStepSet.Any();
         }
 
         public bool HasUncompletedSteps()
         {
-            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask == this);
-            return childrenStepSet.Count(x => !x.Criteria.IsCompleted()) == 0;
+            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().ToList().Where(x => x.ParentTask.Id == this.Id).ToList();
+            return childrenStepSet.Count(x => !x.Criteria.IsCompleted()) > 0;
         }
         public static List<Task> GetLowestTasks()
         {
             //TODO: should return all tasks with uncompleted steps
-            var tasksWithStepsChildren = DAL.SqlRepository.Tasks.Cast<Task>().Where(t => t.ChildrenAreSteps());
+            var tasksWithStepsChildren = DAL.SqlRepository.Tasks.Cast<Task>().ToList().Where(t => t.ChildrenAreSteps()).ToList();
             return tasksWithStepsChildren.Where(t => t.HasUncompletedSteps()).ToList();
         }
 

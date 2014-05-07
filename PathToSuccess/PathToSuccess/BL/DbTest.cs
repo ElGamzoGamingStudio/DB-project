@@ -88,5 +88,19 @@ namespace PathToSuccess.BL
 
             
         }
+
+        public static void Try()
+        {
+            var collection = DAL.SqlRepository.TimeBindings.Cast<TimeBinding>().ToList();
+            foreach (var tb in collection)
+                DAL.SqlRepository.TimeBindings.Remove(tb);
+            DAL.SqlRepository.Save();
+
+            ScheduleManager.Initialize();
+
+            ScheduleManager.FillScheduleForPeriodic();
+
+            ScheduleManager.CreateScheduleForNonTB();
+        }
     }
 }

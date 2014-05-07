@@ -41,6 +41,8 @@ namespace PathToSuccess.Models
             tr.Schedule = schedule;
             tr.IsUserApproved = false;
 
+            if (schedule.)
+
             set.Add(tr);
             DAL.SqlRepository.Save();
             return tr;
