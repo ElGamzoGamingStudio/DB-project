@@ -26,15 +26,19 @@ namespace PathToSuccess
         public MainWindow()
         {
             InitializeComponent();
+            BL.Application.SetUp();
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
 
-            var log = new LoginWindow();
-            log.ShowDialog();
-            if (log.RightPass == null)
-                Application.Current.Shutdown();
+            var sc = new ScheduleVisualiser();
+            sc.ShowDialog();
 
-            UserInfo.Content = "Вы вошли как " + BL.Application.CurrentUser.Name;
+            //var log = new LoginWindow();
+            //log.ShowDialog();
+            //if (log.RightPass == null)
+            //    Application.Current.Shutdown();
+
+            //UserInfo.Content = "Вы вошли как " + BL.Application.CurrentUser.Name;
         }
 
         private void OverflowCanvas()

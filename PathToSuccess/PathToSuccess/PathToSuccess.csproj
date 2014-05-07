@@ -122,6 +122,9 @@
     <Compile Include="QueryDialog.xaml.cs">
       <DependentUpon>QueryDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScheduleVisualiser.xaml.cs">
+      <DependentUpon>ScheduleVisualiser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Schedule\ScheduleVisualizer.xaml.cs">
       <DependentUpon>ScheduleVisualizer.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="QueryDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScheduleVisualiser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
