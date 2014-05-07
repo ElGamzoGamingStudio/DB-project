@@ -101,6 +101,7 @@
     <Compile Include="BL\Application.cs" />
     <Compile Include="BL\Authentication.cs" />
     <Compile Include="BL\DbTest.cs" />
+    <Compile Include="BL\Log.cs" />
     <Compile Include="BL\ScheduleManager.cs" />
     <Compile Include="BL\Settings.cs" />
     <Compile Include="DAL\Context.cs" />

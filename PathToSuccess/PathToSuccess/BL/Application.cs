@@ -12,5 +12,11 @@ namespace PathToSuccess.BL
         public static User CurrentUser { get; set; }
 
         public static Tree CurrentTree { get; set; }
+
+        public void SetUp()
+        {
+            DAL.SqlRepository.Initialize();
+            Log.Initialize();
+        }
     }
 }
