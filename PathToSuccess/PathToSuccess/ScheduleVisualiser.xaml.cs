@@ -28,7 +28,7 @@ namespace PathToSuccess
             InitializeComponent();
 
             ScheduleListView.Width = Width - 150;
-            ScheduleListView.Height = Height / 4;
+            ScheduleListView.Height = Height /2;
             Edit.Width = Add.Width = Remove.Width = Width - ScheduleListView.Width - 20;
             Edit.Height = Add.Height = Remove.Height = Height / 3 - 15;
             MondayPanel.MaxWidth =
