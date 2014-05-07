@@ -4,7 +4,7 @@
         Title="MainWindow" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024" SizeChanged="Update" >
     <Grid Background="Gainsboro">
         <ScrollViewer MinWidth="830" HorizontalScrollBarVisibility="Auto" Name="TreeField" MinHeight="520" MaxHeight="520" MaxWidth="830" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <Canvas   Background="White" Name="TreeCanvas" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" MinWidth="830">
+            <Canvas   Background="White" Name="TreeCanvas" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" MinWidth="830" Height="498">
                 <Canvas.Resources>
                     <Style TargetType="Border">
                         <Style.Triggers>
@@ -83,5 +83,36 @@
         </ComboBox>
         <Label HorizontalAlignment="Left" Name="UserInfo" Margin="866,7,0,0" VerticalAlignment="Top" Width="140"/>
         <Button Content="Поиск" Name="SearchButton" HorizontalAlignment="Left" Margin="630,13,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="270,13,0,0" VerticalAlignment="Top" Width="251"/>
+        <Grid Background="DeepSkyBlue" Name="Adding" HorizontalAlignment="Left" MinHeight="520" Margin="-1000,0,0,0" VerticalAlignment="Bottom" MinWidth="813">
+            <Label Content="Добавление" FontSize="24" HorizontalAlignment="Left" Margin="300,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="170"/>
+            <StackPanel Name="Chos" HorizontalAlignment="Left" Height="47" Margin="10,68,0,0" VerticalAlignment="Top" Width="166">
+                <RadioButton Content="Цель" Name="TaskButton" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="166"/>
+                <RadioButton Content="Шаг" Name="StepButton" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="166"/>
+            </StackPanel>
+            <TextBox Name="DescBox" HorizontalAlignment="Left" Height="59" Margin="10,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="398"/>
+            <Label Content="Описание" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="166"/>
+            <CheckBox Name="Periodic" Content="Периодичный" HorizontalAlignment="Left" Margin="527,158,0,0" VerticalAlignment="Top" Width="129"/>
+            
+            <Label Content="Критерий выполнения" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
+            <TextBox Name="UnitBox" HorizontalAlignment="Left" Height="23" Margin="150,356,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox Name="TargetVal" HorizontalAlignment="Left" Height="23" Margin="150,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <Label Content="В чем измеряется" HorizontalAlignment="Left" Margin="9,352,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
+            <Label Content="Целевой результат" HorizontalAlignment="Left" Margin="10,393,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
+            <Label Content="Временное правило" HorizontalAlignment="Left" Margin="527,115,0,0" VerticalAlignment="Top" Width="232"/>
+            <Label Content="Время на выполнение" HorizontalAlignment="Left" Margin="10,242,0,0" VerticalAlignment="Top" Width="141"/>
+            <Label Content="С" HorizontalAlignment="Left" Margin="10,273,0,0" VerticalAlignment="Top"/>
+            <DatePicker Name="Begin" HorizontalAlignment="Left" Margin="32,275,0,0" VerticalAlignment="Top"/>
+            <DatePicker Name="End" HorizontalAlignment="Left" Margin="193,275,0,0" VerticalAlignment="Top"/>
+            <Label Content="По" HorizontalAlignment="Left" Margin="162,274,0,0" VerticalAlignment="Top"/>
+            <Button Content="ОК" HorizontalAlignment="Left" Margin="627,476,0,0" VerticalAlignment="Top" Width="54" Height="34" Click="Add_Click" />
+            <Button Content="Отмена" HorizontalAlignment="Left" Margin="722,476,0,0" VerticalAlignment="Top" Width="54" Height="34" Click="Discard_Click"/>
+            <ComboBox Name="Graphs" HorizontalAlignment="Left" Margin="527,193,0,0" VerticalAlignment="Top" Width="154"/>
+            <ComboBox  HorizontalAlignment="Left" Name="Imp" Margin="527,299,0,0" VerticalAlignment="Top" Width="154"/>
+            <ComboBox HorizontalAlignment="Left" Name="Urg" Margin="527,377,0,0" VerticalAlignment="Top" Width="154"/>
+            <Label Content="Важность" HorizontalAlignment="Left" Margin="527,268,0,0" VerticalAlignment="Top" Width="108"/>
+            <Label Content="Срочность" HorizontalAlignment="Left" Margin="527,346,0,0" VerticalAlignment="Top" Width="129"/>
+
+        </Grid>
     </Grid>
 </Window>
