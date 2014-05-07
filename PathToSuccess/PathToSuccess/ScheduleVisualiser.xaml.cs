@@ -205,6 +205,7 @@ namespace PathToSuccess
             var creation = Models.Schedule.CreateSchedule(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
             schedules.Add(creation);
             SqlRepository.Save();
+            UpdateTableView();
         }
 
         private void EditClick(object sender, RoutedEventArgs e)
@@ -215,6 +216,15 @@ namespace PathToSuccess
         private bool IsOk(string intervalToCheck, out int number)
         {
             return Int32.TryParse(intervalToCheck.Trim(), out number) && number >= 0 && number <= 24;
+        }
+
+        private void UpdateTableView()
+        {
+            ScheduleListView.Items.Clear();
+            foreach (var o in SqlRepository.Schedules.Cast<Models.Schedule>().ToList())
+            {
+                ScheduleListView.Items.Add(o);
+            }
         }
     }
 }
