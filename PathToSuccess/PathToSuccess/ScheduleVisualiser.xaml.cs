@@ -70,20 +70,20 @@ namespace PathToSuccess
         {
             var item = (ScheduleListView.SelectedItem as Models.Schedule);
             if (item == null) return;
-            MondayFrom.Text = item.MondayInterval != null ? item.MondayInterval.BeginTime.Hour.ToString() : "";
-            MondayTo.Text = item.MondayInterval != null ? item.MondayInterval.EndTime.Hour.ToString() : "";
-            TuesdayFrom.Text = item.TuesdayInterval != null ? item.TuesdayInterval.BeginTime.Hour.ToString() : "";
-            TuesdayTo.Text = item.TuesdayInterval != null ? item.TuesdayInterval.EndTime.Hour.ToString() : "";
-            WednesdayFrom.Text = item.WednesdayInterval != null ? item.WednesdayInterval.BeginTime.Hour.ToString() : "";
-            WednesdayTo.Text = item.WednesdayInterval != null ? item.WednesdayInterval.EndTime.Hour.ToString() : "";
-            ThursdayFrom.Text = item.ThursdayInterval != null ? item.ThursdayInterval.BeginTime.Hour.ToString() : "";
-            ThursdayTo.Text = item.ThursdayInterval != null ? item.ThursdayInterval.EndTime.Hour.ToString() : "";
-            FridayFrom.Text = item.FridayInterval != null ? item.FridayInterval.BeginTime.Hour.ToString() : "";
-            FridayTo.Text = item.FridayInterval != null ? item.FridayInterval.EndTime.Hour.ToString() : "";
-            SaturdayFrom.Text = item.SaturdayInterval != null ? item.SaturdayInterval.BeginTime.Hour.ToString() : "";
-            SaturdayTo.Text = item.SaturdayInterval != null ? item.SaturdayInterval.EndTime.Hour.ToString() : "";
-            SundayFrom.Text = item.SundayInterval != null ? item.SundayInterval.BeginTime.Hour.ToString() : "";
-            SundayTo.Text = item.SundayInterval != null ? item.SundayInterval.EndTime.Hour.ToString() : "";
+            MondayFrom.Text = item.MondayInterval != null ? item.MondayInterval.BeginTime.Hour.ToString() : "NULL";
+            MondayTo.Text = item.MondayInterval != null ? item.MondayInterval.EndTime.Hour.ToString() : "NULL";
+            TuesdayFrom.Text = item.TuesdayInterval != null ? item.TuesdayInterval.BeginTime.Hour.ToString() : "NULL";
+            TuesdayTo.Text = item.TuesdayInterval != null ? item.TuesdayInterval.EndTime.Hour.ToString() : "NULL";
+            WednesdayFrom.Text = item.WednesdayInterval != null ? item.WednesdayInterval.BeginTime.Hour.ToString() : "NULL";
+            WednesdayTo.Text = item.WednesdayInterval != null ? item.WednesdayInterval.EndTime.Hour.ToString() : "NULL";
+            ThursdayFrom.Text = item.ThursdayInterval != null ? item.ThursdayInterval.BeginTime.Hour.ToString() : "NULL";
+            ThursdayTo.Text = item.ThursdayInterval != null ? item.ThursdayInterval.EndTime.Hour.ToString() : "NULL";
+            FridayFrom.Text = item.FridayInterval != null ? item.FridayInterval.BeginTime.Hour.ToString() : "NULL";
+            FridayTo.Text = item.FridayInterval != null ? item.FridayInterval.EndTime.Hour.ToString() : "NULL";
+            SaturdayFrom.Text = item.SaturdayInterval != null ? item.SaturdayInterval.BeginTime.Hour.ToString() : "NULL";
+            SaturdayTo.Text = item.SaturdayInterval != null ? item.SaturdayInterval.EndTime.Hour.ToString() : "NULL";
+            SundayFrom.Text = item.SundayInterval != null ? item.SundayInterval.BeginTime.Hour.ToString() : "NULL";
+            SundayTo.Text = item.SundayInterval != null ? item.SundayInterval.EndTime.Hour.ToString() : "NULL";
         }
 
         private void RemoveClick(object sender, RoutedEventArgs e)
@@ -266,7 +266,7 @@ namespace PathToSuccess
             if (IsOk(ThursdayFrom.Text, out numberThursdayFrom) && IsOk(ThursdayTo.Text, out numberThursdayTo))
             {
                 thursday = Interval.CreateInterval(new DateTime(300, 5, 3, numberThursdayFrom, 0, 0),
-                    new DateTime(0, 0, 0, numberThursdayTo, 0, 0));
+                    new DateTime(300, 5, 3, numberThursdayTo, 0, 0));
                 intervals.Add(thursday);
             }
             else

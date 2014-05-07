@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Sql;
 using System.Collections.Generic;
 using System.Linq;
+using PathToSuccess.DAL;
 
 namespace PathToSuccess.Models
 {
@@ -87,9 +88,10 @@ namespace PathToSuccess.Models
                         allInts.Remove(Interval.GetIntervalByID(intervinf.intervalID));
                 }
             }
-            foreach (var interv in allInts)
+            for (int i = allInts.Count-1; i >= 0; i--)
             {
-                DeleteInterval(interv);
+                var interv = allInts[i];
+                SqlRepository.Intervals.Remove(interv);
             }
         }
     }
