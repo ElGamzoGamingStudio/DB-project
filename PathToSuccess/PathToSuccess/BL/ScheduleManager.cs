@@ -197,5 +197,17 @@ namespace PathToSuccess.BL
                 }
             }
         }
+
+        public static List<Step> Overdue()
+        {
+            var overdue = new List<Step>();
+            foreach (var step in withTB)
+            {
+                if (!step.TimeRule.IsPeriodic)
+                    if (TimeBinding.GetTBbyStepID(step.Id)[0].Time < DateTime.Now.AddDays(1))
+                        overdue.Add(step);
+            }
+            return overdue;
+        }
     }
 }
