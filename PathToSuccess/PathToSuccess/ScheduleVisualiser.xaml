@@ -43,13 +43,13 @@
                         <TextBlock Text="Sunday" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
-                <ListView Name="ScheduleListView" Width="300"/>
+                <ListView Name="ScheduleListView" Width="300" Margin="0,10, 0, 0"/>
             </StackPanel>
 
-            <StackPanel Name="ControlPanel" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
-                <Button Name="Remove" Content="Remove"/>
-                <Button Name="Add" Content="Add"/>
-                <Button Name="Edit" Content="Edit"/>
+            <StackPanel Name="ControlPanel" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Name="Remove" Content="Remove" Click="RemoveClick"/>
+                <Button Name="Add" Content="Add" Click="AddClick"/>
+                <Button Name="Edit" Content="Edit" Click="EditClick"/>
             </StackPanel>
         </StackPanel>
     </Grid>

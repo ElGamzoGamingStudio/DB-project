@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using LinqToDB;
 using PathToSuccess.BL;
 using PathToSuccess.DAL;
 using PathToSuccess.Models;
@@ -27,9 +28,9 @@ namespace PathToSuccess
             InitializeComponent();
 
             ScheduleListView.Width = Width - 150;
-            ScheduleListView.Height = Height / 3;
+            ScheduleListView.Height = Height / 4;
             Edit.Width = Add.Width = Remove.Width = Width - ScheduleListView.Width - 20;
-            Edit.Height = Add.Height = Remove.Height = Remove.Width / 2;
+            Edit.Height = Add.Height = Remove.Height = Height / 3 - 15;
             MondayPanel.MaxWidth =
                 TuesdayPanel.MaxWidth =
                     WednesdayPanel.MaxWidth =
@@ -61,10 +62,14 @@ namespace PathToSuccess
                 ScheduleListView.Items.Add(o);
             }
 
-            ScheduleListView.SelectionChanged += SelectionChanged;
 
-            ScheduleListView.SelectedItem = ScheduleListView.Items[0];
+            ScheduleListView.SelectionChanged += SelectionChanged;
+        }
+
+        private void SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             var item = (ScheduleListView.SelectedItem as Models.Schedule);
+            if (item == null) return;
             MondayFrom.Text = item.MondayInterval != null ? item.MondayInterval.BeginTime.ToString() : "";
             MondayTo.Text = item.MondayInterval != null ? item.MondayInterval.EndTime.ToString() : "";
             TuesdayFrom.Text = item.TuesdayInterval != null ? item.TuesdayInterval.BeginTime.ToString() : "";
@@ -81,23 +86,135 @@ namespace PathToSuccess
             SundayTo.Text = item.SundayInterval != null ? item.SundayInterval.EndTime.ToString() : "";
         }
 
-        private void SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RemoveClick(object sender, RoutedEventArgs e)
         {
-            var item = (ScheduleListView.SelectedItem as Models.Schedule);
-            MondayFrom.Text = item.MondayInterval != null ? item.MondayInterval.BeginTime.ToString() : "";
-            MondayTo.Text = item.MondayInterval != null ? item.MondayInterval.EndTime.ToString() : "";
-            TuesdayFrom.Text = item.TuesdayInterval != null ? item.TuesdayInterval.BeginTime.ToString() : "";
-            TuesdayTo.Text = item.TuesdayInterval != null ? item.TuesdayInterval.EndTime.ToString() : "";
-            WednesdayFrom.Text = item.WednesdayInterval != null ? item.WednesdayInterval.BeginTime.ToString() : "";
-            WednesdayTo.Text = item.WednesdayInterval != null ? item.WednesdayInterval.EndTime.ToString() : "";
-            ThursdayFrom.Text = item.ThursdayInterval != null ? item.ThursdayInterval.BeginTime.ToString() : "";
-            ThursdayTo.Text = item.ThursdayInterval != null ? item.ThursdayInterval.EndTime.ToString() : "";
-            FridayFrom.Text = item.FridayInterval != null ? item.FridayInterval.BeginTime.ToString() : "";
-            FridayTo.Text = item.FridayInterval != null ? item.FridayInterval.EndTime.ToString() : "";
-            SaturdayFrom.Text = item.SaturdayInterval!= null ? item.SaturdayInterval.BeginTime.ToString() : "";
-            SaturdayTo.Text = item.SaturdayInterval != null ? item.SaturdayInterval.EndTime.ToString() : "";
-            SundayFrom.Text = item.SundayInterval != null ? item.SundayInterval.BeginTime.ToString() : "";
-            SundayTo.Text = item.SundayInterval!= null ? item.SundayInterval.EndTime.ToString() : "";
+            if (ScheduleListView.SelectedItem == null) return;
+            SqlRepository.Schedules.Remove(ScheduleListView.SelectedItem as Models.Schedule);
+            SqlRepository.Save();
+            ScheduleListView.Items.Clear();
+            foreach (var o in SqlRepository.Schedules.Cast<Models.Schedule>().ToList())
+            {
+                ScheduleListView.Items.Add(o);
+            }
+        }
+
+        private void AddClick(object sender, RoutedEventArgs e)
+        {
+            var intervals = SqlRepository.Intervals;
+            var schedules = SqlRepository.Schedules;
+
+            int numberMondayFrom;
+            int numberMondayTo;
+            Interval monday;
+            if (IsOk(MondayFrom.Text, out numberMondayFrom) && IsOk(MondayTo.Text, out numberMondayTo))
+            {
+                monday = Interval.CreateInterval(new DateTime(300, 5, 3, numberMondayFrom, 0, 0),
+                   new DateTime(300, 5, 3, numberMondayTo, 0, 0));
+                intervals.Add(monday);
+            }
+            else
+            {
+                monday = (Interval)intervals.Find(-1);
+            }
+
+
+            int numberTuesdayFrom;
+            int numberTuesdayTo;
+            Interval tuesday;
+            if (IsOk(TuesdayFrom.Text, out numberTuesdayFrom) && IsOk(TuesdayTo.Text, out numberTuesdayTo))
+            {
+                tuesday = Interval.CreateInterval(new DateTime(300, 5, 3, numberTuesdayFrom, 0, 0),
+                    new DateTime(300, 2, 3, numberTuesdayTo, 0, 0));
+                intervals.Add(tuesday);
+            }
+            else
+            {
+                tuesday = (Interval)intervals.Find(-1);
+            }
+
+            int numberWednesdayFrom;
+            int numberWednesdayTo;
+            Interval wednesday;
+            if (IsOk(WednesdayFrom.Text, out numberWednesdayFrom) && IsOk(WednesdayTo.Text, out numberWednesdayTo))
+            {
+                wednesday = Interval.CreateInterval(new DateTime(300, 5, 3, numberWednesdayFrom, 0, 0),
+                    new DateTime(300, 5, 3, numberWednesdayTo, 0, 0));
+                intervals.Add(wednesday);
+            }
+            else
+            {
+                wednesday = (Interval)intervals.Find(-1);
+            }
+
+            int numberThursdayFrom;
+            int numberThursdayTo;
+            Interval thursday;
+            if (IsOk(ThursdayFrom.Text, out numberThursdayFrom) && IsOk(ThursdayTo.Text, out numberThursdayTo))
+            {
+                thursday = Interval.CreateInterval(new DateTime(300, 5, 3, numberThursdayFrom, 0, 0),
+                    new DateTime(0, 0, 0, numberThursdayTo, 0, 0));
+                intervals.Add(thursday);
+            }
+            else
+            {
+                thursday = (Interval)intervals.Find(-1);
+            }
+
+            int numberFridayFrom;
+            int numberFridayTo;
+            Interval friday;
+            if (IsOk(FridayFrom.Text, out numberFridayFrom) && IsOk(FridayTo.Text, out numberFridayTo))
+            {
+                friday = Interval.CreateInterval(new DateTime(300, 5, 3, numberThursdayFrom, 0, 0),
+                    new DateTime(300, 5, 3, numberFridayTo, 0, 0));
+                intervals.Add(friday);
+            }
+            else
+            {
+                friday = (Interval)intervals.Find(-1);
+            }
+
+            int numberSaturdayFrom;
+            int numberSaturdayTo;
+            Interval saturday;
+            if (IsOk(SaturdayFrom.Text, out numberSaturdayFrom) && IsOk(SaturdayTo.Text, out numberSaturdayTo))
+            {
+                saturday = Interval.CreateInterval(new DateTime(300, 5, 3, numberSaturdayFrom, 0, 0),
+                    new DateTime(300, 5, 3, numberSaturdayTo, 0, 0));
+                intervals.Add(saturday);
+            }
+            else
+            {
+                saturday = (Interval)intervals.Find(-1);
+            }
+
+            int numberSundayFrom;
+            int numberSundayTo;
+            Interval sunday;
+            if (IsOk(FridayFrom.Text, out numberSundayFrom) && IsOk(FridayTo.Text, out numberSundayTo))
+            {
+                sunday = Interval.CreateInterval(new DateTime(300, 5, 3, numberSundayFrom, 0, 0),
+                    new DateTime(300, 5, 3, numberSundayTo, 0, 0));
+                intervals.Add(sunday);
+            }
+            else
+            {
+                sunday = (Interval)intervals.Find(-1);
+            }
+
+            var creation = Models.Schedule.CreateSchedule(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+            schedules.Add(creation);
+            SqlRepository.Save();
+        }
+
+        private void EditClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException("NO WAY");
+        }
+
+        private bool IsOk(string intervalToCheck, out int number)
+        {
+            return Int32.TryParse(intervalToCheck.Trim(), out number) && number >= 0 && number <= 24;
         }
     }
 }

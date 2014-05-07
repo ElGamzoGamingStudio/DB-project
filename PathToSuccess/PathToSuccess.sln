@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathToSuccess", "PathToSuccess\PathToSuccess.csproj", "{C9D23B52-7B9B-4DDC-89BC-96D18637B56E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PathToSuccess", "PathToSuccess\\PathToSuccess.csproj", "{C9D23B52-7B9B-4DDC-89BC-96D18637B56E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
