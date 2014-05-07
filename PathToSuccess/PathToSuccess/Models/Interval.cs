@@ -70,5 +70,10 @@ namespace PathToSuccess.Models
         {
             return (Interval) DAL.SqlRepository.Intervals.Find(id);
         }
+
+        public override string ToString()
+        {
+            return "From = " + BeginTime.ToString() + "To = " + EndTime.ToString();
+        }
     }
 }

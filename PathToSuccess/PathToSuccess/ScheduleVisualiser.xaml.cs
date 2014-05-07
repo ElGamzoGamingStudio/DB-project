@@ -26,8 +26,8 @@ namespace PathToSuccess
         {
             InitializeComponent();
 
-            ScheduleListView.Width = Width;
-            ScheduleListView.Height = Height;
+            ScheduleListView.Width = Width - 50;
+            ScheduleListView.Height = Height - 50;
             var objCollection = SqlRepository.Schedules; //input smthing
             
             var obj = objCollection.Cast<Models.Schedule>().FirstOrDefault();
