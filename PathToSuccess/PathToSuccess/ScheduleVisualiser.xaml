@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ScheduleVisualiser" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024">
     <Grid>
-        <ListView Name="ScheduleListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="500" Height="300">
+        <ListView Name="ScheduleListView" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="300">
             
         </ListView>
     </Grid>

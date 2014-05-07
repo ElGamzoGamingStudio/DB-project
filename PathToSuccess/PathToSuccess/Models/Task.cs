@@ -77,7 +77,8 @@ namespace PathToSuccess.Models
             task.Description = description;
             task.Parent = parent;
             task.ParentId = parentId;
- 
+
+            DAL.SqlRepository.Tasks.Add(task);
             DAL.SqlRepository.Save();
 
             return task;

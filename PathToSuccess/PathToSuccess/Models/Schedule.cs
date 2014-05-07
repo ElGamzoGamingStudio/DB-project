@@ -70,6 +70,43 @@ namespace PathToSuccess.Models
             SaturdayIntervalId  = saturday == null  ? -1 : saturday.Id;
             SundayIntervalId    = sunday == null    ? -1 : sunday.Id;
         }
+
+        public static Schedule CreateSchedule(Interval monday, Interval tuesday, Interval wednesday, Interval thirsday, Interval friday, Interval saturday, Interval sunday)
+        {
+            var set = DAL.SqlRepository.Schedules;
+            var item = (Schedule)set.Create(typeof(Schedule));
+
+            item.MondayInterval = monday;
+            item.TuesdayInterval = tuesday;
+            item.WednesdayInterval = wednesday;
+            item.ThirsdayInterval = thirsday;
+            item.FridayInterval = friday;
+            item.SaturdayInterval = saturday;
+            item.SundayInterval = sunday;
+
+            item.MondayIntervalId = monday == null ? -1 : monday.Id;
+            item.TuesdayIntervalId = tuesday == null ? -1 : tuesday.Id;
+            item.WednesdayIntervalId = wednesday == null ? -1 : wednesday.Id;
+            item.ThirsdayIntervalId = thirsday == null ? -1 : thirsday.Id;
+            item.FridayIntervalId = friday == null ? -1 : friday.Id;
+            item.SaturdayIntervalId = saturday == null ? -1 : saturday.Id;
+            item.SundayIntervalId = sunday == null ? -1 : sunday.Id;
+
+            DAL.SqlRepository.Schedules.Add(item);
+            DAL.SqlRepository.Save();
+
+            return item;
+        }
+
+        public static void DeleteSchedule(Schedule schedule)
+        {
+            var item = DAL.SqlRepository.Schedules.Find(schedule.Id);
+            if (item != null)
+            {
+                DAL.SqlRepository.Schedules.Remove(item);
+                DAL.SqlRepository.Save();
+            }
+        }
         public static List<IntervalInfo> GetNotEmptyIntervals(int id)
         {
             //TODO: should return not null intervals with dayOfWeek accepted by DateTime.DayOfWeek by schedule id

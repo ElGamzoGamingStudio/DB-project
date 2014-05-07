@@ -36,26 +36,27 @@ namespace PathToSuccess.Models
 
         public TimeBinding()
         {}
-        public TimeBinding(int id,int stepId,Step step,DateTime time, int day, int month, int year)
-        {
-            Id = id;
-            StepId = stepId;
-            Step = step;
-            Time = time;
-            Day = day;
-            Month = month;
-            Year = year;
-        }
-        public static void CreateTimeBinding(TimeBinding timeBinding)
+        
+        public static TimeBinding CreateTimeBinding(int id, int stepId, Step step, DateTime time, int day, int month, int year)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            var tb = new TimeBinding();
 
-            set.Add(timeBinding);
-            DAL.SqlRepository.DBContext.SaveChanges();
+            tb.Id = id;
+            tb.StepId = stepId;
+            tb.Step = step;
+            tb.Time = time;
+            tb.Day = day;
+            tb.Month = month;
+            tb.Year = year;
+
+            set.Add(tb);
+            DAL.SqlRepository.Save();
+            return tb;
         }
         public static void DeleteTimeBinding(TimeBinding timeBinding)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
+            var set = DAL.SqlRepository.TimeBindings;
             var tb = set.Find(timeBinding.Id);
             if (tb != null)
             {
@@ -65,23 +66,30 @@ namespace PathToSuccess.Models
         }
         public static List<TimeBinding> Select(Func<TimeBinding, bool> predicate)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
-            return set.Cast<TimeBinding>().Where(predicate).ToList();
+            return DAL.SqlRepository.TimeBindings
+                .Cast<TimeBinding>()
+                .Where(predicate)
+                .ToList();
         }
         public static List<TimeBinding> GetAll()
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
-            return set.Cast<TimeBinding>().ToList();
+            return DAL.SqlRepository.TimeBindings
+                .Cast<TimeBinding>()
+                .ToList();
         }
         public static List<TimeBinding> GetTBofDay(int day, int month, int year)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
-            return set.Cast<TimeBinding>().Where(x => x.Year == year && x.Month == month && x.Day == day).ToList();
+            return DAL.SqlRepository.TimeBindings
+                .Cast<TimeBinding>()
+                .Where(x => x.Year == year && x.Month == month && x.Day == day)
+                .ToList();
         }
         public static List<TimeBinding> GetTBbyStepID(int stepid)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeBinding>();
-            return set.Cast<TimeBinding>().Where(x => x.StepId == stepid).ToList();           
+            return DAL.SqlRepository.TimeBindings
+                .Cast<TimeBinding>()
+                .Where(x => x.StepId == stepid)
+                .ToList();           
         }
         public bool TimeCheck()
         {

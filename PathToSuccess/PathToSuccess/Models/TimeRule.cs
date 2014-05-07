@@ -30,40 +30,43 @@ namespace PathToSuccess.Models
 
         public TimeRule()
         { }
-        public TimeRule(int id, bool isPeriodic, int scheduleId, Schedule schedule)
-        {
-            Id = id;
-            IsPeriodic = isPeriodic;
-            ScheduleId = scheduleId;
-            Schedule = schedule;
-            IsUserApproved = false;
-        }
-        public static void CreateTimeRule(TimeRule timeRule)
+        
+        public static void CreateTimeRule(int id, bool isPeriodic, int scheduleId, Schedule schedule)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
+            var tr = new TimeRule();
 
-            set.Add(timeRule);
-            DAL.SqlRepository.DBContext.SaveChanges();
+            tr.Id = id;
+            tr.IsPeriodic = isPeriodic;
+            tr.ScheduleId = scheduleId;
+            tr.Schedule = schedule;
+            tr.IsUserApproved = false;
+
+            set.Add(tr);
+            DAL.SqlRepository.Save();
         }
         public static void DeleteTimeRule(TimeRule timeRule)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
+            var set = DAL.SqlRepository.TimeRules;
             var tr = set.Find(timeRule.Id);
             if (tr != null)
             {
                 set.Remove(timeRule);
-                DAL.SqlRepository.DBContext.SaveChanges();
+                DAL.SqlRepository.Save();
             }
         }
         public static List<TimeRule> GetAll()
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
-            return set.Cast<TimeRule>().ToList();
+            return DAL.SqlRepository.TimeRules
+                .Cast<TimeRule>()
+                .ToList();
         }
         public static List<TimeRule> GetPeriodic()
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
-            return set.Cast<TimeRule>().Where(x => x.IsPeriodic == true).ToList();
+            return DAL.SqlRepository.TimeRules
+                .Cast<TimeRule>()
+                .Where(x => x.IsPeriodic == true)
+                .ToList();
         }
         public static TimeRule GetByID(int id)
         {
@@ -71,7 +74,7 @@ namespace PathToSuccess.Models
         }
         public static List<TimeRule> GetApproved()
         {
-            return DAL.SqlRepository.DBContext.GetDbSet<TimeRule>()
+            return DAL.SqlRepository.TimeRules
                 .Cast<TimeRule>()
                 .Where(x => x.IsUserApproved == true)
                 .ToList();

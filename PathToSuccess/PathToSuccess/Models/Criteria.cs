@@ -33,18 +33,19 @@ namespace PathToSuccess.Models
             criteria.TargetValue = targetValue;
             criteria.Unit = unit;
 
+            DAL.SqlRepository.Criterias.Add(criteria);
             DAL.SqlRepository.Save();
             return criteria;
         }
 
         public static void DeleteCriteria(Criteria criteria)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Criteria>();
+            var set = DAL.SqlRepository.Criterias;
             var cr = set.Find(criteria.Id);
             if (cr != null)
             {
                 set.Remove(cr);
-                DAL.SqlRepository.DBContext.SaveChanges();
+                DAL.SqlRepository.Save();
             }
         }
 
