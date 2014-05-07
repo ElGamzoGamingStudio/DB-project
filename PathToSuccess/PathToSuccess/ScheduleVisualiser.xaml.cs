@@ -96,6 +96,7 @@ namespace PathToSuccess
             {
                 ScheduleListView.Items.Add(o);
             }
+            Interval.RemoveTrash();
         }
 
         private void AddClick(object sender, RoutedEventArgs e)
@@ -205,6 +206,7 @@ namespace PathToSuccess
             var creation = Models.Schedule.CreateSchedule(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
             schedules.Add(creation);
             SqlRepository.Save();
+            Interval.RemoveTrash();
             UpdateTableView();
         }
 
@@ -330,6 +332,8 @@ namespace PathToSuccess
             item.SundayIntervalId = sunday.Id;
             
             SqlRepository.Save();
+            Interval.RemoveTrash();
+            UpdateTableView();
         }
 
         private bool IsOk(string intervalToCheck, out int number)
