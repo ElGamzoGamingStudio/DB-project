@@ -4,10 +4,12 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Viewbox x:Key="BackArrow">
-
             <Grid>
-                <Grid Name="backgroundGrid" Width="24" Height="24" Visibility="Collapsed" />
-                <Path Data="F1M646.688,13.5518L646.783,13.4593 646.965,13.639 668.383,35.0583 689.459,35.0583 665.155,10.751 657.503,3.10126 657.323,2.92023 664.876,-4.63837 689.184,-28.9417 668.109,-28.9417 646.688,-7.52637 636.15,3.01398 646.688,13.5518z" Stretch="Uniform" Fill="#FF000000" Width="12" Height="12" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                <Grid Width="24" Height="24" Visibility="Visible">
+                    <Path Data="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z" Stretch="Fill" Fill="#FFFFFFFF"
+                          Visibility="Visible" />
+                </Grid>
+                <Path Data="F1M1928.8,1024.07L1920.05,1024.07 1905.62,1009.64 1901.24,1005.26 1920.1,986.403 1928.78,986.403 1928.82,986.439 1913.09,1002.17 1954.58,1002.17 1954.58,1008.35 1913.09,1008.35 1928.8,1024.07z" Stretch="Uniform" Fill="#FF000000" Width="12" Height="12" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
                         <TransformGroup>
                             <TransformGroup.Children>
@@ -19,11 +21,15 @@
                 </Path>
             </Grid>
         </Viewbox>
+        
 
         <Viewbox x:Key="ForwardArrow">
             <Grid>
-                <Grid Name="backgroundGrid" Width="24" Height="24" Visibility="Collapsed" />
-                <Path Data="F1M568.254,-7.43524L568.159,-7.34277 567.977,-7.52246 546.559,-28.9417 525.484,-28.9417 549.787,-4.63446 557.439,3.01532 557.619,3.19629 550.067,10.7549 525.758,35.0583 546.834,35.0583 568.254,13.6429 578.792,3.10254 568.254,-7.43524z" Stretch="Uniform" Fill="#FF000000" Width="16" Height="16" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                <Grid Width="24" Height="24" Visibility="Visible">
+                    <Path Data="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z" Stretch="Fill" Fill="#FFFFFFFF"
+                          Visibility="Visible" />
+                </Grid>
+                <Path Data="F1M-756.543,-2951.94L-775.412,-2933.06 -775.278,-2932.93 -765.046,-2932.93 -747.577,-2950.4 -742.327,-2955.65 -764.908,-2978.23 -775.412,-2978.23 -756.543,-2959.36 -806.328,-2959.36 -806.328,-2951.94 -756.543,-2951.94z" Stretch="Uniform" Fill="#FF000000" Width="12" Height="12" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
                         <TransformGroup>
                             <TransformGroup.Children>

@@ -71,7 +71,7 @@ namespace PathToSuccess.Models
 
         public override string ToString()
         {
-            return "From = " + BeginTime.ToString() + "To = " + EndTime.ToString();
+            return "From = " + BeginTime.ToString() + " To" + EndTime.ToString();
         }
     }
 }

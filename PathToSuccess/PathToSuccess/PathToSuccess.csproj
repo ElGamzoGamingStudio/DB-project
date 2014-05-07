@@ -133,6 +133,9 @@
     <Compile Include="SearchEngine.xaml.cs">
       <DependentUpon>SearchEngine.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TableVisualiserPattern.xaml.cs">
+      <DependentUpon>TableVisualiserPattern.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TaskTree\TaskManager.cs" />
     <Page Include="CreateLoadTreeDialog.xaml">
       <SubType>Designer</SubType>
@@ -171,6 +174,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SearchEngine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TableVisualiserPattern.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
