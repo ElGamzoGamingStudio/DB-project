@@ -36,6 +36,7 @@ namespace PathToSuccess.BL
                 }
             }
         }
+
         public static void CreateScheduleForNonTB()
         {
             foreach (var step in withoutTB)
@@ -145,6 +146,7 @@ namespace PathToSuccess.BL
                 }
             }
         }
+
         public static void FillScheduleForPeriodic()
         {
             var periodicSteps = new List<Step>();
@@ -168,7 +170,30 @@ namespace PathToSuccess.BL
                 bool isFine = true;
                 for (int i = 0; i < intervals.Count; i++)
                 {
-
+                    var tbs = TimeBinding.GetTBofDay(intervalDates[i].Day, intervalDates[i].Month, intervalDates[i].Year);
+                    if (tbs.Count != 0)
+                    {
+                        foreach (var tb in tbs)
+                        {
+                            TimeSpan delta = tb.GetNormalTime() - Interval.GetIntervalByID(intervals[i].intervalID).BeginTime;
+                            if (Math.Abs(delta.Hours) < 1)
+                                isFine = false;
+                        }
+                    }
+                }
+                if (isFine)
+                {
+                    foreach (var date in intervalDates)
+                    {
+                        while (date < pstep.EndDate)
+                        {
+                            var tb = new TimeBinding(0, pstep.Id, pstep, date, date.Day, date.Month, date.Year);
+                            TimeBinding.CreateTimeBinding(tb);
+                            date.AddDays(7);
+                        }
+                    }
+                    withoutTB.Remove(pstep);
+                    withTB.Add(pstep);
                 }
             }
         }
