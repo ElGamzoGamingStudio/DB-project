@@ -3,8 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ScheduleVisualiser" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024">
     <Grid>
-        <ListView Name="ScheduleListView" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="300">
-            
-        </ListView>
+        <StackPanel Name="MainPanel" Orientation="Horizontal">
+            <ListView Name="ScheduleListView" HorizontalAlignment="Center" VerticalAlignment="Top" Width="500" Height="300"/>
+            <StackPanel Name="ControlPanel" HorizontalAlignment="Stretch">
+                <Button Name="Remove" Content="Remove"/>
+                <Button Name="Add" Content="Add"/>
+                <Button Name="Edit" Content="Edit"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
