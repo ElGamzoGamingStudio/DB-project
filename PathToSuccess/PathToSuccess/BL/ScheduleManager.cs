@@ -68,8 +68,7 @@ namespace PathToSuccess.BL
                                 }
                                 if (isFine)
                                 {
-                                    var stTB = new TimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
-                                    TimeBinding.CreateTimeBinding(stTB);
+                                    var stTB =  TimeBinding.CreateTimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
                                     withoutTB.Remove(step);
                                     withTB.Add(step);
                                     flag = true;
@@ -80,22 +79,20 @@ namespace PathToSuccess.BL
                                 if (tbs.Count == 0)
                                 {
                                     flag = true;
-                                    var newTB = new TimeBinding(0, step.Id, step, currInterv.BeginTime,
+                                    var newTB = TimeBinding.CreateTimeBinding(0, step.Id, step, currInterv.BeginTime,
                                         currInterv.BeginTime.Day, currInterv.BeginTime.Month, currInterv.BeginTime.Year);
                                     withoutTB.Remove(step);
                                     withTB.Add(step);
-                                    TimeBinding.CreateTimeBinding(newTB);
                                     continue;
                                 }
                                 TimeSpan delta = tbs[0].GetNormalTime() - currInterv.BeginTime;
                                 if (delta.Hours > 1)
                                 {
                                     flag = true;
-                                    var newTB = new TimeBinding(0, step.Id, step, currInterv.BeginTime,
+                                    var newTB = TimeBinding.CreateTimeBinding(0, step.Id, step, currInterv.BeginTime,
                                         currInterv.BeginTime.Day, currInterv.BeginTime.Month, currInterv.BeginTime.Year);
                                     withoutTB.Remove(step);
                                     withTB.Add(step);
-                                    TimeBinding.CreateTimeBinding(newTB);
                                     continue;
                                 }
                                 for (int i = 1; i < tbs.Count - 1 && !flag; i++)
@@ -107,10 +104,9 @@ namespace PathToSuccess.BL
                                         if (timeCounter > currInterv.EndTime)
                                             break;
                                         flag = true;
-                                        var newTB = new TimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
+                                        var newTB = TimeBinding.CreateTimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
                                         withoutTB.Remove(step);
                                         withTB.Add(step);
-                                        TimeBinding.CreateTimeBinding(newTB);
                                     }
                                 }
                                 if (!flag)
@@ -121,7 +117,7 @@ namespace PathToSuccess.BL
                                         flag = true;
                                         timeCounter = new DateTime(tbs[tbs.Count - 1].Year, tbs[tbs.Count - 1].Month, tbs[tbs.Count - 1].Day,
                                             tbs[tbs.Count - 1].Time.Hour - 1, tbs[tbs.Count - 1].Time.Minute, 0);
-                                        var newTB = new TimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
+                                        var newTB = TimeBinding.CreateTimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
                                         withoutTB.Remove(step);
                                         withTB.Add(step);
                                     }
@@ -187,8 +183,7 @@ namespace PathToSuccess.BL
                     {
                         while (date < pstep.EndDate)
                         {
-                            var tb = new TimeBinding(0, pstep.Id, pstep, date, date.Day, date.Month, date.Year);
-                            TimeBinding.CreateTimeBinding(tb);
+                            var tb = TimeBinding.CreateTimeBinding(0, pstep.Id, pstep, date, date.Day, date.Month, date.Year);
                             date.AddDays(7);
                         }
                     }
