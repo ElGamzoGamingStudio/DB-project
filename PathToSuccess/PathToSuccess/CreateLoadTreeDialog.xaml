@@ -66,19 +66,21 @@
                 </TabItem>
                 <TabItem Name="TreeTabItem" Visibility="Collapsed">
                     <Grid Name="ThirdStep">
-                        <StackPanel Name="WholePanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical" Background="Salmon">
+                        <StackPanel Name="WholePanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Vertical">
                             <Button Name="BackFromTree" Click="BackToTreeNameTabFromTreeAdd" Content="{StaticResource BackArrow}" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
-                            <Grid Name="TreeVisualisingGrid" VerticalAlignment="Center" HorizontalAlignment="Right" Background="Tomato">
-                                <TextBlock Text="NO FOCKING IDEA"/>
+                            <Grid Name="TreeVisualisingGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="MAYBE COMING SOON" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Grid>
                             <StackPanel Name="AddPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="SteelBlue">
                                 <StackPanel Name="AddStepPanel" VerticalAlignment="Bottom" Background="SlateBlue">
-                                    <TextBlock Text="SIKASIKASIKASCICEYCAS"/>
+                                    <TextBlock Text="ADD STEP HERE"/>
+                                    <Rectangle Width="60" Height="150" Fill="Yellow"/>
                                 </StackPanel>
                                 <StackPanel Name="AddTaskPanel" VerticalAlignment="Top" Background="SeaGreen">
-                                    <TextBlock Text="PISIOSIOPSISOSPOISPIOS"/>
+                                    <TextBlock Text="ADD TASK HERE"/>
+                                    <Rectangle Width="60" Height="150" Fill="Yellow"/>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>
