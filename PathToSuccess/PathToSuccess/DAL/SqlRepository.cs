@@ -29,6 +29,8 @@ namespace PathToSuccess.DAL
 
         public static void Initialize()
         {
+            if (System.Windows.SystemParameters.IsSlowMachine) throw new System.Exception("VISOSI UEBOK COMP NORM KUPI KRIM NAW");
+                    
             var doc = XDocument.Load("DbConnectionInfo.xml");
             string connectionString = "Server=" + doc.Root.Attribute("ip").Value + ";Port=" + doc.Root.Attribute("port").Value +
                                       ";User Id=" + doc.Root.Attribute("id").Value + ";Password=" + doc.Root.Attribute("pass").Value +

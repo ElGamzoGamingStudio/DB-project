@@ -40,7 +40,7 @@ namespace PathToSuccess.BL
         {
             foreach (var step in withoutTB)
             {
-                var avlIntervals = PathToSuccess.Models.Schedule.GetNotEmptyIntervals();
+                var avlIntervals = PathToSuccess.Models.Schedule.GetNotEmptyIntervals(step.TimeRule.ScheduleId);
                 bool flag = false;
                 int counter = 0;
                 DateTime dateCounter = DateTime.Today;
@@ -64,13 +64,66 @@ namespace PathToSuccess.BL
                                     TimeSpan ts = tb.GetNormalTime() - timeCounter;
                                     if (Math.Abs(ts.Hours) < 1)
                                         isFine = false;
-                                    //todo: check end of term
                                 }
                                 if (isFine)
                                 {
-                                    var stTB = new TimeBinding(1225236, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
+                                    var stTB = new TimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
                                     TimeBinding.CreateTimeBinding(stTB);
+                                    withoutTB.Remove(step);
+                                    withTB.Add(step);
                                     flag = true;
+                                }
+                            }
+                            else
+                            {
+                                if (tbs.Count == 0)
+                                {
+                                    flag = true;
+                                    var newTB = new TimeBinding(0, step.Id, step, currInterv.BeginTime,
+                                        currInterv.BeginTime.Day, currInterv.BeginTime.Month, currInterv.BeginTime.Year);
+                                    withoutTB.Remove(step);
+                                    withTB.Add(step);
+                                    TimeBinding.CreateTimeBinding(newTB);
+                                    continue;
+                                }
+                                TimeSpan delta = tbs[0].GetNormalTime() - currInterv.BeginTime;
+                                if (delta.Hours > 1)
+                                {
+                                    flag = true;
+                                    var newTB = new TimeBinding(0, step.Id, step, currInterv.BeginTime,
+                                        currInterv.BeginTime.Day, currInterv.BeginTime.Month, currInterv.BeginTime.Year);
+                                    withoutTB.Remove(step);
+                                    withTB.Add(step);
+                                    TimeBinding.CreateTimeBinding(newTB);
+                                    continue;
+                                }
+                                for (int i = 1; i < tbs.Count - 1 && !flag; i++)
+                                {
+                                    delta = tbs[i].GetNormalTime() - tbs[i - 1].GetNormalTime();
+                                    if (Math.Abs(delta.Hours) > 2)
+                                    {
+                                        timeCounter = new DateTime(tbs[i].Year, tbs[i].Month, tbs[i].Day, tbs[i].Time.Hour - 1, tbs[i].Time.Minute, 0);
+                                        if (timeCounter > currInterv.EndTime)
+                                            break;
+                                        flag = true;
+                                        var newTB = new TimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
+                                        withoutTB.Remove(step);
+                                        withTB.Add(step);
+                                        TimeBinding.CreateTimeBinding(newTB);
+                                    }
+                                }
+                                if (!flag)
+                                {
+                                    delta = currInterv.EndTime - tbs[tbs.Count - 1].GetNormalTime();
+                                    if (delta.Hours > 2)
+                                    {
+                                        flag = true;
+                                        timeCounter = new DateTime(tbs[tbs.Count - 1].Year, tbs[tbs.Count - 1].Month, tbs[tbs.Count - 1].Day,
+                                            tbs[tbs.Count - 1].Time.Hour - 1, tbs[tbs.Count - 1].Time.Minute, 0);
+                                        var newTB = new TimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
+                                        withoutTB.Remove(step);
+                                        withTB.Add(step);
+                                    }
                                 }
                             }
                         }
@@ -83,27 +136,40 @@ namespace PathToSuccess.BL
                                 counter++;
                                 counter %= avlIntervals.Count();
                             }
+                            if (step.EndDate <= dateCounter)
+                            {
+                                flag = true;
+                            }
                         }
                     }
                 }
+            }
+        }
+        public static void FillScheduleForPeriodic()
+        {
+            var periodicSteps = new List<Step>();
+            foreach (var st in withoutTB)
+                if (st.TimeRule.IsPeriodic)
+                    periodicSteps.Add(st);
+            foreach (var pstep in periodicSteps)
+            {
+                var intervals = PathToSuccess.Models.Schedule.GetNotEmptyIntervals(pstep.TimeRule.ScheduleId);
+                var intervalDates = new List<DateTime>();
+                foreach (var intervin in intervals)
+                {
+                    var dateCounter = DateTime.Today;
+                    dateCounter.AddDays(1);
+                    var interv = Interval.GetIntervalByID(intervin.intervalID);
+                    while (dateCounter.DayOfWeek != intervin.dayOfWeek)
+                        dateCounter.AddDays(1);
+                    intervalDates.Add(new DateTime(dateCounter.Year, dateCounter.Month, dateCounter.Day,
+                        interv.BeginTime.Hour, interv.BeginTime.Minute, 0));
+                }
+                bool isFine = true;
+                for (int i = 0; i < intervals.Count; i++)
+                {
 
-
-                //while (!flag)
-                //{
-                //    if (dateCounter.DayOfWeek == avlIntervals[counter].dayOfWeek)
-                //    {
-                //    }
-                //    else
-                //    {
-                //        if (dateCounter.DayOfWeek < avlIntervals[counter].dayOfWeek)
-                //            dateCounter.AddDays(1);
-                //        else
-                //        {
-                //            counter++;
-                //            counter %= avlIntervals.Count();
-                //        }
-                //    }
-                //}
+                }
             }
         }
     }
