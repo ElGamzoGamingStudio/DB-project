@@ -13,7 +13,7 @@ namespace PathToSuccess.BL
 
         public static Tree CurrentTree { get; set; }
 
-        public void SetUp()
+        public static void SetUp()
         {
             DAL.SqlRepository.Initialize();
             Log.Initialize();

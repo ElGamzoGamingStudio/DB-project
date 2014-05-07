@@ -28,7 +28,6 @@ namespace PathToSuccess
             InitializeComponent();
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
-            DAL.SqlRepository.Initialize();
 
             var log = new LoginWindow();
             log.ShowDialog();
