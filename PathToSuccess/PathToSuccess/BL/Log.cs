@@ -9,11 +9,11 @@ namespace PathToSuccess.BL
     // USAGE: to get messages: while(Log.MessagesLeft()) var message = Log.NextMessage(); ...
     public static class Log
     {
-        public class ListStack<T>
+        public class ListQueue<T>
         {
             private List<T> items;
 
-            public ListStack()
+            public ListQueue()
             {
                 items = new List<T>();
             }
@@ -22,7 +22,7 @@ namespace PathToSuccess.BL
             {
                 if (items.Count > 0)
                 {
-                    var x = items.Last();
+                    var x = items.First();
                     items.Remove(x);
                     return x;
                 }
@@ -31,7 +31,7 @@ namespace PathToSuccess.BL
 
             public T Peek()
             {
-                return items.Count > 0 ? items.Last() : default(T);
+                return items.Count > 0 ? items.First() : default(T);
             }
 
             public void Push(T item)
@@ -40,11 +40,11 @@ namespace PathToSuccess.BL
             }
         }
 
-        public static ListStack<String> Messages { get; private set; }
+        public static ListQueue<String> Messages { get; private set; }
 
         public static void Initialize()
         {
-            Messages = new ListStack<string>();
+            Messages = new ListQueue<string>();
         }
 
         public static bool MessagesLeft()
