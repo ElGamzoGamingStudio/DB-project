@@ -181,7 +181,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TableVisualiserPattern.xaml">
+    <Page Include="TableVisualiserPattern.xaml"/>
     <Page Include="TaskVisual.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
