@@ -1,0 +1,10 @@
+﻿<Window x:Class="PathToSuccess.TableVisualiserPattern"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TableVisualiserPattern" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024">
+    <Grid>
+        <StackPanel Name="MainPanel" Orientation="Horizontal">
+            <ListView Name="TableListView" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="300"/>
+        </StackPanel>
+    </Grid>
+</Window>
