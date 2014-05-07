@@ -31,12 +31,11 @@ namespace PathToSuccess.Models
         public TimeRule()
         { }
         
-        public static void CreateTimeRule(int id, bool isPeriodic, int scheduleId, Schedule schedule)
+        public static TimeRule CreateTimeRule(bool isPeriodic, int scheduleId, Schedule schedule)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
             var tr = new TimeRule();
 
-            tr.Id = id;
             tr.IsPeriodic = isPeriodic;
             tr.ScheduleId = scheduleId;
             tr.Schedule = schedule;
@@ -44,6 +43,7 @@ namespace PathToSuccess.Models
 
             set.Add(tr);
             DAL.SqlRepository.Save();
+            return tr;
         }
         public static void DeleteTimeRule(TimeRule timeRule)
         {

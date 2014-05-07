@@ -42,15 +42,46 @@ namespace PathToSuccess.Models
             return Password == pass.GetHashCode();
         }
 
-        public static void CreateUser(User user)
+        public static User CreateUser(string login, string name, DateTime birth, string pass, DateTime dateReg)
         {
             var set = DAL.SqlRepository.Users;
+            var user = new User();
 
             if (set.Find(user.Login) == null)
             {
+                user.Login = login;
+                user.Name = name;
+                user.DateOfBirth = birth;
+                user.Password = pass.GetHashCode();
+                user.DateReg = dateReg;
+
                 set.Add(user);
                 DAL.SqlRepository.Save();
+
+                return user;
             }
+            return null;
+        }
+
+        public static User CreateUser(string login, string name, DateTime birth, int pass, DateTime dateReg)
+        {
+            var set = DAL.SqlRepository.Users;
+            var user = new User();
+
+            if (set.Find(user.Login) == null)
+            {
+                user.Login = login;
+                user.Name = name;
+                user.DateOfBirth = birth;
+                user.Password = pass;
+                user.DateReg = dateReg;
+
+                set.Add(user);
+                DAL.SqlRepository.Save();
+
+                return user;
+            }
+            return null;
         }
 
         public static void DeleteUser(User user)
