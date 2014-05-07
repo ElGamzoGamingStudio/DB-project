@@ -17,7 +17,7 @@ namespace PathToSuccess.BL
         {
             DAL.SqlRepository.Initialize();
             Log.Initialize();
-            RawSqlPusher.Initialize();
+            //RawSqlPusher.Initialize();
         }
     }
 }
