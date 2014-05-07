@@ -37,27 +37,46 @@ namespace PathToSuccess.Models
 
         public Tree() { }
 
-        public Tree(User user, string userLogin,Task mainTask, int mainTaskId, string name, string description)
+        public Tree(User user, string userLogin, string name, string description)
         {
             TreeUser = user;
             TreeUserLogin = userLogin;
-            MainTask = mainTask;
-            MainTaskId = mainTaskId;
+            MainTask = generateRoot();
+            MainTaskId = MainTask.Id;
             Name = name;
             Description = description;
             LastChangesTime = DateTime.Now;
         }
 
-        public static void CreateTree(Tree tree) // TODO: create default nodes
+        private static Models.Task generateRoot()
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Tree>();
-            set.Add(tree);
-            DAL.SqlRepository.DBContext.SaveChanges();
+            var u = Urgency.GetLowestUrgency();
+            var i = Importance.GetLowestImportance();
+            var c = Criteria.CreateCriteria(0, 1, "times");
+
+            return Task.CreateTask(DateTime.Now, DateTime.MaxValue, u.UrgencyName, i.ImportanceName, i, u, c.Id, c, "Root task", null, 0);
+        }
+
+        public static Tree CreateTree(User user, string userLogin, string name, string description)
+        {
+            var set = DAL.SqlRepository.Trees;
+            var tree = (Tree)set.Create(typeof(Tree));
+
+            tree.TreeUser = user;
+            tree.TreeUserLogin = userLogin;
+            tree.MainTask = generateRoot();
+            tree.MainTaskId = tree.MainTask.Id;
+            tree.Name = name;
+            tree.Description = description;
+            tree.LastChangesTime = DateTime.Now;
+            
+            DAL.SqlRepository.Save();
+            return tree;
         }
 
         public static void DeleteTree(Tree tree) //TODO: recursively delete all tasks and steps?
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Tree>();
+            var set = DAL.SqlRepository.Trees;
             var t = set.Find(tree.TreeId);
             if (t != null)
             {
@@ -68,7 +87,7 @@ namespace PathToSuccess.Models
 
         public static List<Tree> FindTreesForUser(User user)
         {
-            return DAL.SqlRepository.DBContext.GetDbSet<Tree>()
+            return DAL.SqlRepository.Trees
                 .Cast<Tree>()
                 .Where(x => x.TreeUser.Login == user.Login)
                 .ToList<Tree>();
@@ -76,7 +95,7 @@ namespace PathToSuccess.Models
 
         public static Tree FindTreeWithRoot(Task mainTask)
         {
-            return DAL.SqlRepository.DBContext.GetDbSet<Tree>()
+            return DAL.SqlRepository.Trees
                 .Cast<Tree>()
                 .FirstOrDefault(x => x.MainTaskId == mainTask.Id);
         }

@@ -54,48 +54,33 @@ namespace PathToSuccess.Models
 
         //methods
 
-        /// <summary>
-        /// Main constructor
-        /// </summary>
-        /// <param name="beginDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="urgencyName"></param>
-        /// <param name="importanceName"></param>
-        /// <param name="importance"></param>
-        /// <param name="criteriaId"></param>
-        /// <param name="criteria"></param>
-        /// <param name="description">Actual text ot the task</param>
-        /// <param name="parent"></param>
-        /// <param name="parentId"></param>
-        public Task(DateTime beginDate, DateTime endDate, string urgencyName, string importanceName, 
-                    Importance importance, Urgency urgency, int criteriaId, Criteria criteria, string description, Task parent, int parentId)
-        {
-            BeginDate = beginDate;
-            EndDate = endDate;
-            UrgencyName = urgencyName;
-            ImportanceName = importanceName;
-            Importance = importance;
-            Urgency = urgency;
-            CriteriaId = criteriaId;
-            Criteria = criteria;
-            Description = description;
-            Parent = parent;
-            ParentId = parentId;
-        }
-
         public Task() { }
 
         /// <summary>
         /// Method to add new task to the database
         /// </summary>
         /// <param name="task">Create using a simple constructor</param>
-        public static void CreateTask(Task task)
+        public static Task CreateTask(DateTime beginDate, DateTime endDate, string urgencyName, string importanceName,
+                    Importance importance, Urgency urgency, int criteriaId, Criteria criteria, string description, Task parent, int parentId)
         {
             var set = DAL.SqlRepository.Tasks;
+            var task = (Task)set.Create(typeof(Task));
 
-            //if (set.Find(task.Id) != null) return;
-            set.Add(task);
-            DAL.SqlRepository.DBContext.SaveChanges();
+            task.BeginDate = beginDate;
+            task.EndDate = endDate;
+            task.Urgency = urgency;
+            task.UrgencyName = urgencyName;
+            task.Importance = importance;
+            task.ImportanceName = importanceName;
+            task.Criteria = criteria;
+            task.CriteriaId = criteriaId;
+            task.Description = description;
+            task.Parent = parent;
+            task.ParentId = parentId;
+ 
+            DAL.SqlRepository.Save();
+
+            return task;
         }
 
         public static void DeleteTask(Task task)

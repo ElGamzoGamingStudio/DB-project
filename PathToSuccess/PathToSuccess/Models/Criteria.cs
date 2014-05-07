@@ -24,18 +24,17 @@ namespace PathToSuccess.Models
 
         public Criteria() { }
 
-        public Criteria(int currentValue, int targetValue, string unit)
+        public static Criteria CreateCriteria(int currentValue, int targetValue, string unit)
         {
-            CurrentValue = currentValue;
-            TargetValue = targetValue;
-            Unit = unit;
-        }
+            var set = DAL.SqlRepository.Criterias;
+            var criteria = (Criteria)set.Create(typeof(Criteria));
 
-        public static void CreateCriteria(Criteria criteria)
-        {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Criteria>();
-            set.Add(criteria);
-            DAL.SqlRepository.DBContext.SaveChanges();
+            criteria.CurrentValue = currentValue;
+            criteria.TargetValue = targetValue;
+            criteria.Unit = unit;
+
+            DAL.SqlRepository.Save();
+            return criteria;
         }
 
         public static void DeleteCriteria(Criteria criteria)

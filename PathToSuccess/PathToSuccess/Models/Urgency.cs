@@ -23,28 +23,40 @@ namespace PathToSuccess.Models
             Value = value;
         }
 
-        public List<Urgency> GetViableUrgencyLevels()
+        public static string GetLowestUrgencyLevelName()
+        {
+            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>();
+            return urgencies.Where(x => x.Value == urgencies.Min(y => y.Value)).FirstOrDefault().UrgencyName;
+        }
+
+        public static Urgency GetLowestUrgency()
+        {
+            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>();
+            return urgencies.Where(x => x.Value == urgencies.Min(y => y.Value)).FirstOrDefault();
+        }
+
+        public static List<Urgency> GetViableUrgencyLevels()
         {
             return DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
                 .Cast<Urgency>()
                 .ToList<Urgency>();
         }
 
-        public bool ValueAlreadyUsed(int value)
+        public static bool ValueAlreadyUsed(int value)
         {
             return DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
                 .Cast<Urgency>()
                 .FirstOrDefault(x => x.Value == value) != null;
         }
 
-        public int GetMaxValue()
+        public static int GetMaxValue()
         {
             return DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
                 .Cast<Urgency>()
                 .Max(x => x.Value);
         }
 
-        public int GetValueByName(string name)
+        public static int GetValueByName(string name)
         {
             var item = DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
                 .Cast<Urgency>()

@@ -23,28 +23,40 @@ namespace PathToSuccess.Models
             Value = value;
         }
 
-        public List<Importance> GetViableImportanceLevels()
+        public static string GetLowestImportanceLevelName()
+        {
+            var importancies = DAL.SqlRepository.Urgencies.Cast<Importance>();
+            return importancies.Where(x => x.Value == importancies.Min(y => y.Value)).FirstOrDefault().ImportanceName;
+        }
+
+        public static Importance GetLowestImportance()
+        {
+            var impotancies = DAL.SqlRepository.Urgencies.Cast<Importance>();
+            return impotancies.Where(x => x.Value == impotancies.Min(y => y.Value)).FirstOrDefault();
+        }
+
+        public static List<Importance> GetViableImportanceLevels()
         {
             return DAL.SqlRepository.DBContext.GetDbSet<Importance>()
                 .Cast<Importance>()
                 .ToList<Importance>();
         }
 
-        public bool ValueAlreadyUsed(int value)
+        public static bool ValueAlreadyUsed(int value)
         {
             return DAL.SqlRepository.DBContext.GetDbSet<Importance>()
                 .Cast<Importance>()
                 .FirstOrDefault(x => x.Value == value) != null;
         }
 
-        public int GetMaxValue()
+        public static int GetMaxValue()
         {
             return DAL.SqlRepository.DBContext.GetDbSet<Importance>()
                 .Cast<Importance>()
                 .Max(x => x.Value);
         }
 
-        public int GetValueByName(string name)
+        public static int GetValueByName(string name)
         {
             var item = DAL.SqlRepository.DBContext.GetDbSet<Importance>()
                 .Cast<Importance>()
