@@ -34,5 +34,12 @@ namespace PathToSuccess.BL
             Application.CurrentUser = user;
             return true;
         }
+
+        public static void LogOut()
+        {
+            Application.CurrentTree = null;
+            Application.CurrentUser = null;
+            //login window should not be opened here.
+        }
     }
 }

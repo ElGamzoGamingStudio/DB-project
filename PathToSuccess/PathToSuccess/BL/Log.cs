@@ -38,6 +38,11 @@ namespace PathToSuccess.BL
             {
                 items.Add(item);
             }
+
+            public void Clean()
+            {
+                items.Clear();
+            }
         }
 
         public static ListQueue<String> Messages { get; private set; }
@@ -60,6 +65,11 @@ namespace PathToSuccess.BL
         public static void Add(String message)
         {
             Messages.Push(message);
+        }
+
+        public static void Clean()
+        {
+            Messages.Clean();
         }
     }
 }
