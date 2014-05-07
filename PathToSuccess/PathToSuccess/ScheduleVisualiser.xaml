@@ -5,10 +5,10 @@
     <Grid>
         <StackPanel Name="MainPanel" Orientation="Horizontal">
             <StackPanel Name="VisualPanel" VerticalAlignment="Bottom">
-                <TextBlock Text="Set up intervals or die" HorizontalAlignment="Center"/>
+                <TextBlock Text="Set up intervals 0..24 integer value" HorizontalAlignment="Center"/>
                 <StackPanel Name="IntervalPanel" Orientation="Horizontal">
                     <StackPanel Name="MondayPanel" Background="BurlyWood">
-                        <TextBox Name="ModnayFrom"/>
+                        <TextBox Name="MondayFrom"/>
                         <TextBox Name="MondayTo"/>
                         <TextBlock Text="Monday" HorizontalAlignment="Center"/>
                     </StackPanel>
