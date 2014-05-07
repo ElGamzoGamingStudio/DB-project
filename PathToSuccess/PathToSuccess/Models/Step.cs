@@ -61,55 +61,37 @@ namespace PathToSuccess.Models
 
         
         //methods
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="beginDate"></param>
-        /// <param name="endDate">please USE !!DATETIME.MIN_VALUE!! if is not finished</param>
-        /// <param name="urgencyName"></param>
-        /// <param name="importanceName"></param>
-        /// <param name="importance"></param>
-        /// <param name="criteriaId"></param>
-        /// <param name="criteria"></param>
-        /// <param name="timeRuleId"></param>
-        /// <param name="timeRule"></param>
-        /// <param name="description">actual text of the step</param>
-        /// <param name="parentTask"></param>
-        /// <param name="taskId"></param>
-        public Step(DateTime beginDate, DateTime endDate, string urgencyName, Urgency urgency,
-                    string importanceName, Importance importance, int criteriaId, Criteria criteria, 
-                    int timeRuleId, TimeRule timeRule, string description, Task parentTask, int taskId, int order)
-        {
-            BeginDate = beginDate;
-            EndDate = endDate;
-            UrgencyName = urgencyName;
-            Urgency = urgency;
-            ImportanceName = importanceName;
-            Importance = importance;
-            CriteriaId = criteriaId;
-            Criteria = criteria;
-            TimeRuleId = timeRuleId;
-            TimeRule = timeRule;
-            Description = description;
-            ParentTask = parentTask;
-            TaskId = taskId;
-            Order = order;
-        }
-
         public Step() { }
 
         /// <summary>
         /// Method to add new step to the database
         /// </summary>
         /// <param name="step">Create using a simple constructor</param>
-        public static void CreateStep(Step step)
+        public static Step CreateStep(DateTime beginDate, DateTime endDate, string urgencyName, Urgency urgency,
+                    string importanceName, Importance importance, int criteriaId, Criteria criteria,
+                    int timeRuleId, TimeRule timeRule, string description, Task parentTask, int taskId, int order)
         {
             var set = DAL.SqlRepository.Steps;
+            var step = (Step)set.Create(typeof(Step));
 
-            //if (set.Find(step.Id) != null) return;
+            step.BeginDate = beginDate;
+            step.EndDate = endDate;
+            step.UrgencyName = urgencyName;
+            step.Urgency = urgency;
+            step.ImportanceName = importanceName;
+            step.Importance = importance;
+            step.CriteriaId = criteriaId;
+            step.Criteria = criteria;
+            step.TimeRuleId = timeRuleId;
+            step.TimeRule = timeRule;
+            step.Description = description;
+            step.ParentTask = parentTask;
+            step.TaskId = taskId;
+            step.Order = order;
+
             set.Add(step);
-            DAL.SqlRepository.DBContext.SaveChanges();
+            DAL.SqlRepository.Save();
+            return step;
         }
         public static void DeleteStep(Step step)
         {
@@ -127,7 +109,7 @@ namespace PathToSuccess.Models
         {
             if (Criteria.IsCompleted()) return;
             Criteria.Inc();
-            DAL.SqlRepository.DBContext.SaveChanges();
+            DAL.SqlRepository.Save();
         }
 
         /// <summary>
@@ -141,8 +123,10 @@ namespace PathToSuccess.Models
 
         public static List<Step> Select(Func<Step, bool> predicate)
         {
-            var set = DAL.SqlRepository.Steps;
-            return set.Cast<Step>().Where(predicate).ToList();
+            return DAL.SqlRepository.Steps
+                .Cast<Step>()
+                .Where(predicate)
+                .ToList();
         }
         public static Step GetFirstUndoneStepByTaskID(int taskID)
         {

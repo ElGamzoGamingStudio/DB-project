@@ -44,43 +44,36 @@ namespace PathToSuccess.Models
 
         public static void CreateUser(User user)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
+            var set = DAL.SqlRepository.Users;
 
             if (set.Find(user.Login) == null)
             {
                 set.Add(user);
-                DAL.SqlRepository.DBContext.SaveChanges();
+                DAL.SqlRepository.Save();
             }
         }
 
         public static void DeleteUser(User user)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
+            var set = DAL.SqlRepository.Users;
             var usr = set.Find(user.Login);
             if (usr != null)
             {
                 set.Remove(usr);
-                DAL.SqlRepository.DBContext.SaveChanges();
+                DAL.SqlRepository.Save();
             }
         }
 
-        public void ResetPass(string newPass)
+        public static void ResetPass(User user, string newPass)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
-            Password = newPass.GetHashCode();
+            var u = (User)DAL.SqlRepository.Users.Find(user.Login);
+            u.Password = newPass.GetHashCode();
             DAL.SqlRepository.DBContext.SaveChanges();
         }
 
         public static bool CheckLoginIsUnique(string login)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<User>();
-            return set.Find(new object[] { login }) == null;
-        }
-
-        public static User Find(string login)
-        {
-            return (User) DAL.SqlRepository.DBContext.GetDbSet<User>()
-                .Find(login);
+            return DAL.SqlRepository.Users.Find(login) == null;
         }
     }
 }

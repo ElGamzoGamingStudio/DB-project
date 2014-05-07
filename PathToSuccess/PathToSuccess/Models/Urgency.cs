@@ -17,10 +17,24 @@ namespace PathToSuccess.Models
 
         public Urgency() { }
 
-        public Urgency(string name, int value)
+        public static Urgency CreateUrgency(int value, string name)
         {
-            UrgencyName = name;
-            Value = value;
+            var u = new Urgency();
+            u.Value = value;
+            u.UrgencyName = name;
+            DAL.SqlRepository.Urgencies.Add(u);
+            DAL.SqlRepository.Save();
+            return u;
+        }
+
+        public static void DeleteImportance(string name)
+        {
+            var item = DAL.SqlRepository.Urgencies.Find(name);
+            if (item != null)
+            {
+                DAL.SqlRepository.Urgencies.Remove(item);
+                DAL.SqlRepository.Save();
+            }
         }
 
         public static string GetLowestUrgencyLevelName()
@@ -35,30 +49,36 @@ namespace PathToSuccess.Models
             return urgencies.Where(x => x.Value == urgencies.Min(y => y.Value)).FirstOrDefault();
         }
 
+        public static Urgency GetHighestUrgency()
+        {
+            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>();
+            return urgencies.Where(x => x.Value == urgencies.Max(y => y.Value)).FirstOrDefault();
+        }
+
         public static List<Urgency> GetViableUrgencyLevels()
         {
-            return DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
+            return DAL.SqlRepository.Urgencies
                 .Cast<Urgency>()
                 .ToList<Urgency>();
         }
 
         public static bool ValueAlreadyUsed(int value)
         {
-            return DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
+            return DAL.SqlRepository.Urgencies
                 .Cast<Urgency>()
                 .FirstOrDefault(x => x.Value == value) != null;
         }
 
         public static int GetMaxValue()
         {
-            return DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
+            return DAL.SqlRepository.Urgencies
                 .Cast<Urgency>()
                 .Max(x => x.Value);
         }
 
         public static int GetValueByName(string name)
         {
-            var item = DAL.SqlRepository.DBContext.GetDbSet<Urgency>()
+            var item = DAL.SqlRepository.Urgencies
                 .Cast<Urgency>()
                 .FirstOrDefault(x => x.UrgencyName == name);
             return item == null ? -1 : item.Value;

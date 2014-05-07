@@ -52,7 +52,7 @@ namespace PathToSuccess.DAL
             TimeBindings = DBContext.GetDbSet<TimeBinding>();
             Intervals = DBContext.GetDbSet<Interval>();
 
-            //BL.DbTest.Seed();
+            BL.DbTest.Seed();
         }
     }
 }

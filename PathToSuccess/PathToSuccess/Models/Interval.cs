@@ -22,27 +22,25 @@ namespace PathToSuccess.Models
 
         public Interval() { }
 
-        public Interval(DateTime beginTime, DateTime endTime)
+        public static Interval CreateInterval(DateTime begin, DateTime end)
         {
-            BeginTime = beginTime;
-            EndTime = endTime;
-        }
-
-        public static void CreateInterval(Interval interval)
-        {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Interval>();
+            var set = DAL.SqlRepository.Intervals;
+            var interval = new Interval();
+            interval.BeginTime = begin;
+            interval.EndTime = end;
             set.Add(interval);
-            DAL.SqlRepository.DBContext.SaveChanges();
+            DAL.SqlRepository.Save();
+            return interval;
         }
 
         public static void DeleteInterval(Interval interval)
         {
-            var set = DAL.SqlRepository.DBContext.GetDbSet<Interval>();
+            var set = DAL.SqlRepository.Intervals;
             var i = set.Find(interval.Id);
             if (i != null)
             {
                 set.Remove(i);
-                DAL.SqlRepository.DBContext.SaveChanges();
+                DAL.SqlRepository.Save();
             }
         }
 
@@ -59,7 +57,7 @@ namespace PathToSuccess.Models
 
         public static void Seed()
         {
-            if (DAL.SqlRepository.DBContext.GetDbSet<Interval>().Find(-1) == null)
+            if (DAL.SqlRepository.Intervals.Find(-1) == null)
             {
                 DAL.SqlRepository.DBContext.Database.ExecuteSqlCommand(
                     "insert into public.interval values (-1, @date, @date);", new Npgsql.NpgsqlParameter("date", DateTime.Now)

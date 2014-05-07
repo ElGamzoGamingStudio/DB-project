@@ -36,25 +36,13 @@ namespace PathToSuccess.Models
         public DateTime LastChangesTime { get; set; }
 
         public Tree() { }
-
-        public Tree(User user, string userLogin, string name, string description)
-        {
-            TreeUser = user;
-            TreeUserLogin = userLogin;
-            MainTask = generateRoot();
-            MainTaskId = MainTask.Id;
-            Name = name;
-            Description = description;
-            LastChangesTime = DateTime.Now;
-        }
-
         private static Models.Task generateRoot()
         {
             var u = Urgency.GetLowestUrgency();
             var i = Importance.GetLowestImportance();
             var c = Criteria.CreateCriteria(0, 1, "times");
 
-            return Task.CreateTask(DateTime.Now, DateTime.MaxValue, u.UrgencyName, i.ImportanceName, i, u, c.Id, c, "Root task", null, 0);
+            return Task.CreateTask(DateTime.Now, DateTime.MaxValue, u.UrgencyName, i.ImportanceName, i, u, c.Id, c, "Root task", null, -1);
         }
 
         public static Tree CreateTree(User user, string userLogin, string name, string description)
@@ -69,8 +57,10 @@ namespace PathToSuccess.Models
             tree.Name = name;
             tree.Description = description;
             tree.LastChangesTime = DateTime.Now;
-            
+
+            set.Add(tree);
             DAL.SqlRepository.Save();
+
             return tree;
         }
 
@@ -81,7 +71,7 @@ namespace PathToSuccess.Models
             if (t != null)
             {
                 set.Remove(t);
-                DAL.SqlRepository.DBContext.SaveChanges();
+                DAL.SqlRepository.Save();
             }
         }
 
