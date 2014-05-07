@@ -29,10 +29,10 @@ namespace PathToSuccess.Models
         [ForeignKey("WednesdayIntervalId")]
         public Interval WednesdayInterval { get; set; }
 
-        [Column("thirsday")]
-        public int ThirsdayIntervalId { get; set; }
+        [Column("thursday")]
+        public int ThursdayIntervalId { get; set; }
         [ForeignKey("ThirsdayIntervalId")]
-        public Interval ThirsdayInterval { get; set; }
+        public Interval ThursdayInterval { get; set; }
 
         [Column("friday")]
         public int FridayIntervalId { get; set; }
@@ -52,26 +52,7 @@ namespace PathToSuccess.Models
 
         public Schedule() { }
 
-        public Schedule(Interval monday, Interval tuesday, Interval wednesday, Interval thirsday, Interval friday, Interval saturday, Interval sunday)
-        {
-            MondayInterval = monday;
-            TuesdayInterval = tuesday;
-            WednesdayInterval = wednesday;
-            ThirsdayInterval = thirsday;
-            FridayInterval = friday;
-            SaturdayInterval = saturday;
-            SundayInterval = sunday;
-
-            MondayIntervalId    = monday == null    ? -1 : monday.Id;
-            TuesdayIntervalId   = tuesday == null   ? -1 : tuesday.Id;
-            WednesdayIntervalId = wednesday == null ? -1 : wednesday.Id;
-            ThirsdayIntervalId  = thirsday == null  ? -1 : thirsday.Id;
-            FridayIntervalId    = friday == null    ? -1 : friday.Id;
-            SaturdayIntervalId  = saturday == null  ? -1 : saturday.Id;
-            SundayIntervalId    = sunday == null    ? -1 : sunday.Id;
-        }
-
-        public static Schedule CreateSchedule(Interval monday, Interval tuesday, Interval wednesday, Interval thirsday, Interval friday, Interval saturday, Interval sunday)
+        public static Schedule CreateSchedule(Interval monday, Interval tuesday, Interval wednesday, Interval thursday, Interval friday, Interval saturday, Interval sunday)
         {
             var set = DAL.SqlRepository.Schedules;
             var item = (Schedule)set.Create(typeof(Schedule));
@@ -79,7 +60,7 @@ namespace PathToSuccess.Models
             item.MondayInterval = monday;
             item.TuesdayInterval = tuesday;
             item.WednesdayInterval = wednesday;
-            item.ThirsdayInterval = thirsday;
+            item.ThursdayInterval = thursday;
             item.FridayInterval = friday;
             item.SaturdayInterval = saturday;
             item.SundayInterval = sunday;
@@ -87,7 +68,7 @@ namespace PathToSuccess.Models
             item.MondayIntervalId = monday == null ? -1 : monday.Id;
             item.TuesdayIntervalId = tuesday == null ? -1 : tuesday.Id;
             item.WednesdayIntervalId = wednesday == null ? -1 : wednesday.Id;
-            item.ThirsdayIntervalId = thirsday == null ? -1 : thirsday.Id;
+            item.ThursdayIntervalId = thursday == null ? -1 : thursday.Id;
             item.FridayIntervalId = friday == null ? -1 : friday.Id;
             item.SaturdayIntervalId = saturday == null ? -1 : saturday.Id;
             item.SundayIntervalId = sunday == null ? -1 : sunday.Id;
