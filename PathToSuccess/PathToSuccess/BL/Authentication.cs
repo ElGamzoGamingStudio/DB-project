@@ -30,8 +30,8 @@ namespace PathToSuccess.BL
         {
             if (user == null || UserExists(user.Login)) 
                 return false;
-            User.CreateUser(user);
-            Application.CurrentUser = user;
+            var usr = User.CreateUser(user.Login, user.Name, user.DateOfBirth, user.Password, user.DateReg);
+            Application.CurrentUser = usr;
             return true;
         }
 

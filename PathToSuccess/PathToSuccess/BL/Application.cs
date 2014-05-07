@@ -18,6 +18,7 @@ namespace PathToSuccess.BL
             DAL.SqlRepository.Initialize();
             Log.Initialize();
             RawSqlPusher.Initialize();
+            //DbTest.Seed();
         }
     }
 }
