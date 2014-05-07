@@ -30,15 +30,17 @@ namespace PathToSuccess
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
 
-            var sc = new ScheduleVisualiser();
-            sc.ShowDialog();
+            //var sc = new ScheduleVisualiser();
+            //sc.ShowDialog();
 
             //var log = new LoginWindow();
             //log.ShowDialog();
             //if (log.RightPass == null)
             //    Application.Current.Shutdown();
 
-            //UserInfo.Content = "Вы вошли как " + BL.Application.CurrentUser.Name;
+            UserInfo.Content = BL.Application.CurrentUser != null
+                                   ? "Вы вошли как " + BL.Application.CurrentUser.Name
+                                   : "";
         }
 
         private void OverflowCanvas()
@@ -74,9 +76,10 @@ namespace PathToSuccess
                 widthDifference = Width - MinWidth;
                 heightDifference = Height - MinHeight;
             }
-            TreeField.MaxWidth = TreeField.MinWidth + widthDifference;
-            TreeField.MaxHeight = TreeField.MinHeight + heightDifference;
-
+            TreeField.MaxWidth = TreeCanvas.Width = TreeField.MinWidth + widthDifference;
+            TreeField.MaxHeight = TreeCanvas.Height = TreeField.MinHeight + heightDifference;
+            Filter.Margin = new Thickness(710 + widthDifference, 11, 0, 0);
+            SearchButton.Margin = new Thickness(630 + widthDifference, 13, 0, 0);
         }
 
         private void CreateTree(object sender, RoutedEventArgs e)
@@ -114,6 +117,7 @@ namespace PathToSuccess
             {
                 
             }
+            
         }
 
         private void Tasks_OnSelected(object sender, RoutedEventArgs e)

@@ -4,7 +4,7 @@
         Title="MainWindow" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024" SizeChanged="Update" >
     <Grid Background="Gainsboro">
         <ScrollViewer MinWidth="830" HorizontalScrollBarVisibility="Auto" Name="TreeField" MinHeight="520" MaxHeight="520" MaxWidth="830" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-            <Canvas   Background="White" Name="TreeCanvas" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" Width="830">
+            <Canvas   Background="White" Name="TreeCanvas" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" MinWidth="830">
                 <Canvas.Resources>
                     <Style TargetType="Border">
                         <Style.Triggers>
@@ -76,12 +76,12 @@
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Save" Width="35" Click="SaveChanges"/>
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="SQL" Width="35" Click="OpenQuery"/>
         </StackPanel>
-        <ComboBox HorizontalAlignment="Left" Margin="710,22,0,0" VerticalAlignment="Top" Width="120">
+        <ComboBox HorizontalAlignment="Left" Margin="710,11,0,0" Name="Filter" VerticalAlignment="Top" Width="120">
             <ComboBoxItem Name="All" Content="All" IsSelected="True" Selected="All_OnSelected"/>
             <ComboBoxItem Name="Tasks" Content="Task without steps" Selected="Tasks_OnSelected"/>
             <ComboBoxItem Name="TaskSt" Content="Task with steps" Selected="TaskSt_OnSelected"/>
         </ComboBox>
         <Label HorizontalAlignment="Left" Name="UserInfo" Margin="866,7,0,0" VerticalAlignment="Top" Width="140"/>
-        <Button Content="Поиск" HorizontalAlignment="Left" Margin="620,22,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Поиск" Name="SearchButton" HorizontalAlignment="Left" Margin="630,13,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </Window>

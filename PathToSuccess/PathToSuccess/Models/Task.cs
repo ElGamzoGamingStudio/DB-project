@@ -160,5 +160,10 @@ namespace PathToSuccess.Models
             var tasksWithStepsChildren = DAL.SqlRepository.Tasks.Cast<Task>().Where(t => t.ChildrenAreSteps());
             return tasksWithStepsChildren.Where(t => t.HasUncompletedSteps()).ToList();
         }
+
+        public static Task GetOldestParent(Task child)
+        {
+            return child.ParentId == -1 ? child : GetOldestParent(child.Parent);
+        }
     }
 }
