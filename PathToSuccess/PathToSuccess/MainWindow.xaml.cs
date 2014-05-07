@@ -87,7 +87,7 @@ namespace PathToSuccess
             var treeDialog = new CreateLoadTreeDialog();
             treeDialog.CreateClick(treeDialog.Create, new EventArgs());
             treeDialog.ShowDialog();
-            
+            if(BL.Application.CurrentTree != null) TreeLoaded();
         }
 
         private void LoadTree(object sender, RoutedEventArgs e)
@@ -95,6 +95,7 @@ namespace PathToSuccess
             var treeDialog = new CreateLoadTreeDialog();
             treeDialog.LoadClick(treeDialog.Load, new EventArgs());
             treeDialog.ShowDialog();
+            if (BL.Application.CurrentTree != null) TreeLoaded();
         }
 
         private void SaveChanges(object sender, RoutedEventArgs e)
@@ -118,6 +119,51 @@ namespace PathToSuccess
                 
             }
             
+        }
+
+        private void TreeLoaded()
+        {
+            var firetask =
+                DAL.SqlRepository.Tasks.Cast<Models.Task>()
+                   .First(
+                       task =>
+                       Models.Task.GetOldestParent(task).Id == BL.Application.CurrentTree.MainTaskId &&
+                       task.Urgency.Value >=
+                       DAL.SqlRepository.Tasks.Cast<Models.Task>()
+                          .Where(task2 => Models.Task.GetOldestParent(task2).Id == BL.Application.CurrentTree.MainTaskId)
+                          .Max(task1 => task1.Urgency.Value));
+            var cildren = firetask.SelectChildrenTasks();
+            var visual = new TaskVisual { Height = 150, Width = 150 };
+            visual.Desc.Text = firetask.Description;
+            visual.Date.Text = "С " + firetask.BeginDate.ToShortDateString() + " по " + firetask.EndDate.ToShortDateString();
+            visual.CritDesc.Text = firetask.Criteria.Unit;
+            visual.Progress.Text = firetask.Criteria.CurrentValue.ToString() + "/" + firetask.Criteria.TargetValue.ToString();
+            visual.Field.Background = firetask.Criteria.IsCompleted() ? Brushes.Chartreuse : Brushes.Coral;
+            TreeCanvas.Children.Add(visual);
+            int i = cildren.Count + 1;
+            _realCanvasWidth = visual.Width * i;
+            OverflowCanvas();
+            visual.SetValue(Canvas.LeftProperty, (TreeField.Width - visual.Width) / 2);
+            visual.SetValue(Canvas.TopProperty, 20);
+            
+            foreach (var task in cildren)
+            {
+                var child = new TaskVisual {Height = 150, Width = 150};
+                child.Desc.Text = task.Description;
+                child.Date.Text = "С " + task.BeginDate.ToShortDateString() + " по " + task.EndDate.ToShortDateString();
+                child.CritDesc.Text = task.Criteria.Unit;
+                child.Progress.Text = task.Criteria.CurrentValue.ToString() + "/" + task.Criteria.TargetValue.ToString();
+                child.Field.Background = task.Criteria.IsCompleted() ? Brushes.Chartreuse : Brushes.Coral;
+                TreeCanvas.Children.Add(child);
+                child.SetValue(Canvas.LeftProperty, ( TreeField.Width - visual.Width * i-- ) / 2);
+                child.SetValue(Canvas.TopProperty, visual.Height + 220);
+                var lane = new Line {StrokeThickness = 1, Fill = Brushes.DarkCyan,Name ="L" + child.Desc.Text};
+                TreeCanvas.Children.Add(lane);
+                lane.X1 = TreeField.Width/2;
+                lane.Y1 = 20 + visual.Height;
+                lane.X2 = (double) child.GetValue(Canvas.LeftProperty) + child.Width/2;
+                lane.Y2 = (double) child.GetValue(Canvas.TopProperty);
+            }
         }
 
         private void Tasks_OnSelected(object sender, RoutedEventArgs e)
