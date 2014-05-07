@@ -11,13 +11,13 @@ namespace PathToSuccess.BL
     {
         public static bool UserExists(string login)
         {
-            return User.Find(login) != null;
+            return DAL.SqlRepository.Users.Find(login) != null;
         }
 
         //login is meant to be existing. validate using method above.
         public static bool Authenticate(string login, string pass)
         {
-            var user = User.Find(login);
+            var user = (User)DAL.SqlRepository.Users.Find(login);
             if (user!=null && user.ComparePass(pass))
             {
                 Application.CurrentUser = user;
