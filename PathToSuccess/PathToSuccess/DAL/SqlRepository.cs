@@ -50,6 +50,7 @@ namespace PathToSuccess.DAL
             Steps = DBContext.GetDbSet<Step>();
             Tasks = DBContext.GetDbSet<Task>();
             TimeBindings = DBContext.GetDbSet<TimeBinding>();
+            Intervals = DBContext.GetDbSet<Interval>();
 
             //BL.Application.CurrentTree = (Tree)Trees.Find(1);
             //BL.DbTest.Seed();

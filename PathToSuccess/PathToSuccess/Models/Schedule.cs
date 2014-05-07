@@ -93,6 +93,17 @@ namespace PathToSuccess.Models
             //TODO: should return not null intervals with dayOfWeek accepted by DateTime.DayOfWeek by schedule id
             return null;
         }
+
+        //public void LoadIntervals()
+        //{
+        //    MondayInterval = (Interval)DAL.SqlRepository.Intervals.Find(MondayIntervalId);
+        //    TuesdayInterval = (Interval)DAL.SqlRepository.Intervals.Find(TuesdayIntervalId);
+        //    WednesdayInterval = (Interval)DAL.SqlRepository.Intervals.Find(WednesdayIntervalId);
+        //    ThursdayInterval = (Interval)DAL.SqlRepository.Intervals.Find(ThursdayIntervalId);
+        //    FridayInterval = (Interval)DAL.SqlRepository.Intervals.Find(FridayIntervalId);
+        //    SaturdayInterval = (Interval)DAL.SqlRepository.Intervals.Find(SaturdayIntervalId);
+        //    SundayInterval = (Interval)DAL.SqlRepository.Intervals.Find(SundayIntervalId);
+        //}
     }
 
     public struct IntervalInfo

@@ -56,7 +56,7 @@ namespace PathToSuccess
             {
                 gridView.Columns.Add(new GridViewColumn() { Header = prop.Name, DisplayMemberBinding = new Binding(prop.Name) });
             }
-            foreach (var o in objCollection.Cast<Models.Schedule>())
+            foreach (var o in objCollection.Cast<Models.Schedule>().ToList())
             {
                 ScheduleListView.Items.Add(o);
             }
