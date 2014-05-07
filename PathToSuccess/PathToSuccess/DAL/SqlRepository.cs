@@ -45,9 +45,10 @@ namespace PathToSuccess.DAL
             Importancies = DBContext.GetDbSet<Importance>();
             Criterias = DBContext.GetDbSet<Criteria>();
             Trees = DBContext.GetDbSet<Tree>();
-            Schedules = DBContext.GetDbSet<Task>();
+            Schedules = DBContext.GetDbSet<Models.Schedule>();
             TimeRules = DBContext.GetDbSet<TimeRule>();
             Steps = DBContext.GetDbSet<Step>();
+            Tasks = DBContext.GetDbSet<Task>();
             TimeBindings = DBContext.GetDbSet<TimeBinding>();
 
             //BL.DbTest.Seed();
