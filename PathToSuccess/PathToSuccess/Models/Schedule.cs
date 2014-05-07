@@ -90,8 +90,58 @@ namespace PathToSuccess.Models
         }
         public static List<IntervalInfo> GetNotEmptyIntervals(int id)
         {
-            //TODO: should return not null intervals with dayOfWeek accepted by DateTime.DayOfWeek by schedule id
-            return null;
+            var result = new List<IntervalInfo>();
+            var sch = (Schedule) DAL.SqlRepository.Schedules.Find(id);
+            if (sch.MondayInterval.Id != -1)
+            {
+                var ii = new IntervalInfo();
+                ii.dayOfWeek = DayOfWeek.Monday;
+                ii.intervalID = sch.MondayIntervalId;
+                result.Add(ii);
+            }
+            if (sch.TuesdayInterval.Id != -1)
+            {
+                var ii = new IntervalInfo();
+                ii.dayOfWeek = DayOfWeek.Tuesday;
+                ii.intervalID = sch.TuesdayIntervalId;
+                result.Add(ii);
+            }
+            if (sch.WednesdayInterval.Id != -1)
+            {
+                var ii = new IntervalInfo();
+                ii.dayOfWeek = DayOfWeek.Wednesday;
+                ii.intervalID = sch.WednesdayIntervalId;
+                result.Add(ii);
+            }
+            if (sch.ThursdayInterval.Id != -1)
+            {
+                var ii = new IntervalInfo();
+                ii.dayOfWeek = DayOfWeek.Thursday;
+                ii.intervalID = sch.ThursdayIntervalId;
+                result.Add(ii);
+            }
+            if (sch.FridayInterval.Id != -1)
+            {
+                var ii = new IntervalInfo();
+                ii.dayOfWeek = DayOfWeek.Friday;
+                ii.intervalID = sch.FridayIntervalId;
+                result.Add(ii);
+            }
+            if (sch.SaturdayInterval.Id != -1)
+            {
+                var ii = new IntervalInfo();
+                ii.dayOfWeek = DayOfWeek.Saturday;
+                ii.intervalID = sch.SaturdayIntervalId;
+                result.Add(ii);
+            }
+            if (sch.SundayInterval.Id != -1)
+            {
+                var ii = new IntervalInfo();
+                ii.dayOfWeek = DayOfWeek.Sunday;
+                ii.intervalID = sch.SundayIntervalId;
+                result.Add(ii);
+            }
+            return result;
         }
 
         //public void LoadIntervals()
