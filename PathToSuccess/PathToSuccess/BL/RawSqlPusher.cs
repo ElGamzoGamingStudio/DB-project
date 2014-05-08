@@ -24,14 +24,14 @@ namespace PathToSuccess.BL
 
         public static void Initialize()
         {
-            var doc = XDocument.Load("RawSqlConnectionInfo.xml");
-            string connectionString = "Server=" + doc.Root.Attribute("ip").Value + ";Port=" + doc.Root.Attribute("port").Value +
-                                      ";User Id=" + doc.Root.Attribute("id").Value + ";Password=" + doc.Root.Attribute("pass").Value +
-                                      ";Database=" + doc.Root.Attribute("dbname").Value + ";";
+            //var doc = XDocument.Load("RawSqlConnectionInfo.xml");
+            //string connectionString = "Server=" + doc.Root.Attribute("ip").Value + ";Port=" + doc.Root.Attribute("port").Value +
+            //                          ";User Id=" + doc.Root.Attribute("id").Value + ";Password=" + doc.Root.Attribute("pass").Value +
+            //                          ";Database=" + doc.Root.Attribute("dbname").Value + ";";
 
-            var conn = new NpgsqlConnection(connectionString);
+            //var conn = new NpgsqlConnection(connectionString);
     
-            conn.Open();
+            //conn.Open();
             
             //var conn = new NpgsqlConnection(connectionString);
             //conn.Open();

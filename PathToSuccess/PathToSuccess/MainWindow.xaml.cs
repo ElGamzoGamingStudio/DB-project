@@ -24,6 +24,7 @@ namespace PathToSuccess
     {
         private double _realCanvasHeight;
         private double _realCanvasWidth;
+        private TaskVisual _parent;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,13 +32,13 @@ namespace PathToSuccess
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
 
-            var sc = new ScheduleVisualiser();
-            sc.ShowDialog();
-
-            //var log = new LoginWindow();
-            //log.ShowDialog();
-            //if (log.RightPass == null)
-            //    Application.Current.Shutdown();
+            //var sc = new ScheduleVisualiser();
+            //sc.ShowDialog();
+            Adding.Visibility=Visibility.Collapsed;
+            var log = new LoginWindow();
+            log.ShowDialog();
+            if (log.RightPass == null)
+                Application.Current.Shutdown();
 
             UserInfo.Content = BL.Application.CurrentUser != null
                                    ? "Вы вошли как " + BL.Application.CurrentUser.Name
@@ -58,9 +59,9 @@ namespace PathToSuccess
 
         private void OverflowCanvas()
         {
-            TreeCanvas.Width += _realCanvasWidth >= TreeCanvas.Width
-                                    ? 300
-                                    : _realCanvasWidth + 300 < TreeCanvas.Width ? -300 : 0;
+            TreeCanvas.MinWidth = _realCanvasWidth >= TreeCanvas.Width
+                                    ? _realCanvasWidth
+                                    : TreeField.MaxWidth;
             TreeCanvas.Height += _realCanvasHeight >= TreeCanvas.Height
                                     ? 170
                                     : _realCanvasHeight + 170 < TreeCanvas.Height ? -170 : 0;
@@ -69,6 +70,16 @@ namespace PathToSuccess
         private void AddTask(object sender, RoutedEventArgs e)
         {
             Adding.IsEnabled = true;
+            Adding.Visibility = Visibility.Visible;
+            InAnimation();
+        }
+
+        private void AddStep(object sender, RoutedEventArgs e)
+        {
+            Adding.IsEnabled = true;
+            StepButton.IsChecked = true;
+            TaskButton.IsEnabled = false;
+            Adding.Visibility = Visibility.Visible;
             InAnimation();
         }
 
@@ -87,8 +98,6 @@ namespace PathToSuccess
             }
             TreeField.MaxWidth = TreeCanvas.Width = TreeField.MinWidth + widthDifference;
             TreeField.MaxHeight = TreeCanvas.Height = TreeField.MinHeight + heightDifference;
-            Filter.Margin = new Thickness(710 + widthDifference, 11, 0, 0);
-            SearchButton.Margin = new Thickness(630 + widthDifference, 13, 0, 0);
             LevelUp.Margin = new Thickness(270 + widthDifference, 13, 0, 0);
             Adding.MinWidth = TreeField.MaxWidth;
             Adding.MinHeight = TreeField.MaxHeight;
@@ -117,10 +126,19 @@ namespace PathToSuccess
 
         private void All_OnSelected(object sender, RoutedEventArgs e)
         {
-            
+            if(RawView==null)return;
+            foreach (var result in RawView.Items.Cast<ListBoxItem>())
+            {
+                result.Background = Brushes.White;
+            }
         }
 
-        private void UpdateTree(Models.Task displayTask)
+        public enum MoveDirections
+        {
+            Up, Down, None
+        }
+
+        private void UpdateTree(Models.Task displayTask,MoveDirections dir)
         {
             var children = displayTask.SelectChildrenTasks();
             var visual = new TaskVisual { Height = 150, Width = 150 };
@@ -135,9 +153,13 @@ namespace PathToSuccess
             int i = children.Count + 1;
             _realCanvasWidth = visual.Width * i;
             OverflowCanvas();
-            visual.SetValue(Canvas.LeftProperty, (TreeField.MaxWidth - visual.Width) / 2);
+            visual.SetValue(Canvas.LeftProperty, (TreeCanvas.MinWidth - visual.Width) / 2);
             visual.SetValue(Canvas.TopProperty, 20.0);
-
+            _parent = visual;
+            if (displayTask.ChildrenAreSteps())
+                visual.Add.Click += AddStep;
+            else
+                visual.Add.Click += AddTask;
             foreach (var task in children)
             {
                 var child = new TaskVisual { Height = 150, Width = 150 };
@@ -149,14 +171,24 @@ namespace PathToSuccess
                                       task.Criteria.TargetValue.ToString();
                 child.Field.Background = task.Criteria.IsCompleted() ? Brushes.Chartreuse : Brushes.Coral;
                 TreeCanvas.Children.Add(child);
-                child.SetValue(Canvas.LeftProperty, (TreeField.MaxWidth - visual.Width * i--) / 2);
-                child.SetValue(Canvas.TopProperty, visual.Height + 220);
-                var lane = new Line { StrokeThickness = 1, Fill = Brushes.DarkCyan, Name = "L" + child.Desc.Text };
+                child.SetValue(Canvas.LeftProperty, (TreeCanvas.MinWidth - (visual.Width+visual.Width/children.Count)  * --i));
+                child.SetValue(Canvas.TopProperty, visual.Height + 180);
+                child.Add.Visibility=Visibility.Collapsed;
+                var lane = new Line
+                    {
+                        StrokeThickness = 5,
+                        Fill = Brushes.DarkCyan,
+                        X1 = (double) visual.GetValue(Canvas.LeftProperty) + visual.Width/2,
+                        Y1 = 20 + visual.Height,
+                        Stroke = Brushes.DarkCyan,
+                        X2 = (double) child.GetValue(Canvas.LeftProperty) + child.Width/2,
+                        Y2 = (double) child.GetValue(Canvas.TopProperty),
+                        SnapsToDevicePixels = true
+                    };
+                lane.SetValue(RenderOptions.EdgeModeProperty,EdgeMode.Aliased);
                 TreeCanvas.Children.Add(lane);
-                lane.X1 = TreeField.Width / 2;
-                lane.Y1 = 20 + visual.Height;
-                lane.X2 = (double)child.GetValue(Canvas.LeftProperty) + child.Width / 2;
-                lane.Y2 = (double)child.GetValue(Canvas.TopProperty);
+                
+                child.PreviewMouseLeftButtonUp += SelectChild;
             }
 
             if (displayTask.ChildrenAreSteps())
@@ -185,6 +217,13 @@ namespace PathToSuccess
             
         }
 
+        private void SelectChild(object sender, RoutedEventArgs e)
+        {
+            var child = sender as TaskVisual;
+            TreeCanvas.Children.Clear();
+            UpdateTree(DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x=>x.Description==child.Desc.Text),MoveDirections.Up);
+        }
+
         private void TreeLoaded()
         {
             var q = DAL.SqlRepository.Tasks.Cast<Models.Task>();
@@ -194,13 +233,19 @@ namespace PathToSuccess
                 if(Models.Task.GetOldestParent(task).Id == BL.Application.CurrentTree.MainTaskId)
                     p.Add(task);
             }
+            foreach (var task in p)
+            {
+                RawView.Items.Add(new ListBoxItem {Content = task.Description, Height = 20});
+            }
             var m = p.Max(task1 => task1.Urgency.Value);
             foreach (var task1 in p)
             {
                 if (Models.Task.GetOldestParent(task1).Id == BL.Application.CurrentTree.MainTaskId &&
                     task1.Urgency.Value >= m)
                 {
-                    UpdateTree(task1);
+                    UpdateTree(task1, MoveDirections.None);
+                    RawView.Items.Cast<ListBoxItem>().First(x => x.Content.ToString() == task1.Description).IsSelected =
+                        true;
                     break;
                 }
             }
@@ -208,12 +253,24 @@ namespace PathToSuccess
 
         private void Tasks_OnSelected(object sender, RoutedEventArgs e)
         {
-            
+            var tasks = Models.Task.Select(x => !x.ChildrenAreSteps());
+            foreach (var result in RawView.Items.Cast<ListBoxItem>())
+            {
+                result.Background = tasks.FirstOrDefault(x => x.Description == result.Content.ToString()) != null
+                                        ? Brushes.CornflowerBlue
+                                        : Brushes.White;
+            }
         }
 
         private void TaskSt_OnSelected(object sender, RoutedEventArgs e)
         {
-            
+            var tasks = Models.Task.Select(x => x.ChildrenAreSteps());
+            foreach (var result in RawView.Items.Cast<ListBoxItem>())
+            {
+                result.Background = tasks.FirstOrDefault(x => x.Description == result.Content.ToString()) != null
+                                        ? Brushes.CornflowerBlue
+                                        : Brushes.White;
+            }
         }
 
         private void OpenQuery(object sender, RoutedEventArgs e)
@@ -234,7 +291,13 @@ namespace PathToSuccess
         private void OutAnimation()
         {
             var anim = new ThicknessAnimation(new Thickness(-1000, 0, 0, 0), new Duration(TimeSpan.FromSeconds(1)));
+            anim.Completed += HideThisShit;
             Adding.BeginAnimation(MarginProperty, anim);
+        }
+
+        private void HideThisShit(object sender, EventArgs e)
+        {
+            Adding.Visibility=Visibility.Collapsed;
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -247,19 +310,20 @@ namespace PathToSuccess
                 };
             var imp =
                 DAL.SqlRepository.Importancies.Cast<Importance>()
-                   .First(x => Imp.SelectedValue.ToString() == x.ImportanceName);
+                   .First(x => ((ComboBoxItem)Imp.SelectedItem).Content.ToString() == x.ImportanceName);
             var urg =
-                DAL.SqlRepository.Urgencies.Cast<Urgency>().First(x => Urg.SelectedValue.ToString() == x.UrgencyName);
+                DAL.SqlRepository.Urgencies.Cast<Urgency>().First(x => ((ComboBoxItem)Urg.SelectedItem).Content.ToString() == x.UrgencyName);
             if (StepButton.IsChecked == true)
             {
                 var tr = new TimeRule()
                     {
                         IsPeriodic = Periodic.IsChecked == true,
                         Schedule =
-                            DAL.SqlRepository.Schedules.Cast<Models.Schedule>()
-                               .First(x => x.Id == Convert.ToInt32(Graphs.SelectedValue.ToString())),
-                        ScheduleId = Convert.ToInt32(Graphs.SelectedValue.ToString())
+                            DAL.SqlRepository.Schedules.Cast<Models.Schedule>().ToList()
+                               .First(x => x.Id == Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())),
+                        ScheduleId = Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())
                     };
+                var t = DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x => x.Description == _parent.Desc.Text);
                 var st = new Step
                     {
                         BeginDate = Begin.SelectedDate != null ? (DateTime) Begin.SelectedDate : DateTime.Now,
@@ -272,11 +336,17 @@ namespace PathToSuccess
                         Urgency = urg,
                         UrgencyName = urg.UrgencyName,
                         TimeRule = tr,
-                        TimeRuleId = tr.Id
+                        TimeRuleId = tr.Id,
+                        ParentTask = t,
+                        TaskId = t.Id
                     };
+                DAL.SqlRepository.Steps.Add(st);
+                DAL.SqlRepository.Save();
+                UpdateTree(t,MoveDirections.None);
             }
             else
             {
+                var p = DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x => x.Description == _parent.Desc.Text);
                 var t = new PathToSuccess.Models.Task
                     {
                     BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.Now,
@@ -287,8 +357,14 @@ namespace PathToSuccess
                     Importance = imp,
                     ImportanceName = imp.ImportanceName,
                     Urgency = urg,
-                    UrgencyName = urg.UrgencyName
+                    UrgencyName = urg.UrgencyName,
+                    Parent = p,
+                    ParentId = p.Id
                 };
+                DAL.SqlRepository.Tasks.Add(t);
+                DAL.SqlRepository.Save();
+                UpdateTree(p,MoveDirections.None);
+                OutAnimation();
             }
         }
 
@@ -300,6 +376,15 @@ namespace PathToSuccess
             TargetVal.Clear();
             OutAnimation();
             Adding.IsEnabled = false;
+        }
+
+        private void LevelUp_Click(object sender, RoutedEventArgs e)
+        {
+            var parent =
+                DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x => x.Description == _parent.Desc.Text);
+            if(parent.ParentId==-1)return;
+            TreeCanvas.Children.Clear();
+            UpdateTree(parent.Parent,MoveDirections.Down);
         }
     }
 }

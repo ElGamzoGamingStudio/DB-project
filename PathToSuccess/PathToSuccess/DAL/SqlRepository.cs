@@ -52,7 +52,7 @@ namespace PathToSuccess.DAL
             TimeBindings = DBContext.GetDbSet<TimeBinding>();
             Intervals = DBContext.GetDbSet<Interval>();
 
-            //BL.Application.CurrentTree = (Tree)Trees.Find(1);
+            BL.Application.CurrentTree = (Tree)Trees.Find(2);
             //BL.DbTest.Seed();
         }
     }

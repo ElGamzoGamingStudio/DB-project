@@ -7,10 +7,10 @@
              d:DesignHeight="150" d:DesignWidth="150">
     <Grid Name="Field">
         <TextBlock HorizontalAlignment="Center" Name="Desc"  TextAlignment="Center" FontSize="15" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="49" Margin="43,0"/>
-        <Button Content="Button" Name="Add" HorizontalAlignment="Left" Margin="125,125,0,0" VerticalAlignment="Top" Width="25" Height="25"/>
+        <Button Content="Button" Name="Add" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Width="25" Height="25"/>
         <TextBlock HorizontalAlignment="Center" Name="Date" Margin="0,54,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="TextBlock" VerticalAlignment="Top"  Height="22"/>
         <TextBlock HorizontalAlignment="Left" Name="CritDesc" Margin="10,81,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="35" Width="90"/>
-        <TextBlock HorizontalAlignment="Left" Name="Progress" Margin="120,81,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="21" Width="24"/>
+        <TextBlock HorizontalAlignment="Left" Name="Progress" Margin="105,81,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="21" Width="39"/>
 
     </Grid>
 </UserControl>

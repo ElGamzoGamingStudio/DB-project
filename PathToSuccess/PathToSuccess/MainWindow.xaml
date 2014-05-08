@@ -30,10 +30,6 @@
                 <Ellipse Height="100" Width="100" Fill="Black" Canvas.Top="1000"/>
             </Canvas>
         </ScrollViewer>
-        <StackPanel Width="150" Height="260" Background="DarkGray" HorizontalAlignment="Right" Margin="0,49,0,260">
-            <Button Height="125" BorderThickness="0">Task</Button>
-            <Button Height="125" BorderThickness="0" Margin="0,5,0,0">Step</Button>
-        </StackPanel>
         <StackPanel Orientation="Horizontal" Width="200" Margin="10,0,0,0" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style TargetType="Button">
@@ -76,14 +72,14 @@
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Save" Width="35" Click="SaveChanges"/>
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="SQL" Width="35" Click="OpenQuery"/>
         </StackPanel>
-        <ComboBox HorizontalAlignment="Left" Margin="710,11,0,0" Name="Filter" VerticalAlignment="Top" Width="120">
+        <ComboBox HorizontalAlignment="Right" Margin="0,50,10,0" Name="Filter" VerticalAlignment="Top" Width="150">
             <ComboBoxItem Name="All" Content="All" IsSelected="True" Selected="All_OnSelected"/>
             <ComboBoxItem Name="Tasks" Content="Task without steps" Selected="Tasks_OnSelected"/>
             <ComboBoxItem Name="TaskSt" Content="Task with steps" Selected="TaskSt_OnSelected"/>
         </ComboBox>
-        <Label HorizontalAlignment="Left" Name="UserInfo" Margin="866,7,0,0" VerticalAlignment="Top" Width="140"/>
-        <Button Content="Поиск" Name="SearchButton" HorizontalAlignment="Left" Margin="630,13,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="270,13,0,0" VerticalAlignment="Top" Width="251"/>
+        <Label HorizontalAlignment="Right" Name="UserInfo" Margin="0,549,20,0" VerticalAlignment="Top" Width="140"/>
+        <Button Content="Поиск" Name="SearchButton" HorizontalAlignment="Right" Margin="0,25,10,0" VerticalAlignment="Top" Width="25"/>
+        <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="270,13,0,0" VerticalAlignment="Top" Width="251" Click="LevelUp_Click"/>
         <Grid Background="DeepSkyBlue" Name="Adding" HorizontalAlignment="Left" MinHeight="520" Margin="-1000,0,0,0" VerticalAlignment="Bottom" MinWidth="813">
             <Label Content="Добавление" FontSize="24" HorizontalAlignment="Left" Margin="300,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="170"/>
             <StackPanel Name="Chos" HorizontalAlignment="Left" Height="47" Margin="10,68,0,0" VerticalAlignment="Top" Width="166">
@@ -93,7 +89,7 @@
             <TextBox Name="DescBox" HorizontalAlignment="Left" Height="59" Margin="10,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="398"/>
             <Label Content="Описание" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="166"/>
             <CheckBox Name="Periodic" Content="Периодичный" HorizontalAlignment="Left" Margin="527,158,0,0" VerticalAlignment="Top" Width="129"/>
-            
+
             <Label Content="Критерий выполнения" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
             <TextBox Name="UnitBox" HorizontalAlignment="Left" Height="23" Margin="150,356,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
             <TextBox Name="TargetVal" HorizontalAlignment="Left" Height="23" Margin="150,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
@@ -114,5 +110,7 @@
             <Label Content="Срочность" HorizontalAlignment="Left" Margin="527,346,0,0" VerticalAlignment="Top" Width="129"/>
 
         </Grid>
+        <TextBox Name="SearchBox" HorizontalAlignment="Right" Height="23" Margin="0,22,40,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <ListBox Name="RawView" HorizontalAlignment="Right" Height="320" Margin="0,77,10,0" VerticalAlignment="Top" Width="150"/>
     </Grid>
 </Window>
