@@ -203,6 +203,17 @@ namespace PathToSuccess
                 sunday = (Interval)intervals.Find(-1);
             }
 
+            if (UserApproovedCheckBox.IsChecked != null && (bool)UserApproovedCheckBox.IsChecked)
+            {
+                monday.EndTime = Interval.PIOS;
+                tuesday.EndTime = Interval.PIOS;
+                wednesday.EndTime = Interval.PIOS;
+                thursday.EndTime = Interval.PIOS;
+                friday.EndTime = Interval.PIOS;
+                saturday.EndTime = Interval.PIOS;
+                sunday.EndTime = Interval.PIOS;
+            }
+
             var creation = Models.Schedule.CreateSchedule(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
             schedules.Add(creation);
             SqlRepository.Save();
@@ -316,6 +327,16 @@ namespace PathToSuccess
                 sunday = (Interval)intervals.Find(-1);
             }
 
+            if (UserApproovedCheckBox.IsChecked != null && (bool) UserApproovedCheckBox.IsChecked)
+            {
+                monday.EndTime = Interval.PIOS;
+                tuesday.EndTime = Interval.PIOS;
+                wednesday.EndTime = Interval.PIOS;
+                thursday.EndTime = Interval.PIOS;
+                friday.EndTime = Interval.PIOS;
+                saturday.EndTime = Interval.PIOS;
+                sunday.EndTime = Interval.PIOS;
+            }
             item.MondayInterval = monday;
             item.MondayIntervalId = monday.Id;
             item.TuesdayInterval = tuesday;
@@ -330,7 +351,7 @@ namespace PathToSuccess
             item.SaturdayIntervalId = saturday.Id;
             item.SundayInterval = sunday;
             item.SundayIntervalId = sunday.Id;
-            
+
             SqlRepository.Save();
             Interval.RemoveTrash();
             UpdateTableView();

@@ -115,8 +115,8 @@ namespace PathToSuccess.Models
 
         public static List<Task> Select(Func<Task, bool> predicate)
         {
-            var set = DAL.SqlRepository.Tasks;
-            return set.Cast<Task>().Where(predicate).ToList();
+            var set = DAL.SqlRepository.Tasks.Cast<Models.Task>().ToList();
+            return set.Where(predicate).ToList();
         }
 
         public List<Task> SelectChildrenTasks()
@@ -145,14 +145,14 @@ namespace PathToSuccess.Models
 
         public bool ChildrenAreSteps()
         {
-            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().ToList().Where(x => x.ParentTask.Id == this.Id);
+            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.TaskId == this.Id);
             //var childrenTaskSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
             return childrenStepSet.Any();
         }
 
         public bool HasUncompletedSteps()
         {
-            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().ToList().Where(x => x.ParentTask.Id == this.Id).ToList();
+            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().ToList().Where(x => x.TaskId == this.Id).ToList();
             return childrenStepSet.Count(x => !x.Criteria.IsCompleted()) > 0;
         }
         public static List<Task> GetLowestTasks()

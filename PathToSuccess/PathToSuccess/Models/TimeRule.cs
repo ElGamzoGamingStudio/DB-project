@@ -40,7 +40,6 @@ namespace PathToSuccess.Models
             tr.ScheduleId = scheduleId;
             tr.Schedule = schedule;
             tr.IsUserApproved = schedule.IsPios();
-
             set.Add(tr);
             DAL.SqlRepository.Save();
             return tr;

@@ -19,7 +19,7 @@ namespace PathToSuccess.BL
             Log.Initialize();
             RawSqlPusher.Initialize();
             //ScheduleManager.Initialize();
-            DbTest.Try();
+            //DbTest.Try();
             //DbTest.Seed();
 
         }

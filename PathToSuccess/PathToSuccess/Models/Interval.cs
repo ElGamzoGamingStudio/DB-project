@@ -25,6 +25,8 @@ namespace PathToSuccess.Models
 
         public Interval() { }
 
+        public static readonly DateTime PIOS = new DateTime(1000, 8, 6, 4, 2, 0);
+
         public static Interval CreateInterval(DateTime begin, DateTime end)
         {
             var set = DAL.SqlRepository.Intervals;
