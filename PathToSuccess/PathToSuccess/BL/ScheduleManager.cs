@@ -209,6 +209,19 @@ namespace PathToSuccess.BL
             }
             return overdue;
         }
+        public static void Exterminatus()
+        {
+            foreach (var st in Overdue())
+            {
+                TimeBinding.DeleteTimeBinding(TimeBinding.GetTBbyStepID(st.Id)[0]);
+            }
+        }
+        public static void CreateSchedule()
+        {
+            Exterminatus();
+            FillScheduleForPeriodic();
+            CreateScheduleForNonTB();
+        }
  
     }
 }

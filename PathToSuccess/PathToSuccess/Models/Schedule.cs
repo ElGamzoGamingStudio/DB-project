@@ -143,6 +143,31 @@ namespace PathToSuccess.Models
             }
             return result;
         }
+        public bool IsPios()
+        {
+        //    if (MondayInterval.Id != -1)
+        //        if (MondayInterval.EndTime == Interval.PIOS)
+        //            return true;
+        //    if (TuesdayInterval.Id != -1)
+        //        if (TuesdayInterval.EndTime == Interval.PIOS)
+        //            return true;
+        //    if (WednesdayInterval.Id != -1)
+        //        if (WednesdayInterval.EndTime == Interval.PIOS)
+        //            return true;
+        //    if (ThursdayInterval.Id != -1)
+        //        if (ThursdayInterval.EndTime == Interval.PIOS)
+        //            return true;
+        //    if (FridayInterval.Id != -1)
+        //        if (FridayInterval.EndTime == Interval.PIOS)
+        //            return true;
+        //    if (SaturdayInterval.Id != -1)
+        //        if (SaturdayInterval.EndTime == Interval.PIOS)
+        //            return true;
+        //    if (SundayInterval.Id != -1)
+        //        if (SundayInterval.EndTime == Interval.PIOS)
+        //            return true;
+            return false;
+        }
 
         //public void LoadIntervals()
         //{

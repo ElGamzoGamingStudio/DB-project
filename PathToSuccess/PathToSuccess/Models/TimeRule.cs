@@ -39,9 +39,7 @@ namespace PathToSuccess.Models
             tr.IsPeriodic = isPeriodic;
             tr.ScheduleId = scheduleId;
             tr.Schedule = schedule;
-            tr.IsUserApproved = false;
-
-            if (schedule.)
+            tr.IsUserApproved = schedule.IsPios();
 
             set.Add(tr);
             DAL.SqlRepository.Save();
