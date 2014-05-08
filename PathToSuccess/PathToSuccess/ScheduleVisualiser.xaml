@@ -8,6 +8,7 @@
                 <StackPanel Name="ScheduleNamePanel" Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="This schedule name - "/>
                     <TextBox Name="ScheduleNameBox" Width="150"/>
+                    <CheckBox Name="UserApproovedCheckBox" VerticalAlignment="Center"/>
                 </StackPanel>
                 <TextBlock Text="Set up intervals 0..24 integer value" HorizontalAlignment="Center"/>
                 <StackPanel Name="IntervalPanel" Orientation="Horizontal">
