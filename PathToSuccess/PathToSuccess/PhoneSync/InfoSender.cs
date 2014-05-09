@@ -23,11 +23,11 @@ namespace PathToSuccess.PhoneSync
             string json = "";
 
             json += "{" +
-                "description : " + tb.Step.Description + ",\n" +
-                "importance : " + tb.Step.ImportanceName + ",\n" +
-                "time : " + tb.Time.ToShortTimeString() + ",\n" +
-                "id : " + tb.Id
-                + "}";
+                "\"description\" : \"" + tb.Step.Description + "\",\n" +
+                "\"importance\" : \"" + tb.Step.ImportanceName + "\",\n" +
+                "\"time\" : \"" + tb.Time.ToShortTimeString() + "\",\n" +
+                "\"id\" : \"" + tb.Id
+                + "\"\n}";
 
             return json;
         }
@@ -37,13 +37,13 @@ namespace PathToSuccess.PhoneSync
             string json = "";
 
             json += "{" +
-                //"user : " + PathToSuccess.BL.Application.CurrentUser.Login + ",\n" +
-                "user : stub,\n" +
-                //"password_hash : " + PathToSuccess.BL.Application.CurrentUser.Password + ",\n";
-                "password_hash : stub,\n";
+                //"\"user\" : \"" + PathToSuccess.BL.Application.CurrentUser.Login + "\",\n" +
+                "\"user\" : \"stub\",\n" +
+                //"\"password_hash\" : \"" + PathToSuccess.BL.Application.CurrentUser.Password + "\",\n";
+                "\"password_hash\" : \"stub\",\n";
 
             json +=
-                "days : [\n";
+                "\"days\" : [\n";
 
             DateTime dateCounter = DateTime.Now;
             string day = "";
@@ -53,10 +53,10 @@ namespace PathToSuccess.PhoneSync
                 day = "";
    
                 day += "{";
-                day += "   day : " + dateCounter.Day + ",\n" +
-                    "   month : " + dateCounter.Month + ",\n" +
-                    "   year : " + dateCounter.Year + ",\n" +
-                    "   steps : [\n";
+                day += "   \"day\" : \"" + dateCounter.Day + "\",\n" +
+                    "   \"month\" : \"" + dateCounter.Month + "\",\n" +
+                    "   \"year\" : \"" + dateCounter.Year + "\",\n" +
+                    "   \"steps\" : [\n";
 
                 foreach (var tb in tbs)
                 {
