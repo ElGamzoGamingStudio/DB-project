@@ -63,9 +63,11 @@ namespace PathToSuccess
                 };
                 panel.Children.Add(dayTextBlock);
 
-                var thisDaySteps = stepsToSchedule.Where(step => TimeBinding.GetTBbyStepID(step.Id)[0].Time >= dateCounter
-                                                              && TimeBinding.GetTBbyStepID(step.Id)[0].Time < dateCounter.AddDays(1))
-                                                              .ToList();
+                //TimeBinding.GetTBbyStepID(step.Id)[0].Time >= dateCounter
+                //                                              && 
+                //please give me the proper collection
+                var thisDaySteps = stepsToSchedule.Where(step => TimeBinding.GetTBbyStepID(step.Id)[0].Time < dateCounter.AddDays(1))
+                                                              .ToList(); //pls huilo
                 foreach (var step in thisDaySteps)
                 {
                     var stepPanel = new StackPanel()
