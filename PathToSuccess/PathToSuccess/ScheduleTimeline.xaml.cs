@@ -46,7 +46,7 @@ namespace PathToSuccess
                 var panel = new StackPanel()
                 {
                     Orientation = Orientation.Vertical,
-                    Background = new SolidColorBrush(Colors.DarkCyan),
+                    Background = new SolidColorBrush(Colors.Wheat),
                     CanHorizontallyScroll = false,
                     CanVerticallyScroll = true,
                     MinWidth = 200,
@@ -57,24 +57,26 @@ namespace PathToSuccess
                 };
                 var dayTextBlock = new TextBlock()
                 {
-                    Text = dateCounter.DayOfWeek.ToString(),
-                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Text = dateCounter.DayOfWeek.ToString() + " " + dateCounter.ToShortDateString(),
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Top,
+                    Background = new SolidColorBrush(Colors.Teal),
+                    FontSize = 14,
+                    TextAlignment = TextAlignment.Center,
                 };
                 panel.Children.Add(dayTextBlock);
 
-                //TimeBinding.GetTBbyStepID(step.Id)[0].Time >= dateCounter
-                //                                              && 
-                //please give me the proper collection
-                var thisDaySteps = stepsToSchedule.Where(step => TimeBinding.GetTBbyStepID(step.Id)[0].Time < dateCounter.AddDays(1))
-                                                              .ToList(); //pls huilo
+                var steps = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year);
+                var thisDaySteps = new List<Step>();
+                thisDaySteps.AddRange(steps.Select(binding => binding.Step));
+
                 foreach (var step in thisDaySteps)
                 {
                     var stepPanel = new StackPanel()
                     {
                         Orientation = Orientation.Vertical,
-                        Background = new SolidColorBrush(Colors.Green),
-
+                        Background = new SolidColorBrush(Colors.OrangeRed),
+                        Margin = new Thickness(0, 1, 0, 0),
                     };
                     var descriptionText = new TextBlock() { Text = step.Description, HorizontalAlignment = HorizontalAlignment.Center };
                     var stepImportance = new TextBlock() { Text = step.ImportanceName, HorizontalAlignment = HorizontalAlignment.Center };
@@ -83,21 +85,18 @@ namespace PathToSuccess
                         Text = step.Criteria.CurrentValue + " / " + step.Criteria.TargetValue,
                         HorizontalAlignment = HorizontalAlignment.Center
                     };
-                    var timePanel = new StackPanel()
+                    var timeText = new TextBlock()
                     {
-                        Orientation = Orientation.Horizontal,
-                        Background = new SolidColorBrush(Colors.GreenYellow),
-                        HorizontalAlignment = HorizontalAlignment.Center
+                        Text = step.BeginDate.ToShortTimeString() + " - " + step.EndDate.ToShortTimeString(),
+                        HorizontalAlignment = HorizontalAlignment.Stretch,
+                        Background = new SolidColorBrush(Colors.CadetBlue),
+                        TextAlignment = TextAlignment.Center,
                     };
-                    var start = new TextBlock() { Text = step.BeginDate.ToShortTimeString(), HorizontalAlignment = HorizontalAlignment.Center };
-                    var finish = new TextBlock() { Text = " - " + step.EndDate.ToShortTimeString(), HorizontalAlignment = HorizontalAlignment.Center };
-                    timePanel.Children.Add(start);
-                    timePanel.Children.Add(finish);
-
+                    
                     stepPanel.Children.Add(descriptionText);
                     stepPanel.Children.Add(stepImportance);
                     stepPanel.Children.Add(criteriaText);
-                    stepPanel.Children.Add(timePanel);
+                    stepPanel.Children.Add(timeText);
 
                     panel.Children.Add(stepPanel);
                 }

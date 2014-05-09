@@ -4,7 +4,7 @@
         Title="ScheduleTimeline" Height="350" Width="1200" ResizeMode="NoResize">
     <Grid>
         <Grid Name="MainField">
-            <ScrollViewer Name="ScrollMasta" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer Name="ScrollMasta" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto">
                 <StackPanel Name="TimelinePanel" Orientation="Horizontal" CanHorizontallyScroll="True">
 
                 </StackPanel>

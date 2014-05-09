@@ -24,19 +24,19 @@ namespace PathToSuccess.BL
         public static void Seed()
         {
 
-            //var user = User.CreateUser("xxxrassiyavperedxxx", "A.Pistoletov", new DateTime(1985, 3, 22), "secret_pass", DateTime.Now);
-            var user = (User)DAL.SqlRepository.Users.Find("xxxrassiyavperedxxx");
-            //var tree = Tree.CreateTree(user, user.Login, "new era of trees", "must work please");
-            var tree = Tree.FindTreesForUser(user).First();
+            var user = User.CreateUser("xxxrassiyavperedxxx", "A.Pistoletov", new DateTime(1985, 3, 22), "secret_pass", DateTime.Now);
+            //var user = (User)DAL.SqlRepository.Users.Find("xxxrassiyavperedxxx");
+            var tree = Tree.CreateTree(user, user.Login, "new era of trees", "must work please");
+           // var tree = Tree.FindTreesForUser(user).First();
 
             var importancies = Importance.GetViableImportanceLevels();
             var urgencies = Urgency.GetViableUrgencyLevels();
-            //var criterias = new Criteria[] {
-            //    Criteria.CreateCriteria(0, 10, "wtuk"),
-            //    Criteria.CreateCriteria(0, 1, "raz"),
-            //    Criteria.CreateCriteria(0, 666, "fragov v cs")
-            //};
-            var criterias = DAL.SqlRepository.Criterias.Cast<Criteria>().ToList();
+            var criterias = new Criteria[] {
+                Criteria.CreateCriteria(0, 10, "wtuk"),
+                Criteria.CreateCriteria(0, 1, "raz"),
+                Criteria.CreateCriteria(0, 666, "fragov v cs")
+            };
+            //var criterias = DAL.SqlRepository.Criterias.Cast<Criteria>().ToList();
 
             var tasks = new Task[4];
 
