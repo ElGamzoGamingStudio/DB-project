@@ -76,7 +76,7 @@
                                     <TextBox Name="DescBox" HorizontalAlignment="Center" Height="60" TextWrapping="Wrap" Width="350"/>
                                     <TextBlock Text="Unit of measure" FontSize="14" HorizontalAlignment="Center"/>
                                     <TextBox Name="UnitBox" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                                    <TextBlock Text="Target value" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Target value (only int)" FontSize="14" HorizontalAlignment="Center"/>
                                     <TextBox Name="TargetVal" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
                                     <TextBlock Text="From" FontSize="14" HorizontalAlignment="Center"/>
                                     <DatePicker Name="Begin" HorizontalAlignment="Center" VerticalAlignment="Top"/>
@@ -84,6 +84,9 @@
                                     <DatePicker Name="End" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                 </StackPanel>
                             </StackPanel>
+                            <Button Name="OK" Click="OkClick" Content="OK" 
+                Width="50" Height="50" HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" Margin="5,5,0,0" Visibility="Visible"/>
                         </StackPanel>
                     </Grid>
                 </TabItem>

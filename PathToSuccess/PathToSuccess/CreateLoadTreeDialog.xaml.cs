@@ -295,5 +295,19 @@ namespace PathToSuccess
                 anim.Completed += toDoAfter;
             moveForward.BeginAnimation(TranslateTransform.XProperty, anim);
         }
+
+        private void OkClick(object sender, RoutedEventArgs e)
+        {
+            BL.Application.CurrentTree.MainTask.BeginDate = Begin.DisplayDate;
+            BL.Application.CurrentTree.MainTask.EndDate = End.DisplayDate;
+            BL.Application.CurrentTree.MainTask.Description = DescBox.Text.Trim();
+            BL.Application.CurrentTree.MainTask.Criteria.Unit = UnitBox.Text.Trim();
+            int targ;
+            if (Int32.TryParse(TargetVal.Text.Trim(), out targ))
+                BL.Application.CurrentTree.MainTask.Criteria.TargetValue = targ;
+            else 
+                throw new Exception("Look what you've done");
+            Close();
+        }
     }
 }
