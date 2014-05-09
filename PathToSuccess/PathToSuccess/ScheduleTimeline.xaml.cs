@@ -36,8 +36,11 @@ namespace PathToSuccess
 
         private IEnumerable<StackPanel> CreateScheduleList()
         {
-            var panelList = new List<StackPanel> ();
+            ScheduleManager.Initialize();
+            ScheduleManager.CreateSchedule();
+            var panelList = new List<StackPanel>();
             var dateCounter = DateTime.Today;
+            var stepsToSchedule = ScheduleManager.withTB;
             while (dateCounter < DateTime.Today.AddMonths(1))
             {
                 var panel = new StackPanel()
@@ -58,8 +61,46 @@ namespace PathToSuccess
                     HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Top,
                 };
-
                 panel.Children.Add(dayTextBlock);
+
+                var thisDaySteps = stepsToSchedule.Where(step => TimeBinding.GetTBbyStepID(step.Id)[0].Time >= dateCounter
+                                                              && TimeBinding.GetTBbyStepID(step.Id)[0].Time < dateCounter.AddDays(1))
+                                                              .ToList();
+                foreach (var step in thisDaySteps)
+                {
+                    var stepPanel = new StackPanel()
+                    {
+                        Orientation = Orientation.Vertical,
+                        Background = new SolidColorBrush(Colors.Green),
+
+                    };
+                    var descriptionText = new TextBlock() { Text = step.Description, HorizontalAlignment = HorizontalAlignment.Center };
+                    var stepImportance = new TextBlock() { Text = step.ImportanceName, HorizontalAlignment = HorizontalAlignment.Center };
+                    var criteriaText = new TextBlock()
+                    {
+                        Text = step.Criteria.CurrentValue + " / " + step.Criteria.TargetValue,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+                    var timePanel = new StackPanel()
+                    {
+                        Orientation = Orientation.Horizontal,
+                        Background = new SolidColorBrush(Colors.GreenYellow),
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+                    var start = new TextBlock() { Text = step.BeginDate.ToShortTimeString(), HorizontalAlignment = HorizontalAlignment.Center };
+                    var finish = new TextBlock() { Text = " - " + step.EndDate.ToShortTimeString(), HorizontalAlignment = HorizontalAlignment.Center };
+                    timePanel.Children.Add(start);
+                    timePanel.Children.Add(finish);
+
+                    stepPanel.Children.Add(descriptionText);
+                    stepPanel.Children.Add(stepImportance);
+                    stepPanel.Children.Add(criteriaText);
+                    stepPanel.Children.Add(timePanel);
+
+                    panel.Children.Add(stepPanel);
+                }
+
+
                 panelList.Add(panel);
                 dateCounter = dateCounter.AddDays(1);
             }
