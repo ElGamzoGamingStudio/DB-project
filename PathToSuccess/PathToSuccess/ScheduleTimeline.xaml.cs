@@ -66,16 +66,18 @@ namespace PathToSuccess
                 };
                 panel.Children.Add(dayTextBlock);
 
-                var steps = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year);
-                var thisDaySteps = new List<Step>();
-                thisDaySteps.AddRange(steps.Select(binding => binding.Step));
+                var stepsBindings = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year);
+               // var thisDaySteps = new List<Step>();
+                //thisDaySteps.AddRange(steps.Select(binding => binding.Step));
 
-                foreach (var step in thisDaySteps)
+                foreach (var binding in stepsBindings)
                 {
+                    var step = binding.Step;
+                   
                     var stepPanel = new StackPanel()
                     {
                         Orientation = Orientation.Vertical,
-                        Background = new SolidColorBrush(Colors.OrangeRed),
+                        Background = new SolidColorBrush(Colors.Coral),
                         Margin = new Thickness(0, 1, 0, 0),
                     };
                     var descriptionText = new TextBlock() { Text = step.Description, HorizontalAlignment = HorizontalAlignment.Center };
@@ -87,7 +89,7 @@ namespace PathToSuccess
                     };
                     var timeText = new TextBlock()
                     {
-                        Text = step.BeginDate.ToShortTimeString() + " - " + step.EndDate.ToShortTimeString(),
+                        Text = binding.Time.ToShortTimeString() + " - " + binding.Time.AddHours(1).ToShortTimeString(),
                         HorizontalAlignment = HorizontalAlignment.Stretch,
                         Background = new SolidColorBrush(Colors.CadetBlue),
                         TextAlignment = TextAlignment.Center,
