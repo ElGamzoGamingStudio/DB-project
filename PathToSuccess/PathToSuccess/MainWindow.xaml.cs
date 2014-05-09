@@ -34,11 +34,14 @@ namespace PathToSuccess
 
             //var sc = new ScheduleVisualiser();
             //sc.ShowDialog();
+            var timeline = new ScheduleTimeline();
+            timeline.ShowDialog();
+
             Adding.Visibility=Visibility.Collapsed;
-            var log = new LoginWindow();
-            log.ShowDialog();
-            if (log.RightPass == null)
-                Application.Current.Shutdown();
+            //var log = new LoginWindow();
+            //log.ShowDialog();
+            //if (log.RightPass == null)
+            //    Application.Current.Shutdown();
 
             UserInfo.Content = BL.Application.CurrentUser != null
                                    ? "Вы вошли как " + BL.Application.CurrentUser.Name

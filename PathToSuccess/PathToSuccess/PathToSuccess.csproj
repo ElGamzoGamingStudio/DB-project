@@ -123,6 +123,9 @@
     <Compile Include="QueryDialog.xaml.cs">
       <DependentUpon>QueryDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScheduleTimeline.xaml.cs">
+      <DependentUpon>ScheduleTimeline.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ScheduleVisualiser.xaml.cs">
       <DependentUpon>ScheduleVisualiser.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ScheduleTimeline.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ScheduleVisualiser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,7 +188,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TableVisualiserPattern.xaml"/>
+    <Page Include="TableVisualiserPattern.xaml" />
     <Page Include="TaskVisual.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
