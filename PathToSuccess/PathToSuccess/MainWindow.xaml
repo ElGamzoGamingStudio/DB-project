@@ -30,7 +30,7 @@
                 <Ellipse Height="100" Width="100" Fill="Black" Canvas.Top="1000"/>
             </Canvas>
         </ScrollViewer>
-        <StackPanel Orientation="Horizontal" Width="200" Margin="10,0,0,0" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" Width="200" Margin="10,0,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="SnapsToDevicePixels" Value="true"/>

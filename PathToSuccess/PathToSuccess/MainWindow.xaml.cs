@@ -356,15 +356,12 @@ namespace PathToSuccess
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            if (
-                DAL.SqlRepository.Tasks.Cast<Task>()
-                   .FirstOrDefault(
-                       x =>
-                       Task.GetOldestParent(x).Id == BL.Application.CurrentTree.MainTaskId &&
-                       x.Description == DescBox.Text) != null)
+            var list = new List<Task>();
+            foreach (var entity in DAL.SqlRepository.Tasks.Cast<Task>())
             {
-                MessageBox.Show("Такая цель уже есть в этом дереве!", "Warning", MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
+                if (Task.GetOldestParent(entity).Id == BL.Application.CurrentTree.MainTaskId &&
+                       entity.Description == DescBox.Text)
+                    list.Add(entity);
             }
             var crit = new Criteria
                 {
