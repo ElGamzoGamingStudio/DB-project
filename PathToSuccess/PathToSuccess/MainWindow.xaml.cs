@@ -398,7 +398,7 @@ namespace PathToSuccess
                 var st = new Step
                     {
                         BeginDate = Begin.SelectedDate != null ? (DateTime) Begin.SelectedDate : DateTime.Now,
-                        EndDate = End.SelectedDate != null ? (DateTime) End.SelectedDate : DateTime.MaxValue,
+                        EndDate = End.SelectedDate != null ? (DateTime) End.SelectedDate : Interval.PIOS,
                         Criteria = crit,
                         CriteriaId = crit.Id,
                         Description = DescBox.Text,
@@ -420,7 +420,7 @@ namespace PathToSuccess
                 var t = new Task
                     {
                     BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.Now,
-                    EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : DateTime.MaxValue,
+                    EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : Interval.PIOS,
                     Criteria = crit,
                     CriteriaId = crit.Id,
                     Description = DescBox.Text,

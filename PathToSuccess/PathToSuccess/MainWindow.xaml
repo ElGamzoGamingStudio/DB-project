@@ -30,7 +30,7 @@
                 <Ellipse Height="100" Width="100" Fill="Black" Canvas.Top="1000"/>
             </Canvas>
         </ScrollViewer>
-        <StackPanel Orientation="Horizontal" Width="200" Margin="10,0,0,0" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" Width="310" Margin="10,0,0,0" HorizontalAlignment="Left" Height="45" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -82,7 +82,7 @@
         </ComboBox>
 
         <Label HorizontalAlignment="Right" Name="UserInfo" Margin="0,0,20,20" VerticalAlignment="Bottom" Width="140"/>
-        
+
         <Button Content="{StaticResource Search}" Name="SearchButton" Click="SearchButton_Click" HorizontalAlignment="Right" Margin="0,30,10,0" VerticalAlignment="Top" Width="25" BorderThickness="0"/>
         <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="270,13,0,0" VerticalAlignment="Top" Width="251" Click="LevelUp_Click"/>
 
