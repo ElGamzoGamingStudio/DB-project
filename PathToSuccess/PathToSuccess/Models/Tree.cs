@@ -42,7 +42,7 @@ namespace PathToSuccess.Models
             var i = Importance.GetLowestImportance();
             var c = Criteria.CreateCriteria(0, 1, "times");
 
-            return Task.CreateTask(DateTime.Now, DateTime.MaxValue, u.UrgencyName, i.ImportanceName, i, u, c.Id, c, "Root task", null, -1);
+            return Task.CreateTask(DateTime.Now, Interval.PIOS, u.UrgencyName, i.ImportanceName, i, u, c.Id, c, "Root task", null, -1);
         }
 
         public static Tree CreateTree(User user, string userLogin, string name, string description)
