@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PathToSuccess.Models;
 
@@ -20,9 +13,11 @@ namespace PathToSuccess
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+// ReSharper disable RedundantExtendsListEntry
     public partial class MainWindow : Window
+// ReSharper restore RedundantExtendsListEntry
     {
-        private double _realCanvasHeight;
+        
         private double _realCanvasWidth;
         private TaskVisual _parent;
         public MainWindow()
@@ -30,12 +25,11 @@ namespace PathToSuccess
             InitializeComponent();
             BL.Application.SetUp();
             _realCanvasWidth = 0;
-            _realCanvasHeight = 0;
 
             //var sc = new ScheduleVisualiser();
             //sc.ShowDialog();
-            var timeline = new ScheduleTimeline();
-            timeline.ShowDialog();
+            //var timeline = new ScheduleTimeline();
+            //timeline.ShowDialog();
 
             Adding.Visibility=Visibility.Collapsed;
             //var log = new LoginWindow();
@@ -65,9 +59,7 @@ namespace PathToSuccess
             TreeCanvas.MinWidth = _realCanvasWidth >= TreeCanvas.Width
                                     ? _realCanvasWidth
                                     : TreeField.MaxWidth;
-            TreeCanvas.Height += _realCanvasHeight >= TreeCanvas.Height
-                                    ? 170
-                                    : _realCanvasHeight + 170 < TreeCanvas.Height ? -170 : 0;
+           
         }
 
         private void AddTask(object sender, RoutedEventArgs e)
@@ -111,7 +103,11 @@ namespace PathToSuccess
             var treeDialog = new CreateLoadTreeDialog();
             treeDialog.CreateClick(treeDialog.Create, new EventArgs());
             treeDialog.ShowDialog();
-            if(BL.Application.CurrentTree != null) TreeLoaded();
+            if (BL.Application.CurrentTree != null)
+            {
+                TreeLoaded();
+
+            }
         }
 
         private void LoadTree(object sender, RoutedEventArgs e)
@@ -119,12 +115,18 @@ namespace PathToSuccess
             var treeDialog = new CreateLoadTreeDialog();
             treeDialog.LoadClick(treeDialog.Load, new EventArgs());
             treeDialog.ShowDialog();
-            if (BL.Application.CurrentTree != null) TreeLoaded();
+            if (BL.Application.CurrentTree != null)
+            {
+                TreeLoaded();
+                ByName.IsSelected = false;
+                ByName.IsSelected = true;
+            }
         }
 
         private void SaveChanges(object sender, RoutedEventArgs e)
         {
             if(BL.Application.CurrentTree==null) return;
+            DAL.SqlRepository.Save();
         }
 
         private void All_OnSelected(object sender, RoutedEventArgs e)
@@ -141,10 +143,12 @@ namespace PathToSuccess
             Up, Down, None
         }
 
-        private void UpdateTree(Models.Task displayTask,MoveDirections dir)
+        private void UpdateTree(Task displayTask,MoveDirections dir)
         {
+            TreeCanvas.Children.Clear();
             var children = displayTask.SelectChildrenTasks();
             var visual = new TaskVisual { Height = 150, Width = 150 };
+            LevelUp.IsEnabled = displayTask.ParentId != -1;
             visual.Desc.Text = displayTask.Description;
             visual.Date.Text = "С " + displayTask.BeginDate.ToShortDateString() + " по " +
                                displayTask.EndDate.ToShortDateString();
@@ -163,18 +167,51 @@ namespace PathToSuccess
                 visual.Add.Click += AddStep;
             else
                 visual.Add.Click += AddTask;
+            bool evenCount = children.Count%2 == 0;
+            int center = children.Count/2;
+            var centerLeft = (double) visual.GetValue(Canvas.LeftProperty);
+            int module=(i-1)/2;
+            var anim = new ThicknessAnimation(dir==MoveDirections.Down?new Thickness(0, -1000, 0, 200):new Thickness(0,200,0,-1000), new Thickness(0, 0, 0, 0),
+                                                  new Duration(TimeSpan.FromSeconds(1)));
+            if(dir!=MoveDirections.None)
+                visual.BeginAnimation(MarginProperty,anim);
             foreach (var task in children)
             {
-                var child = new TaskVisual { Height = 150, Width = 150 };
-                child.Desc.Text = task.Description;
-                child.Date.Text = "С " + task.BeginDate.ToShortDateString() + " по " +
-                                  task.EndDate.ToShortDateString();
-                child.CritDesc.Text = task.Criteria.Unit;
-                child.Progress.Text = task.Criteria.CurrentValue.ToString() + "/" +
-                                      task.Criteria.TargetValue.ToString();
-                child.Field.Background = task.Criteria.IsCompleted() ? Brushes.Chartreuse : Brushes.Coral;
+                var child = new TaskVisual
+                    {
+                        Height = 150,
+                        Width = 150,
+                        Desc = {Text = task.Description},
+                        Date =
+                            {
+                                Text = "С " + task.BeginDate.ToShortDateString() + " по " +
+                                       task.EndDate.ToShortDateString()
+                            },
+                        CritDesc = {Text = task.Criteria.Unit},
+                        Progress =
+                            {
+                                Text = task.Criteria.CurrentValue.ToString() + "/" +
+                                       task.Criteria.TargetValue.ToString()
+                            },
+                        Field = {Background = task.Criteria.IsCompleted() ? Brushes.Chartreuse : Brushes.Coral}
+                    };
                 TreeCanvas.Children.Add(child);
-                child.SetValue(Canvas.LeftProperty, (TreeCanvas.MinWidth - (visual.Width+visual.Width/children.Count)  * --i));
+                i--;
+                double offset = !evenCount
+                                    ? (i == center + 1
+                                           ? centerLeft
+                                           : (i > center + 1
+                                                  ? centerLeft + (visual.Width + visual.Width/children.Count)*module
+                                                  : centerLeft - (visual.Width + visual.Width/2)*i))
+                                    : (i > center
+                                           ? centerLeft + visual.Width/2 + visual.Width / children.Count / 2 +
+                                             (visual.Width/children.Count + visual.Width)*(module-1)
+                                           : centerLeft - visual.Width / 2 - visual.Width / children.Count / 2 -
+                                             (visual.Width/children.Count + visual.Width)*(i - 1));
+                module--;
+                
+                
+                child.SetValue(Canvas.LeftProperty, offset);
                 child.SetValue(Canvas.TopProperty, visual.Height + 180);
                 child.Add.Visibility=Visibility.Collapsed;
                 var lane = new Line
@@ -191,30 +228,40 @@ namespace PathToSuccess
                 lane.SetValue(RenderOptions.EdgeModeProperty,EdgeMode.Aliased);
                 TreeCanvas.Children.Add(lane);
                 
+                if (dir != MoveDirections.None)
+                {
+                    child.BeginAnimation(MarginProperty, anim);
+                    lane.BeginAnimation(MarginProperty,anim);
+                }
                 child.PreviewMouseLeftButtonUp += SelectChild;
+                
             }
-
+            if (TreeCanvas.Children.Count == 1)
+            {
+                visual.Width = visual.Height = 300;
+            }
             if (displayTask.ChildrenAreSteps())
             {
                 var steps = displayTask.SelectChildrenSteps();
-                visual.Width = 400;
-                visual.Height = 400;
-                var list = new ListBox()
-                {
+                var list = new ListBox
+                    {
                     Margin = new Thickness(10.0, visual.Progress.Margin.Top + 30, 20.0, 0.0),
                     HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Width = visual.Width*0.8
                 };
                 foreach (var step in steps)
                 {
-                    list.Items.Add(new ListBoxItem()
-                    {
+                    list.Items.Add(new ListBoxItem
+                        {
                         Content =
-                            step.Description + "\n" + step.Criteria.Unit + "\t\t" + step.Criteria.CurrentValue +
-                            "/" + step.Criteria.TargetValue
+                            step.Description + "\n\n" + step.Criteria.Unit + "\t\t" + step.Criteria.CurrentValue +
+                            "/" + step.Criteria.TargetValue,
+                            BorderThickness = new Thickness(1),
+                            BorderBrush = Brushes.LightBlue
                     });
                 }
-                visual.Add.Click += AddTask;
+                visual.Add.Click += AddStep;
                 visual.Field.Children.Add(list);
             }
             
@@ -224,16 +271,18 @@ namespace PathToSuccess
         {
             var child = sender as TaskVisual;
             TreeCanvas.Children.Clear();
-            UpdateTree(DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x=>x.Description==child.Desc.Text),MoveDirections.Up);
+            UpdateTree(DAL.SqlRepository.Tasks.Cast<Task>().First(x=>x.Description==child.Desc.Text),MoveDirections.Up);
         }
 
         private void TreeLoaded()
         {
-            var q = DAL.SqlRepository.Tasks.Cast<Models.Task>();
-            var p = new List<Models.Task>();
+            var q = DAL.SqlRepository.Tasks.Cast<Task>();
+            var p = new List<Task>();
+// ReSharper disable LoopCanBeConvertedToQuery
             foreach (var task in q)
+// ReSharper restore LoopCanBeConvertedToQuery
             {
-                if(Models.Task.GetOldestParent(task).Id == BL.Application.CurrentTree.MainTaskId)
+                if(Task.GetOldestParent(task).Id == BL.Application.CurrentTree.MainTaskId)
                     p.Add(task);
             }
             foreach (var task in p)
@@ -243,7 +292,7 @@ namespace PathToSuccess
             var m = p.Max(task1 => task1.Urgency.Value);
             foreach (var task1 in p)
             {
-                if (Models.Task.GetOldestParent(task1).Id == BL.Application.CurrentTree.MainTaskId &&
+                if (Task.GetOldestParent(task1).Id == BL.Application.CurrentTree.MainTaskId &&
                     task1.Urgency.Value >= m)
                 {
                     UpdateTree(task1, MoveDirections.None);
@@ -256,7 +305,7 @@ namespace PathToSuccess
 
         private void Tasks_OnSelected(object sender, RoutedEventArgs e)
         {
-            var tasks = Models.Task.Select(x => !x.ChildrenAreSteps());
+            var tasks = Task.Select(x => !x.ChildrenAreSteps());
             foreach (var result in RawView.Items.Cast<ListBoxItem>())
             {
                 result.Background = tasks.FirstOrDefault(x => x.Description == result.Content.ToString()) != null
@@ -267,7 +316,7 @@ namespace PathToSuccess
 
         private void TaskSt_OnSelected(object sender, RoutedEventArgs e)
         {
-            var tasks = Models.Task.Select(x => x.ChildrenAreSteps());
+            var tasks = Task.Select(x => x.ChildrenAreSteps());
             foreach (var result in RawView.Items.Cast<ListBoxItem>())
             {
                 result.Background = tasks.FirstOrDefault(x => x.Description == result.Content.ToString()) != null
@@ -305,12 +354,22 @@ namespace PathToSuccess
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            var crit = new Criteria()
+            if (
+                DAL.SqlRepository.Tasks.Cast<Task>()
+                   .FirstOrDefault(
+                       x =>
+                       Task.GetOldestParent(x).Id == BL.Application.CurrentTree.MainTaskId &&
+                       x.Description == DescBox.Text) != null)
+            {
+                MessageBox.Show("Такая цель уже есть в этом дереве!", "Warning", MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+            }
+            var crit = new Criteria
                 {
-                    CurrentValue = 0,
-                    TargetValue = Convert.ToInt32(TargetVal.Text),
-                    Unit = UnitBox.Text
-                };
+                CurrentValue = 0,
+                TargetValue = Convert.ToInt32(TargetVal.Text),
+                Unit = UnitBox.Text
+            };
             var imp =
                 DAL.SqlRepository.Importancies.Cast<Importance>()
                    .First(x => ((ComboBoxItem)Imp.SelectedItem).Content.ToString() == x.ImportanceName);
@@ -318,7 +377,7 @@ namespace PathToSuccess
                 DAL.SqlRepository.Urgencies.Cast<Urgency>().First(x => ((ComboBoxItem)Urg.SelectedItem).Content.ToString() == x.UrgencyName);
             if (StepButton.IsChecked == true)
             {
-                var tr = new TimeRule()
+                var tr = new TimeRule
                     {
                         IsPeriodic = Periodic.IsChecked == true,
                         Schedule =
@@ -326,7 +385,14 @@ namespace PathToSuccess
                                .First(x => x.Id == Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())),
                         ScheduleId = Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())
                     };
-                var t = DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x => x.Description == _parent.Desc.Text);
+                var t = DAL.SqlRepository.Tasks.Cast<Task>().First(x => x.Description == _parent.Desc.Text);
+                if (
+                    DAL.SqlRepository.Steps.Cast<Step>()
+                       .FirstOrDefault(x => x.TaskId == t.Id && x.Description == DescBox.Text) != null)
+                {
+                    MessageBox.Show("Такой шаг у цели уже есть!", "Warning", MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                }
                 var st = new Step
                     {
                         BeginDate = Begin.SelectedDate != null ? (DateTime) Begin.SelectedDate : DateTime.Now,
@@ -344,13 +410,12 @@ namespace PathToSuccess
                         TaskId = t.Id
                     };
                 DAL.SqlRepository.Steps.Add(st);
-                DAL.SqlRepository.Save();
                 UpdateTree(t,MoveDirections.None);
             }
             else
             {
-                var p = DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x => x.Description == _parent.Desc.Text);
-                var t = new PathToSuccess.Models.Task
+                var p = DAL.SqlRepository.Tasks.Cast<Task>().First(x => x.Description == _parent.Desc.Text);
+                var t = new Task
                     {
                     BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.Now,
                     EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : DateTime.MaxValue,
@@ -365,10 +430,12 @@ namespace PathToSuccess
                     ParentId = p.Id
                 };
                 DAL.SqlRepository.Tasks.Add(t);
-                DAL.SqlRepository.Save();
+
                 UpdateTree(p,MoveDirections.None);
-                OutAnimation();
+                
             }
+            OutAnimation();
+            Adding.IsEnabled = false;
         }
 
         private void Discard_Click(object sender, RoutedEventArgs e)
@@ -384,10 +451,99 @@ namespace PathToSuccess
         private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
             var parent =
-                DAL.SqlRepository.Tasks.Cast<Models.Task>().First(x => x.Description == _parent.Desc.Text);
-            if(parent.ParentId==-1)return;
+                DAL.SqlRepository.Tasks.Cast<Task>().First(x => x.Description == _parent.Desc.Text);
             TreeCanvas.Children.Clear();
+            
             UpdateTree(parent.Parent,MoveDirections.Down);
+        }
+
+        private void OrderByUrgency(object sender, RoutedEventArgs e)
+        {
+            if (RawView.Items.Count == 0) return;
+            var displayedItems = RawView.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList();
+            var sorted =
+                DAL.SqlRepository.Tasks.Cast<Task>()
+                   .Where(x => displayedItems.Contains(x.Description))
+                   .OrderByDescending(task => task.Urgency.Value);
+            RawView.Items.Clear();
+            foreach (var task in sorted)
+            {
+                RawView.Items.Add(new ListBoxItem {Content = task.Description});
+            }
+        }
+
+        private void OrderByImportance(object sender, RoutedEventArgs e)
+        {
+            if (RawView.Items.Count == 0) return;
+            var displayedItems = RawView.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList();
+            var sorted =
+                DAL.SqlRepository.Tasks.Cast<Task>()
+                   .Where(x => displayedItems.Contains(x.Description))
+                   .OrderByDescending(task => task.Importance.Value);
+            RawView.Items.Clear();
+            foreach (var task in sorted)
+            {
+                RawView.Items.Add(new ListBoxItem { Content = task.Description });
+            }
+        }
+
+        private void OrderByDescription(object sender, RoutedEventArgs e)
+        {
+            if(RawView.Items.Count==0)return;
+            var displayedItems = RawView.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList();
+            var sorted =
+                DAL.SqlRepository.Tasks.Cast<Task>()
+                   .Where(x => displayedItems.Contains(x.Description))
+                   .OrderBy(task => task.Description.ToLower());
+            RawView.Items.Clear();
+            foreach (var task in sorted)
+            {
+                RawView.Items.Add(new ListBoxItem { Content = task.Description });
+            }
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(SearchBox.Text.Length==0)return;
+            var result = DAL.SqlRepository.Tasks.Cast<Task>().Where(task => task.Description.Contains(SearchBox.Text));
+            RawView.Items.Clear();
+            foreach (var task in result)
+            {
+                RawView.Items.Add(new ListBoxItem {Content = task.Description});
+            }
+            Disc.Visibility=Visibility.Visible;
+            ByName.IsSelected = false;
+            ByName.IsSelected = true;
+        }
+
+        private void Disc_OnClick(object sender, RoutedEventArgs e)
+        {
+            RawView.Items.Clear();
+            var treeList = new List<Task>();
+// ReSharper disable LoopCanBeConvertedToQuery
+            foreach (var entity in DAL.SqlRepository.Tasks.Cast<Task>())
+// ReSharper restore LoopCanBeConvertedToQuery
+            {
+                if (Task.GetOldestParent(entity).Id == BL.Application.CurrentTree.MainTaskId)
+                {
+                    treeList.Add(entity);
+                }
+            }
+            foreach (var source in treeList)
+            {
+                RawView.Items.Add(new ListBoxItem {Content = source.Description});
+            }
+            ByName.IsSelected = false;
+            ByName.IsSelected = true;
+            Disc.Visibility=Visibility.Hidden;
+        }
+
+        private void TaskSelected(object sender, RoutedEventArgs e)
+        {
+            var source = sender as ListBoxItem;
+            var selectedTask =
+                DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == source.Content.ToString());
+            UpdateTree(selectedTask,MoveDirections.None);
         }
     }
 }

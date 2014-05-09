@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" MinHeight="600" Height="600" WindowStyle="SingleBorderWindow"  MinWidth="1024" Width="1024" SizeChanged="Update" >
     <Grid Background="Gainsboro">
-        <ScrollViewer MinWidth="830" HorizontalScrollBarVisibility="Auto" Name="TreeField" MinHeight="520" MaxHeight="520" MaxWidth="830" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+        <ScrollViewer MinWidth="830" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Name="TreeField" MinHeight="520" MaxHeight="520" MaxWidth="830" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <Canvas   Background="White" Name="TreeCanvas" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" MinWidth="830" Height="498">
                 <Canvas.Resources>
                     <Style TargetType="Border">
@@ -72,13 +72,13 @@
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="Save" Width="35" Click="SaveChanges"/>
             <Button  HorizontalAlignment="Left" Height="32" Margin="10,0,0,0" VerticalAlignment="Top" Content="SQL" Width="35" Click="OpenQuery"/>
         </StackPanel>
-        <ComboBox HorizontalAlignment="Right" Margin="0,50,10,0" Name="Filter" VerticalAlignment="Top" Width="150">
-            <ComboBoxItem Name="All" Content="All" IsSelected="True" Selected="All_OnSelected"/>
-            <ComboBoxItem Name="Tasks" Content="Task without steps" Selected="Tasks_OnSelected"/>
-            <ComboBoxItem Name="TaskSt" Content="Task with steps" Selected="TaskSt_OnSelected"/>
+        <ComboBox HorizontalAlignment="Right" Margin="0,146,10,0" Name="Filter" VerticalAlignment="Top" Width="150">
+            <ComboBoxItem Name="All" Content="Все" IsSelected="True" Selected="All_OnSelected"/>
+            <ComboBoxItem Name="Tasks" Content="Только цели" Selected="Tasks_OnSelected"/>
+            <ComboBoxItem Name="TaskSt" Content="Только задачи" Selected="TaskSt_OnSelected"/>
         </ComboBox>
-        <Label HorizontalAlignment="Right" Name="UserInfo" Margin="0,549,20,0" VerticalAlignment="Top" Width="140"/>
-        <Button Content="Поиск" Name="SearchButton" HorizontalAlignment="Right" Margin="0,25,10,0" VerticalAlignment="Top" Width="25"/>
+        <Label HorizontalAlignment="Right" Name="UserInfo" Margin="0,0,20,20" VerticalAlignment="Bottom" Width="140"/>
+        <Button Content="Поиск" Name="SearchButton" HorizontalAlignment="Right" Margin="0,32,10,0" VerticalAlignment="Top" Width="25" Height="23" Click="SearchButton_Click"/>
         <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="270,13,0,0" VerticalAlignment="Top" Width="251" Click="LevelUp_Click"/>
         <Grid Background="DeepSkyBlue" Name="Adding" HorizontalAlignment="Left" MinHeight="520" Margin="-1000,0,0,0" VerticalAlignment="Bottom" MinWidth="813">
             <Label Content="Добавление" FontSize="24" HorizontalAlignment="Left" Margin="300,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="170"/>
@@ -110,7 +110,24 @@
             <Label Content="Срочность" HorizontalAlignment="Left" Margin="527,346,0,0" VerticalAlignment="Top" Width="129"/>
 
         </Grid>
-        <TextBox Name="SearchBox" HorizontalAlignment="Right" Height="23" Margin="0,22,40,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
-        <ListBox Name="RawView" HorizontalAlignment="Right" Height="320" Margin="0,77,10,0" VerticalAlignment="Top" Width="150"/>
+        <TextBox Name="SearchBox" HorizontalAlignment="Right" Height="23" Margin="0,32,40,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <ListBox Name="RawView" HorizontalAlignment="Right" Height="320" Margin="0,173,10,0" VerticalAlignment="Top" Width="150">
+            <ListBox.Resources>
+                <Style TargetType="ListBoxItem">
+                    <Style.Setters>
+                        <EventSetter Event="Selected" Handler="TaskSelected"/>
+                    </Style.Setters>
+                </Style>
+            </ListBox.Resources>
+        </ListBox>
+        <ComboBox HorizontalAlignment="Right" Margin="0,87,10,0" VerticalAlignment="Top" Width="150">
+            <ComboBoxItem Name="ByName" Content="По описанию" IsSelected="True" Selected="OrderByDescription"/>
+            <ComboBoxItem Name="ByUrgency" Content="По срочности" Selected="OrderByUrgency"/>
+            <ComboBoxItem Name="ByImportance" Content="По важности" Selected="OrderByImportance"/>
+        </ComboBox>
+        <Label HorizontalAlignment="Right" Content="Сортировка"  Margin="0,55,83,0" VerticalAlignment="Top" Width="77" Height="27"/>
+        <Label HorizontalAlignment="Right" Content="Фильтрация"  Margin="0,114,83,0" VerticalAlignment="Top" Width="77" Height="27"/>
+        <Label HorizontalAlignment="Right" Content="Поиск"  Margin="0,5,83,0" VerticalAlignment="Top" Width="77" Height="27"/>
+        <Button Content="X" Background="White" Foreground="Red" FontWeight="ExtraBold" Name="Disc" Click="Disc_OnClick" Visibility="Hidden" HorizontalAlignment="Right" Margin="0,173,159,0" VerticalAlignment="Top" Width="22"/>
     </Grid>
 </Window>
