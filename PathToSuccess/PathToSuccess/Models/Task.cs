@@ -152,8 +152,13 @@ namespace PathToSuccess.Models
 
         public bool HasUncompletedSteps()
         {
-            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().ToList().Where(x => x.TaskId == this.Id).ToList();
-            return childrenStepSet.Count(x => !x.Criteria.IsCompleted()) > 0;
+            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.TaskId == this.Id).ToList();
+            foreach (var step in childrenStepSet)
+            {
+                if (!step.Criteria.IsCompleted())
+                    return true;
+            }
+            return false;
         }
         public static List<Task> GetLowestTasks()
         {
@@ -165,6 +170,19 @@ namespace PathToSuccess.Models
         public static Task GetOldestParent(Task child)
         {
             return child.ParentId == -1 ? child : GetOldestParent(child.Parent);
+        }
+
+        public bool HasUncomplitedTasks()
+        {
+            var list = DAL.SqlRepository.Tasks.Cast<Task>().Where(t => t.ParentId == Id).ToList();
+            bool res=HasUncompletedSteps();
+            if (res) return true;
+            foreach (var task1 in list)
+            {
+                res = task1.HasUncomplitedTasks();
+                if (res) return true;
+            }
+            return false;
         }
     }
 }

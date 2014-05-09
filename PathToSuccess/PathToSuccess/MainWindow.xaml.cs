@@ -154,10 +154,6 @@ namespace PathToSuccess
             visual.Desc.Text = displayTask.Description;
             visual.Date.Text = "С " + displayTask.BeginDate.ToShortDateString() + " по " +
                                displayTask.EndDate.ToShortDateString();
-            visual.CritDesc.Text = displayTask.Criteria.Unit;
-            visual.Progress.Text = displayTask.Criteria.CurrentValue.ToString() + "/" +
-                                   displayTask.Criteria.TargetValue.ToString();
-            visual.Field.Background = displayTask.Criteria.IsCompleted() ? Brushes.Chartreuse : Brushes.Coral;
             TreeCanvas.Children.Add(visual);
             int i = children.Count + 1;
             _realCanvasWidth = visual.Width * i;
@@ -177,6 +173,7 @@ namespace PathToSuccess
                                                   new Duration(TimeSpan.FromSeconds(1)));
             if(dir!=MoveDirections.None)
                 visual.BeginAnimation(MarginProperty,anim);
+            visual.Background = !displayTask.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange;
             foreach (var task in children)
             {
                 var child = new TaskVisual
@@ -195,7 +192,7 @@ namespace PathToSuccess
                                 Text = task.Criteria.CurrentValue.ToString() + "/" +
                                        task.Criteria.TargetValue.ToString()
                             },
-                        Field = {Background = task.Criteria.IsCompleted() ? Brushes.Chartreuse : Brushes.Coral}
+                        Field = {Background = !task.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange}
                     };
                 TreeCanvas.Children.Add(child);
                 i--;
