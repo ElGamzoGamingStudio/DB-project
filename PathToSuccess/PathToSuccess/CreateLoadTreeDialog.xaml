@@ -70,17 +70,18 @@
                             <Button Name="BackFromTree" Click="BackToTreeNameTabFromTreeAdd" Content="{StaticResource BackArrow}" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
-                            <Grid Name="TreeVisualisingGrid" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock Text="MAYBE COMING SOON" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
-                            <StackPanel Name="AddPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="SteelBlue">
-                                <StackPanel Name="AddStepPanel" VerticalAlignment="Bottom" Background="SlateBlue">
-                                    <TextBlock Text="ADD STEP HERE"/>
-                                    <Rectangle Width="60" Height="150" Fill="Yellow"/>
-                                </StackPanel>
+                            <StackPanel Name="AddPanel" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="SteelBlue">
                                 <StackPanel Name="AddTaskPanel" VerticalAlignment="Top" Background="SeaGreen">
-                                    <TextBlock Text="ADD TASK HERE"/>
-                                    <Rectangle Width="60" Height="150" Fill="Yellow"/>
+                                    <TextBlock Text="What do you want to achieve" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBox Name="DescBox" HorizontalAlignment="Center" Height="60" TextWrapping="Wrap" Width="350"/>
+                                    <TextBlock Text="Unit of measure" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBox Name="UnitBox" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                                    <TextBlock Text="Target value" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBox Name="TargetVal" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                                    <TextBlock Text="From" FontSize="14" HorizontalAlignment="Center"/>
+                                    <DatePicker Name="Begin" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                    <TextBlock Text="To" FontSize="14" HorizontalAlignment="Center"/>
+                                    <DatePicker Name="End" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                 </StackPanel>
                             </StackPanel>
                         </StackPanel>

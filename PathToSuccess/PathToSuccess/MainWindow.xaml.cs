@@ -32,10 +32,12 @@ namespace PathToSuccess
             _realCanvasWidth = 0;
             _realCanvasHeight = 0;
 
+            var tree = new CreateLoadTreeDialog();
+            tree.ShowDialog();
             //var sc = new ScheduleVisualiser();
             //sc.ShowDialog();
-            var timeline = new ScheduleTimeline();
-            timeline.ShowDialog();
+            //var timeline = new ScheduleTimeline();
+            //timeline.ShowDialog();
 
             Adding.Visibility=Visibility.Collapsed;
             //var log = new LoginWindow();
@@ -388,6 +390,18 @@ namespace PathToSuccess
             if(parent.ParentId==-1)return;
             TreeCanvas.Children.Clear();
             UpdateTree(parent.Parent,MoveDirections.Down);
+        }
+
+        private void ShowScheduleTimeline(object sender, RoutedEventArgs e)
+        {
+            var sched = new ScheduleTimeline();
+            sched.ShowDialog();
+        }
+
+        private void ShowSchedule(object sender, RoutedEventArgs e)
+        {
+            var schedVis = new ScheduleVisualiser();
+            schedVis.ShowDialog();
         }
     }
 }

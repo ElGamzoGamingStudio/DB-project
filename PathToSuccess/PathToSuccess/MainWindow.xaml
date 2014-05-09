@@ -30,7 +30,7 @@
                 <Ellipse Height="100" Width="100" Fill="Black" Canvas.Top="1000"/>
             </Canvas>
         </ScrollViewer>
-        <StackPanel Orientation="Horizontal" Width="200" Margin="10,5,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" Width="316" Margin="10,5,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -71,6 +71,8 @@
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Open" Width="40" Click="LoadTree"/>
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Save" Width="40" Click="SaveChanges"/>
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="SQL" Width="40" Click="OpenQuery"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Time" Width="40" Click="ShowScheduleTimeline"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Schedule" Width="40" Click="ShowSchedule"/>
         </StackPanel>
         <ComboBox HorizontalAlignment="Right" Margin="0,50,10,0" Name="Filter" VerticalAlignment="Top" Width="150">
             <ComboBoxItem Name="All" Content="All" IsSelected="True" Selected="All_OnSelected"/>
@@ -79,7 +81,7 @@
         </ComboBox>
         <Label HorizontalAlignment="Right" Name="UserInfo" Margin="0,549,20,0" VerticalAlignment="Top" Width="140"/>
         <Button Content="{StaticResource Search}" Name="SearchButton" HorizontalAlignment="Right" Margin="0,23,9.6,0" VerticalAlignment="Top" Width="25" BorderThickness="0"/>
-        <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="270,13,0,0" VerticalAlignment="Top" Width="251" Click="LevelUp_Click"/>
+        <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="446,13,0,0" VerticalAlignment="Top" Width="251" Click="LevelUp_Click"/>
         <Grid Background="DeepSkyBlue" Name="Adding" HorizontalAlignment="Left" MinHeight="520" Margin="-1000,0,0,0" VerticalAlignment="Bottom" MinWidth="813">
             <Label Content="Добавление" FontSize="24" HorizontalAlignment="Left" Margin="300,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="170"/>
             <StackPanel Name="Chos" HorizontalAlignment="Left" Height="47" Margin="10,68,0,0" VerticalAlignment="Top" Width="166">

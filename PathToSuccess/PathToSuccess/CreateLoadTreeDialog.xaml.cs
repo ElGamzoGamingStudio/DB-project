@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +17,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using LinqToDB;
+using PathToSuccess.DAL;
+using PathToSuccess.Models;
 
 namespace PathToSuccess
 {
@@ -218,6 +222,12 @@ namespace PathToSuccess
                 //SIKASIKA
                 //NameBox.Text
                 //DescriptionBox.Text
+
+                if (BL.Application.CurrentUser == null)
+                    BL.Application.CurrentUser = SqlRepository.Users.Cast<User>().FirstOrDefault();
+                BL.Application.CurrentTree = Models.Tree.CreateTree(BL.Application.CurrentUser, BL.Application.CurrentUser.Login, NameBox.Text.Trim(),
+                    DescriptionBox.Text.Trim());
+                
                 Tree.Text = "GRATZ";
 
                 var move = new TranslateTransform(0, 0);
