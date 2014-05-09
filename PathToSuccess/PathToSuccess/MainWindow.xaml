@@ -77,8 +77,13 @@
             <ComboBoxItem Name="Tasks" Content="Только цели" Selected="Tasks_OnSelected"/>
             <ComboBoxItem Name="TaskSt" Content="Только задачи" Selected="TaskSt_OnSelected"/>
         </ComboBox>
+<<<<<<< HEAD
         <Label HorizontalAlignment="Right" Name="UserInfo" Margin="0,0,20,20" VerticalAlignment="Bottom" Width="140"/>
         <Button Content="Поиск" Name="SearchButton" HorizontalAlignment="Right" Margin="0,32,10,0" VerticalAlignment="Top" Width="25" Height="23" Click="SearchButton_Click"/>
+=======
+        <Label HorizontalAlignment="Right" Name="UserInfo" Margin="0,549,20,0" VerticalAlignment="Top" Width="140"/>
+        <Button Content="{StaticResource Search}" Name="SearchButton" HorizontalAlignment="Right" Margin="0,23,9.6,0" VerticalAlignment="Top" Width="25" BorderThickness="0"/>
+>>>>>>> 23d1412029dcea9ccc19d60b7053b94062fcfd1a
         <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Left" Margin="270,13,0,0" VerticalAlignment="Top" Width="251" Click="LevelUp_Click"/>
         <Grid Background="DeepSkyBlue" Name="Adding" HorizontalAlignment="Left" MinHeight="520" Margin="-1000,0,0,0" VerticalAlignment="Bottom" MinWidth="813">
             <Label Content="Добавление" FontSize="24" HorizontalAlignment="Left" Margin="300,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="170"/>

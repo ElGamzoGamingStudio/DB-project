@@ -106,5 +106,15 @@ namespace PathToSuccess.Models
         {
             return new DateTime(Year,Month,Day,Time.Hour,Time.Minute,Time.Second);
         }
+
+        public static List<TimeBinding> GetAllSortedByTime()
+        {
+            return DAL.SqlRepository.TimeBindings
+                .Cast<TimeBinding>()
+                .ToList()
+                .OrderBy(x => x.GetNormalTime())
+                .ToList();
+               
+        }
     }
 }

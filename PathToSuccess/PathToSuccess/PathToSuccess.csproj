@@ -119,7 +119,6 @@
     <Compile Include="Models\Urgency.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="PhoneSync\InfoSender.cs" />
-    <Compile Include="PhoneSync\Serializer.cs" />
     <Compile Include="QueryDialog.xaml.cs">
       <DependentUpon>QueryDialog.xaml</DependentUpon>
     </Compile>

@@ -165,8 +165,8 @@ namespace PathToSuccess
         private void PanelinoStackerino(object sender, EventArgs e)
         {
             
-            TreeNamePanel.Width = Width/4;
-            TreeNamePanel.Height = Height/4;
+            TreeNamePanel.Width = Width/2;
+            TreeNamePanel.Height = Height/2;
         }
 
         #region MOVE TO TAB
