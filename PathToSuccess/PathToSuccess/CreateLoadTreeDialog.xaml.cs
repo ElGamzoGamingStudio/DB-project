@@ -307,6 +307,7 @@ namespace PathToSuccess
                 BL.Application.CurrentTree.MainTask.Criteria.TargetValue = targ;
             else 
                 throw new Exception("Look what you've done");
+            SqlRepository.Save();
             Close();
         }
     }
