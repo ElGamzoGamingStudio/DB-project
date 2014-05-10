@@ -366,7 +366,8 @@ namespace PathToSuccess
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Width = 25,
-                    Height = 25
+                    Height = 25,
+                    Content = "Q"
                 };
            
             valueSetter.Children.Add(b);

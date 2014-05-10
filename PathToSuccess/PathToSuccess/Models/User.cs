@@ -26,9 +26,9 @@ namespace PathToSuccess.Models
         [Column("date_reg")]
         public DateTime DateReg { get; set; }
 
-        public User PIOS()
+        public static User PIOS()
         {
-            var pioooooos = (User)SqlRepository.Users.Find(-1);
+            var pioooooos = (User)SqlRepository.Users.Find("xxxrassiyavperedxxx");
             return pioooooos;
         }
 

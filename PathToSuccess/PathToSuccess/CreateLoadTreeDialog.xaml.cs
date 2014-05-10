@@ -315,12 +315,14 @@ namespace PathToSuccess
         private void LoadTreesToLoadTabItem(object sender, RoutedEventArgs e)
         {
             var trees = Models.Tree.FindTreesForUser(BL.Application.CurrentUser);
+            var defaultTrees = Models.Tree.FindTreesForUser(User.PIOS());
+            trees.AddRange(defaultTrees);
             //concat these trees with default user tree
             foreach (var tree in trees)
             {
                 var treeNameText = new TextBlock()
                 {
-                    Text = tree.Name,
+                    Text = tree.TreeUser == BL.Application.CurrentUser ?  tree.Name : "[" + tree.Name + "]",
                     HorizontalAlignment = HorizontalAlignment.Center,
                     TextWrapping = TextWrapping.Wrap,
                     FontSize = 16,

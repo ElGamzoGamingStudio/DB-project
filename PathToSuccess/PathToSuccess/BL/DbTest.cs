@@ -86,7 +86,6 @@ namespace PathToSuccess.BL
                 Step.CreateStep(DateTime.Now, DateTime.Now.AddDays(30), urgencies[1].UrgencyName, urgencies[1], importancies[0].ImportanceName, importancies[0], criterias[0].Id, criterias[0], timeRules[0].Id, timeRules[0], "step 1", tasks[3], tasks[3].Id, 7)
             };
 
-            
         }
 
         public static void Try()
