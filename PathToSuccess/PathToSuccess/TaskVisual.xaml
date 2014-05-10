@@ -11,6 +11,8 @@
         <TextBlock HorizontalAlignment="Center" Name="Date" Margin="0,54,0,0" TextWrapping="Wrap" TextAlignment="Center" Text="TextBlock" VerticalAlignment="Top"  Height="22"/>
         <TextBlock HorizontalAlignment="Left" Name="CritDesc" Margin="10,81,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="35" Width="90"/>
         <TextBlock HorizontalAlignment="Left" Name="Progress" Margin="105,81,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="21" Width="39"/>
+        <Button Content="Button" Name="Removing" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Width="25" Height="25" Margin="0,0,0,0"/>
+        <Button Content="Button" Name="Edit" HorizontalAlignment="Right"  VerticalAlignment="Bottom" Width="25" Height="25" Margin="0,0,25,0"/>
 
     </Grid>
 </UserControl>

@@ -68,12 +68,12 @@
                     </Setter>
                 </Style>
             </StackPanel.Resources>
-            <Button  HorizontalAlignment="Left" Height="35"  Margin="10,0,0,5" Content="New" Width="40" Click="CreateTree"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Open" Width="40" Click="LoadTree"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Save" Width="40" Click="SaveChanges"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="SQL" Width="40" Click="OpenQuery"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Time" Width="40" Click="ShowScheduleTimeline"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,0" VerticalAlignment="Top" Content="Schedule" Width="40" Click="ShowSchedule"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="New" Width="40" Click="CreateTree"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Open" Width="40" Click="LoadTree"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Save" Width="40" Click="SaveChanges"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="SQL" Width="40" Click="OpenQuery"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Time" Width="40" Click="ShowScheduleTimeline"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Schedule" Width="40" Click="ShowSchedule"/>
         </StackPanel>
 		
         <ComboBox HorizontalAlignment="Right" Margin="0,146,10,0" Name="Filter" VerticalAlignment="Top" Width="150">
@@ -88,7 +88,7 @@
         <Button Content="Уровень вверх" Name="LevelUp" HorizontalAlignment="Center" Margin="0,12,0,0" VerticalAlignment="Top" Width="251" Click="LevelUp_Click"/>
 
         <Grid Background="DeepSkyBlue" Name="Adding" HorizontalAlignment="Left" MinHeight="520" Margin="-1000,0,0,0" VerticalAlignment="Bottom" MinWidth="813">
-            <Label Content="Добавление" FontSize="24" HorizontalAlignment="Left" Margin="300,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="170"/>
+            <Label Content="Добавление" Name="Labl" FontSize="24" HorizontalAlignment="Left" Margin="300,10,0,0" HorizontalContentAlignment="Center" VerticalAlignment="Top" Width="170"/>
             <StackPanel Name="Chos" HorizontalAlignment="Left" Height="47" Margin="10,68,0,0" VerticalAlignment="Top" Width="166">
                 <RadioButton Content="Цель" Name="TaskButton" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="166"/>
                 <RadioButton Content="Шаг" Name="StepButton" HorizontalAlignment="Left" VerticalAlignment="Top" Height="24" Width="166"/>
@@ -97,18 +97,18 @@
             <Label Content="Описание" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="166"/>
             <CheckBox Name="Periodic" Content="Периодичный" HorizontalAlignment="Left" Margin="527,158,0,0" VerticalAlignment="Top" Width="129"/>
 
-            <Label Content="Критерий выполнения" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
+            <Label Content="Критерий выполнения" Name="CritLabel" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
             <TextBox Name="UnitBox" HorizontalAlignment="Left" Height="23" Margin="150,356,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
             <TextBox Name="TargetVal" HorizontalAlignment="Left" Height="23" Margin="150,397,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-            <Label Content="В чем измеряется" HorizontalAlignment="Left" Margin="9,352,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
-            <Label Content="Целевой результат" HorizontalAlignment="Left" Margin="10,393,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
-            <Label Content="Временное правило" HorizontalAlignment="Left" Margin="527,115,0,0" VerticalAlignment="Top" Width="232"/>
+            <Label Content="В чем измеряется" Name="UnitLabel" HorizontalAlignment="Left" Margin="9,352,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
+            <Label Content="Целевой результат" Name="TargetLabel" HorizontalAlignment="Left" Margin="10,393,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
+            <Label Content="Временное правило" Name="TrLabel" HorizontalAlignment="Left" Margin="527,115,0,0" VerticalAlignment="Top" Width="232"/>
             <Label Content="Время на выполнение" HorizontalAlignment="Left" Margin="10,242,0,0" VerticalAlignment="Top" Width="141"/>
             <Label Content="С" HorizontalAlignment="Left" Margin="10,273,0,0" VerticalAlignment="Top"/>
             <DatePicker Name="Begin" HorizontalAlignment="Left" Margin="32,275,0,0" VerticalAlignment="Top"/>
             <DatePicker Name="End" HorizontalAlignment="Left" Margin="193,275,0,0" VerticalAlignment="Top"/>
             <Label Content="По" HorizontalAlignment="Left" Margin="162,274,0,0" VerticalAlignment="Top"/>
-            <Button Content="ОК" HorizontalAlignment="Left" Margin="627,476,0,0" VerticalAlignment="Top" Width="54" Height="34" Click="Add_Click" />
+            <Button Content="ОК" HorizontalAlignment="Left" Margin="627,476,0,0" Name="OkButton" VerticalAlignment="Top" Width="54" Height="34" Click="Add_Click" />
             <Button Content="Отмена" HorizontalAlignment="Left" Margin="722,476,0,0" VerticalAlignment="Top" Width="54" Height="34" Click="Discard_Click"/>
             <ComboBox Name="Graphs" HorizontalAlignment="Left" Margin="527,193,0,0" VerticalAlignment="Top" Width="154"/>
             <ComboBox  HorizontalAlignment="Left" Name="Imp" Margin="527,299,0,0" VerticalAlignment="Top" Width="154"/>

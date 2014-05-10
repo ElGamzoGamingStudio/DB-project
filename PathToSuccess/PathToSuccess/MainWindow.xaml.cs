@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -20,14 +21,15 @@ namespace PathToSuccess
         
         private double _realCanvasWidth;
         private TaskVisual _parent;
+        private Grid _stepChanger;
         public MainWindow()
         {
             InitializeComponent();
             BL.Application.SetUp();
             _realCanvasWidth = 0;
-
-            var tree = new CreateLoadTreeDialog();
-            tree.ShowDialog();
+            
+            //var tree = new CreateLoadTreeDialog();
+            //tree.ShowDialog();
             //var sc = new ScheduleVisualiser();
             //sc.ShowDialog();
             //var timeline = new ScheduleTimeline();
@@ -145,6 +147,61 @@ namespace PathToSuccess
             Up, Down, None
         }
 
+        private void RemoveTask(object sender, RoutedEventArgs e)
+        {
+            
+            var targetTask = DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == _parent.Desc.Text);
+            Task.CascadeRemoving(targetTask);
+            if (targetTask.ParentId == -1)
+            {
+                TreeCanvas.Children.Clear();
+                return;
+            }
+            UpdateTree(DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Id == targetTask.ParentId), MoveDirections.Down);
+        }
+
+        private void EditTask(object sender, RoutedEventArgs e)
+        {
+            var targetTask = DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == _parent.Desc.Text);
+            Adding.Visibility=Visibility.Visible;
+            Adding.IsEnabled = true;
+            InAnimation();
+            Labl.Content = "Редактирование";
+            Chos.Visibility=Visibility.Collapsed;
+            DescBox.Text = targetTask.Description;
+            Begin.SelectedDate = targetTask.BeginDate;
+            End.SelectedDate = targetTask.EndDate;
+            Imp.SelectedItem =
+                Imp.Items.Cast<ComboBoxItem>().First(item => item.Content.ToString() == targetTask.ImportanceName);
+            Urg.SelectedItem =
+                Urg.Items.Cast<ComboBoxItem>().First(item => item.Content.ToString() == targetTask.UrgencyName);
+            CritLabel.Visibility =
+                UnitLabel.Visibility =
+                UnitBox.Visibility =
+                TargetLabel.Visibility =
+                TargetVal.Visibility = TrLabel.Visibility = Periodic.Visibility = Graphs.Visibility = Visibility.Hidden;
+            OkButton.Click -= Add_Click;
+            OkButton.Click += ApplyEditing;
+        }
+
+        private void ApplyEditing(object sender, RoutedEventArgs e)
+        {
+            var targetTask = DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == _parent.Desc.Text);
+            targetTask.Description = DescBox.Text;
+            targetTask.ImportanceName = (Imp.SelectedItem as ComboBoxItem).Content.ToString();
+            targetTask.Importance =
+                DAL.SqlRepository.Importancies.Cast<Importance>()
+                   .First(imp => imp.ImportanceName == targetTask.ImportanceName);
+            targetTask.UrgencyName = (Urg.SelectedItem as ComboBoxItem).Content.ToString();
+            targetTask.Urgency =
+                DAL.SqlRepository.Urgencies.Cast<Urgency>()
+                   .First(imp => imp.UrgencyName == targetTask.UrgencyName);
+            
+            targetTask.BeginDate = Begin.SelectedDate != null ? (DateTime) Begin.SelectedDate : DateTime.MinValue;
+            targetTask.EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : DateTime.MaxValue;
+            Discard_Click(sender, e);
+        }
+
         private void UpdateTree(Task displayTask,MoveDirections dir)
         {
             TreeCanvas.Children.Clear();
@@ -160,6 +217,7 @@ namespace PathToSuccess
             OverflowCanvas();
             visual.SetValue(Canvas.LeftProperty, (TreeCanvas.MinWidth - visual.Width) / 2);
             visual.SetValue(Canvas.TopProperty, 20.0);
+            visual.PreviewMouseLeftButtonDown += ClearStepChanger;
             _parent = visual;
             if (displayTask.ChildrenAreSteps())
                 visual.Add.Click += AddStep;
@@ -174,6 +232,8 @@ namespace PathToSuccess
             if(dir!=MoveDirections.None)
                 visual.BeginAnimation(MarginProperty,anim);
             visual.Background = !displayTask.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange;
+            visual.Removing.Click += RemoveTask;
+            visual.Edit.Click += EditTask;
             foreach (var task in children)
             {
                 var child = new TaskVisual
@@ -194,6 +254,8 @@ namespace PathToSuccess
                             },
                         Field = {Background = !task.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange}
                     };
+                child.Removing.Visibility=Visibility.Collapsed;
+                child.Edit.Visibility=Visibility.Collapsed;
                 TreeCanvas.Children.Add(child);
                 i--;
                 double offset = !evenCount
@@ -251,19 +313,68 @@ namespace PathToSuccess
                 };
                 foreach (var step in steps)
                 {
-                    list.Items.Add(new ListBoxItem
+                    var item = new ListBoxItem
                         {
-                        Content =
-                            step.Description + "\n\n" + step.Criteria.Unit + "\t\t" + step.Criteria.CurrentValue +
-                            "/" + step.Criteria.TargetValue,
+                            Content =
+                                step.Description + "\n\n" + step.Criteria.Unit + "\t\t" + step.Criteria.CurrentValue +
+                                "/" + step.Criteria.TargetValue,
                             BorderThickness = new Thickness(1),
-                            BorderBrush = Brushes.LightBlue
-                    });
+                            BorderBrush = Brushes.LightBlue,
+                            Name = "S" + step.Id
+                        };
+                    item.Selected += StepSelected;
+                    list.Items.Add(item);
                 }
                 visual.Add.Click += AddStep;
                 visual.Field.Children.Add(list);
             }
             
+        }
+        
+        private void ClearStepChanger(object sender, RoutedEventArgs e)
+        {
+            if (_stepChanger != null)
+            {
+                TreeCanvas.Children.Remove(_stepChanger);
+            }
+            _stepChanger = null;
+        }
+
+        private void StepSelected(object sender, RoutedEventArgs e)
+        {
+            if (_stepChanger != null)
+            {
+                TreeCanvas.Children.Remove(_stepChanger);
+            }
+            int id = Convert.ToInt32((sender as ListBoxItem).Name.Substring(1));
+            var step = DAL.SqlRepository.Steps.Cast<Step>().First(st => st.Id == id);
+            var valueSetter = new Grid() {Width = 120, Height = 80, Background = Brushes.CornflowerBlue};
+            valueSetter.Children.Add(new Label
+                {
+                    Content = "Фиксация прогресса",
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                });
+            valueSetter.Children.Add(new TextBox
+                {
+                    Text = step.Criteria.CurrentValue.ToString(),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Right
+                });
+            var b = new Button()
+                {
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Width = 25,
+                    Height = 25
+                };
+           
+            valueSetter.Children.Add(b);
+            TreeCanvas.Children.Add(valueSetter);
+            var p = Mouse.GetPosition(TreeCanvas);
+            valueSetter.SetValue(Canvas.LeftProperty,p.X);
+            valueSetter.SetValue(Canvas.TopProperty,p.Y);
+            _stepChanger = valueSetter;
         }
 
         private void SelectChild(object sender, RoutedEventArgs e)
@@ -430,8 +541,7 @@ namespace PathToSuccess
                 UpdateTree(p,MoveDirections.None);
                 
             }
-            OutAnimation();
-            Adding.IsEnabled = false;
+            Discard_Click(sender,e);
         }
 
         private void Discard_Click(object sender, RoutedEventArgs e)
@@ -440,6 +550,14 @@ namespace PathToSuccess
             Begin.SelectedDate = End.SelectedDate = null;
             UnitBox.Clear();
             TargetVal.Clear();
+            Labl.Content = "Добавление";
+            CritLabel.Visibility =
+                UnitLabel.Visibility =
+                UnitBox.Visibility =
+                TargetLabel.Visibility =
+                TargetVal.Visibility = TrLabel.Visibility = Periodic.Visibility = Graphs.Visibility = Chos.Visibility = Visibility.Visible;
+            OkButton.Click += Add_Click;
+            OkButton.Click -= ApplyEditing;
             OutAnimation();
             Adding.IsEnabled = false;
         }

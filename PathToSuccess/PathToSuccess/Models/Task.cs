@@ -123,7 +123,7 @@ namespace PathToSuccess.Models
         {
             //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
             //var childrenSet = set.Cast<Task>().Where(x => x.Parent == this);
-            return DAL.SqlRepository.Tasks.Cast<Task>().Where(x => x.ParentId == this.Id).ToList();
+            return DAL.SqlRepository.Tasks.Cast<Task>().ToList().Where(x => x.ParentId == this.Id).ToList();
         }
         public List<Task> SelectChildrenTasks(Func<Task, bool> predicate)
         {
@@ -183,6 +183,35 @@ namespace PathToSuccess.Models
                 if (res) return true;
             }
             return false;
+        }
+
+        public static void CascadeRemoving(Task targetTask)
+        {
+            
+            var children = targetTask.SelectChildrenTasks();
+            var steps = targetTask.SelectChildrenSteps();
+            foreach (var step in steps)
+            {
+                DAL.SqlRepository.Steps.Remove(step);
+            }
+            foreach (var child in children)
+            {
+                CascadeRemoving(child);
+            }
+            DAL.SqlRepository.Tasks.Remove(targetTask);
+        }
+
+        public static List<Task> SelectAllTreeTask(int taskId)
+        {
+            var q = DAL.SqlRepository.Tasks.Cast<Task>();
+            var p = new List<Task>();
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach (var task in q)
+            // ReSharper restore LoopCanBeConvertedToQuery
+            {
+                if (GetOldestParent(task).Id == taskId)
+                    p.Add(task);
+            }
         }
     }
 }
