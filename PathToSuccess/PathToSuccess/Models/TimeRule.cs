@@ -30,6 +30,15 @@ namespace PathToSuccess.Models
 
         public TimeRule()
         { }
+
+        public TimeRule(TimeRule toCopy)
+        {
+            Schedule = toCopy.Schedule;
+            IsUserApproved = toCopy.IsUserApproved;
+            IsPeriodic = toCopy.IsPeriodic;
+            ScheduleId = toCopy.ScheduleId;
+            Id = toCopy.Id;
+        }
         
         public static TimeRule CreateTimeRule(bool isPeriodic, int scheduleId, Schedule schedule)
         {

@@ -55,7 +55,21 @@ namespace PathToSuccess.Models
         //methods
 
         public Task() { }
-
+        public Task(Task toCopy)
+        {
+            Id = toCopy.Id;
+            Description = toCopy.Description;
+            ParentId = toCopy.ParentId;
+            Parent = new Task(toCopy.Parent);
+            Criteria = new Criteria(toCopy.Criteria);
+            CriteriaId = toCopy.CriteriaId;
+            Urgency = toCopy.Urgency;
+            UrgencyName = toCopy.UrgencyName;
+            Importance = toCopy.Importance;
+            ImportanceName = toCopy.ImportanceName;
+            EndDate = toCopy.EndDate;
+            BeginDate = toCopy.BeginDate;
+        }
         /// <summary>
         /// Method to add new task to the database
         /// </summary>

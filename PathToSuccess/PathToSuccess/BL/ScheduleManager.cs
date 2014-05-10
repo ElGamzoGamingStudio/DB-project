@@ -55,7 +55,7 @@ namespace PathToSuccess.BL
                         if (dateCounter.DayOfWeek == avlIntervals[counter].dayOfWeek)
                         {
                             var currInterv = Interval.GetIntervalByID(avlIntervals[counter].intervalID);
-                            var tbs = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year);
+                            var tbs = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year,Application.CurrentTree);
                             tbs.Sort();
                             DateTime timeCounter = new DateTime(dateCounter.Year, dateCounter.Month, dateCounter.Day,
                                 currInterv.BeginTime.Hour, currInterv.BeginTime.Minute, currInterv.BeginTime.Second);
@@ -130,7 +130,7 @@ namespace PathToSuccess.BL
                         }
                         else
                         {
-                            if (dateCounter.DayOfWeek < avlIntervals[counter].dayOfWeek)
+                            if (dateCounter.DayOfWeek < avlIntervals[counter].dayOfWeek || dateCounter.DayOfWeek > avlIntervals[avlIntervals.Count-1].dayOfWeek)
                                 dateCounter = dateCounter.AddDays(1);
                             else
                             {
