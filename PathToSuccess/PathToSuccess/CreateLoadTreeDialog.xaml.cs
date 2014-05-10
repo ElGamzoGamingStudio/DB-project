@@ -60,8 +60,8 @@ namespace PathToSuccess
                 Create.Margin = new Thickness(5, 0, 0, 0);
                 Create.RenderTransform = null;
 
-                Load.Width = Width/2 - Width/16;
-                Load.Height = Height/4;
+                Load.Width = Width / 2 - Width / 16;
+                Load.Height = Height / 4;
                 Load.HorizontalAlignment = HorizontalAlignment.Right;
                 Load.VerticalAlignment = VerticalAlignment.Center;
                 Load.Margin = new Thickness(0, 0, 5, 0);
@@ -93,13 +93,13 @@ namespace PathToSuccess
 
         public void CreateClick(object sender, EventArgs e)
         {
-           
+
             var but = sender as Button;
             var move = new TranslateTransform(0, 0);
             var anim = new DoubleAnimation()
             {
                 Duration = new Duration(TimeSpan.FromSeconds(0.7)),
-                To = -but.Margin.Left-but.Width -5,
+                To = -but.Margin.Left - but.Width - 5,
                 AccelerationRatio = 0.5,
             };
             anim.Completed += MoveToCreate2;
@@ -116,8 +116,8 @@ namespace PathToSuccess
             Load.RenderTransform = moveOther;
             moveOther.BeginAnimation(TranslateTransform.XProperty, animOther);
 
-            
-            
+
+
         }
 
         public void LoadClick(object sender, EventArgs e)
@@ -146,9 +146,9 @@ namespace PathToSuccess
             Create.RenderTransform = moveOther;
             moveOther.BeginAnimation(TranslateTransform.XProperty, animOther);
 
-            
+
         }
-        
+
         private void RollBackFirstTab(object sender, EventArgs e)
         {
             SetUpButtons(true);
@@ -163,15 +163,15 @@ namespace PathToSuccess
             var storyboard = new Storyboard();
             storyboard.Children.Add(anim);
             storyboard.Begin();
-            
-            
+
+
         }
 
         private void PanelinoStackerino(object sender, EventArgs e)
         {
-            
-            TreeNamePanel.Width = Width/2;
-            TreeNamePanel.Height = Height/2;
+
+            TreeNamePanel.Width = Width / 2;
+            TreeNamePanel.Height = Height / 2;
         }
 
         #region MOVE TO TAB
@@ -228,7 +228,7 @@ namespace PathToSuccess
                     BL.Application.CurrentUser = SqlRepository.Users.Cast<User>().FirstOrDefault();
                 BL.Application.CurrentTree = Models.Tree.CreateTree(BL.Application.CurrentUser, BL.Application.CurrentUser.Login, NameBox.Text.Trim(),
                     DescriptionBox.Text.Trim());
-                
+
                 Tree.Text = "GRATZ";
 
                 var move = new TranslateTransform(0, 0);
@@ -260,7 +260,7 @@ namespace PathToSuccess
         {
             RollForward(ThirdStep, MoveToCreate2);
         }
-        
+
 
 
 
@@ -281,7 +281,7 @@ namespace PathToSuccess
                 anim.Completed += toDoAfter;
             moveBack.BeginAnimation(TranslateTransform.XProperty, anim);
         }
-        
+
         private void RollForward(UIElement toRoll, EventHandler toDoAfter = null)
         {
             var moveForward = new TranslateTransform(0, 0);
@@ -306,7 +306,7 @@ namespace PathToSuccess
             int targ;
             if (Int32.TryParse(TargetVal.Text.Trim(), out targ))
                 BL.Application.CurrentTree.MainTask.Criteria.TargetValue = targ;
-            else 
+            else
                 throw new Exception("Look what you've done");
             SqlRepository.Save();
             Close();
@@ -369,7 +369,21 @@ namespace PathToSuccess
             var s = sender as Button;
             Debug.Assert(s != null, "s != null");
             BL.Application.CurrentTree = (Tree)SqlRepository.Trees.Find(Int32.Parse(s.Tag.ToString()));
-            Close();
+
+            var move = new TranslateTransform();
+            var anim = new DoubleAnimation()
+            {
+                Duration = new Duration(TimeSpan.FromSeconds(0.2)),
+                AccelerationRatio = 0.7,
+                To = -500,
+            };
+            anim.Completed += (o, ev) => Close();
+            foreach (FrameworkElement child in TreeVisualPanel.Children)
+            {
+                if (child.Tag == s.Tag) continue;
+                child.RenderTransform = move;
+            }
+            move.BeginAnimation(TranslateTransform.YProperty, anim);
         }
     }
 }
