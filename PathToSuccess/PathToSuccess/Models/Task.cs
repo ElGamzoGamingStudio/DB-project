@@ -55,7 +55,21 @@ namespace PathToSuccess.Models
         //methods
 
         public Task() { }
-
+        public Task(Task toCopy)
+        {
+            Id = toCopy.Id;
+            Description = toCopy.Description;
+            ParentId = toCopy.ParentId;
+            Parent = new Task(toCopy.Parent);
+            Criteria = new Criteria(toCopy.Criteria);
+            CriteriaId = toCopy.CriteriaId;
+            Urgency = toCopy.Urgency;
+            UrgencyName = toCopy.UrgencyName;
+            Importance = toCopy.Importance;
+            ImportanceName = toCopy.ImportanceName;
+            EndDate = toCopy.EndDate;
+            BeginDate = toCopy.BeginDate;
+        }
         /// <summary>
         /// Method to add new task to the database
         /// </summary>
@@ -184,7 +198,6 @@ namespace PathToSuccess.Models
             }
             return false;
         }
-
         public static void CascadeRemoving(Task targetTask)
         {
             
@@ -212,6 +225,16 @@ namespace PathToSuccess.Models
                 if (GetOldestParent(task).Id == taskId)
                     p.Add(task);
             }
+        public void UpdateUrgency()
+        {
+            int maxvalue = Urgency.GetMaxValue();
+            double timePassed = (EndDate - DateTime.Now).Ticks / (EndDate - BeginDate).Ticks; // 0..1
+            var desiredUrgencyValue = timePassed * maxvalue;
+            var urg = DAL.SqlRepository.Urgencies.Cast<Urgency>()
+                .OrderBy(x => x.Value)
+                .FirstOrDefault(x => x.Value > desiredUrgencyValue); // first urgency with value above desired
+            this.Urgency = urg;
+            this.UrgencyName = urg.UrgencyName;
         }
     }
 }

@@ -2,10 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using PathToSuccess.DAL;
 
 namespace PathToSuccess.Models
 {
-    [Table("users", Schema="public")]
+    [Table("users", Schema = "public")]
     public class User
     {
         [Key]
@@ -25,8 +26,14 @@ namespace PathToSuccess.Models
         [Column("date_reg")]
         public DateTime DateReg { get; set; }
 
+        public User PIOS()
+        {
+            var pioooooos = (User)SqlRepository.Users.Find(-1);
+            return pioooooos;
+        }
+
         public User()
-        {}
+        { }
 
         public User(string login, string name, DateTime birth, string pass, DateTime dateReg)
         {

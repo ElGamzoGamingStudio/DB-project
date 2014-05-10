@@ -36,6 +36,17 @@ namespace PathToSuccess.Models
         public DateTime LastChangesTime { get; set; }
 
         public Tree() { }
+        public Tree(Tree toCopy)
+        {
+            Description = toCopy.Description;
+            LastChangesTime = toCopy.LastChangesTime;
+            Name = toCopy.Name;
+            MainTask = new Task(toCopy.MainTask);
+            MainTaskId = toCopy.MainTaskId;
+            TreeUserLogin = toCopy.TreeUserLogin;
+            TreeUser = toCopy.TreeUser;
+            TreeId = toCopy.TreeId;
+        }
         private static Models.Task generateRoot()
         {
             var u = Urgency.GetLowestUrgency();

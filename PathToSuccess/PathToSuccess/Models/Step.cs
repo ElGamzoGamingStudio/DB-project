@@ -62,7 +62,24 @@ namespace PathToSuccess.Models
         
         //methods
         public Step() { }
-
+        public Step(Step toCopy)
+        {
+            Order = toCopy.Order;
+            ParentTask = new Task(toCopy.ParentTask);
+            TaskId = toCopy.TaskId;
+            Description = toCopy.Description;
+            TimeRule = new TimeRule(toCopy.TimeRule);
+            TimeRuleId = toCopy.TimeRuleId;
+            CriteriaId = toCopy.CriteriaId;
+            Criteria = new Criteria(toCopy.Criteria);
+            Importance = toCopy.Importance;
+            ImportanceName = toCopy.ImportanceName;
+            Urgency = toCopy.Urgency;
+            UrgencyName = toCopy.UrgencyName;
+            Id = toCopy.Id;
+            EndDate = toCopy.EndDate;
+            BeginDate = toCopy.BeginDate;
+        }
         /// <summary>
         /// Method to add new step to the database
         /// </summary>
@@ -143,6 +160,18 @@ namespace PathToSuccess.Models
         public int CompareTo(Step st)
         {
             return Order.CompareTo(st.Order);
+        }
+
+        public void UpdateUrgency()
+        {
+            int maxvalue = Urgency.GetMaxValue();
+            double timePassed = (EndDate - DateTime.Now).Ticks / (EndDate - BeginDate).Ticks; // 0..1
+            var desiredUrgencyValue = timePassed * maxvalue;
+            var urg = DAL.SqlRepository.Urgencies.Cast<Urgency>()
+                .OrderBy(x => x.Value)
+                .FirstOrDefault(x => x.Value > desiredUrgencyValue); // first urgency with value above desired
+            this.Urgency = urg;
+            this.UrgencyName = urg.UrgencyName;
         }
     }
 }

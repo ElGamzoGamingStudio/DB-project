@@ -77,7 +77,7 @@ namespace PathToSuccess.Models
                 .Cast<TimeBinding>()
                 .ToList();
         }
-        public static List<TimeBinding> GetTBofDay(int day, int month, int year)
+        public static List<TimeBinding> GetTBofDay(int day, int month, int year,Tree tree)
         {
             return DAL.SqlRepository.TimeBindings
                 .Cast<TimeBinding>()

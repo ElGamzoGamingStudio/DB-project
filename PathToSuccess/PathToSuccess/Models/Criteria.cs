@@ -23,7 +23,13 @@ namespace PathToSuccess.Models
         public string Unit { get; set; }
 
         public Criteria() { }
-
+        public Criteria(Criteria toCopy)
+        {
+            Id = toCopy.Id;
+            Unit = toCopy.Unit;
+            TargetValue = toCopy.TargetValue;
+            CurrentValue = toCopy.CurrentValue;
+        }
         public static Criteria CreateCriteria(int currentValue, int targetValue, string unit)
         {
             var set = DAL.SqlRepository.Criterias;
