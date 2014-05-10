@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Collections.Specialized;
 
 namespace PathToSuccess.PhoneSync
 {
@@ -16,6 +17,7 @@ namespace PathToSuccess.PhoneSync
         public static void Initialize()
         {
             GetUrlFromFile();
+            Send();
         }
 
         private static string ToJson(Models.TimeBinding tb)
@@ -26,8 +28,8 @@ namespace PathToSuccess.PhoneSync
                 "\"description\" : \"" + tb.Step.Description + "\",\n" +
                 "\"importance\" : \"" + tb.Step.ImportanceName + "\",\n" +
                 "\"time\" : \"" + tb.Time.ToShortTimeString() + "\",\n" +
-                "\"id\" : \"" + tb.Id
-                + "\"\n}";
+                "\"id\" : " + tb.Id
+                + "\n}";
 
             return json;
         }
@@ -36,11 +38,11 @@ namespace PathToSuccess.PhoneSync
         {
             string json = "";
 
-            json += "{" +
-                //"\"user\" : \"" + PathToSuccess.BL.Application.CurrentUser.Login + "\",\n" +
-                "\"user\" : \"stub\",\n" +
-                //"\"password_hash\" : \"" + PathToSuccess.BL.Application.CurrentUser.Password + "\",\n";
-                "\"password_hash\" : \"stub\",\n";
+            //json += "{" +
+            //    //"\"user\" : \"" + PathToSuccess.BL.Application.CurrentUser.Login + "\",\n" +
+            //    "\"user\" : \"stub\",\n" +
+            //    //"\"password_hash\" : " + PathToSuccess.BL.Application.CurrentUser.Password + ",\n";
+            //    "\"password_hash\" : stub,\n";
 
             json +=
                 "\"days\" : [\n";
@@ -53,9 +55,9 @@ namespace PathToSuccess.PhoneSync
                 day = "";
    
                 day += "{";
-                day += "   \"day\" : \"" + dateCounter.Day + "\",\n" +
-                    "   \"month\" : \"" + dateCounter.Month + "\",\n" +
-                    "   \"year\" : \"" + dateCounter.Year + "\",\n" +
+                day += "   \"day\" : " + dateCounter.Day + ",\n" +
+                    "   \"month\" : " + dateCounter.Month + ",\n" +
+                    "   \"year\" : " + dateCounter.Year + ",\n" +
                     "   \"steps\" : [\n";
 
                 foreach (var tb in tbs)
@@ -95,12 +97,26 @@ namespace PathToSuccess.PhoneSync
                 streamWriter.Close();
             }
 
-            var response = (HttpWebResponse)request.GetResponse();
             string result = "";
-            using (var streamReader = new StreamReader(response.GetResponseStream()))
+            using (WebClient wc = new WebClient())
             {
-                result = streamReader.ReadToEnd();
+                var postData = new NameValueCollection()
+                {
+                    {"user", "stub"},
+                    {"password_hash", "0"},
+                    {"jsondata", json},
+                    {"referer", "me"}
+                };
+                result = Encoding.UTF8.GetString(wc.UploadValues(Url, postData));
             }
+            
+
+            //var response = (HttpWebResponse)request.GetResponse();
+            //string result = "";
+            //using (var streamReader = new StreamReader(response.GetResponseStream()))
+            //{
+            //    result = streamReader.ReadToEnd();
+            //}
 
             PathToSuccess.BL.Log.Add(result);
         }

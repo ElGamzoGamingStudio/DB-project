@@ -144,5 +144,17 @@ namespace PathToSuccess.Models
         {
             return Order.CompareTo(st.Order);
         }
+
+        public void UpdateUrgency()
+        {
+            int maxvalue = Urgency.GetMaxValue();
+            double timePassed = (EndDate - DateTime.Now).Ticks / (EndDate - BeginDate).Ticks; // 0..1
+            var desiredUrgencyValue = timePassed * maxvalue;
+            var urg = DAL.SqlRepository.Urgencies.Cast<Urgency>()
+                .OrderBy(x => x.Value)
+                .FirstOrDefault(x => x.Value > desiredUrgencyValue); // first urgency with value above desired
+            this.Urgency = urg;
+            this.UrgencyName = urg.UrgencyName;
+        }
     }
 }
