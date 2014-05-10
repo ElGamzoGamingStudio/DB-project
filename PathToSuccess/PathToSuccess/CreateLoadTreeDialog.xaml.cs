@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -308,6 +309,66 @@ namespace PathToSuccess
             else 
                 throw new Exception("Look what you've done");
             SqlRepository.Save();
+            Close();
+        }
+
+        private void LoadTreesToLoadTabItem(object sender, RoutedEventArgs e)
+        {
+            var trees = SqlRepository.Trees.Cast<Tree>().ToList();
+            foreach (var tree in trees)
+            {
+                var treeNameText = new TextBlock()
+                {
+                    Text = tree.Name,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    TextWrapping = TextWrapping.Wrap,
+                    FontSize = 16,
+                    Foreground = new SolidColorBrush(Colors.Goldenrod)
+                };
+                var treeDescriptionText = new TextBlock()
+                {
+                    Text = tree.Description,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    TextWrapping = TextWrapping.Wrap,
+                };
+                var treeInfo = new StackPanel()
+                {
+                    Orientation = Orientation.Vertical,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                treeInfo.Children.Add(treeNameText);
+                treeInfo.Children.Add(treeDescriptionText);
+                var treeElement = new Button()
+                {
+                    Background = new SolidColorBrush(Colors.Tomato),
+                    Width = 150,
+                    Height = 150,
+                    Content = treeInfo,
+                    Tag = tree.TreeId
+                };
+                treeElement.Click += TreeChosenClick;
+                TreeVisualPanel.Children.Add(treeElement);
+            }
+
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    var treeElement = new Button()
+            //    {
+            //        Background = new SolidColorBrush(Colors.Tomato),
+            //        Width = 75,
+            //        Height = 75,
+            //        Content ="asdsad"
+            //    };
+            //    TreeVisualPanel.Children.Add(treeElement);
+            //}
+        }
+
+        private void TreeChosenClick(object sender, RoutedEventArgs e)
+        {
+            var s = sender as Button;
+            Debug.Assert(s != null, "s != null");
+            BL.Application.CurrentTree = (Tree)SqlRepository.Trees.Find(Int32.Parse(s.Tag.ToString()));
             Close();
         }
     }
