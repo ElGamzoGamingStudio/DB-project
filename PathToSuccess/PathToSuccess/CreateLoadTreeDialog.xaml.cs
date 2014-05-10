@@ -314,7 +314,8 @@ namespace PathToSuccess
 
         private void LoadTreesToLoadTabItem(object sender, RoutedEventArgs e)
         {
-            var trees = SqlRepository.Trees.Cast<Tree>().ToList();
+            var trees = Models.Tree.FindTreesForUser(BL.Application.CurrentUser);
+            //concat these trees with default user tree
             foreach (var tree in trees)
             {
                 var treeNameText = new TextBlock()
@@ -323,7 +324,7 @@ namespace PathToSuccess
                     HorizontalAlignment = HorizontalAlignment.Center,
                     TextWrapping = TextWrapping.Wrap,
                     FontSize = 16,
-                    Foreground = new SolidColorBrush(Colors.Goldenrod)
+                    Foreground = tree.TreeUser == BL.Application.CurrentUser ? new SolidColorBrush(Colors.Goldenrod) : new SolidColorBrush(Colors.SlateGray)
                 };
                 var treeDescriptionText = new TextBlock()
                 {
