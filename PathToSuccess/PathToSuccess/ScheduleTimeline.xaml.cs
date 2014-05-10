@@ -66,7 +66,7 @@ namespace PathToSuccess
                 };
                 panel.Children.Add(dayTextBlock);
 
-                var stepsBindings = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year);
+                var stepsBindings = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year,BL.Application.CurrentTree);
                // var thisDaySteps = new List<Step>();
                 //thisDaySteps.AddRange(steps.Select(binding => binding.Step));
 

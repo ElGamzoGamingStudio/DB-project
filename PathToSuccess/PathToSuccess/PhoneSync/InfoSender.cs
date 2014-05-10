@@ -17,7 +17,7 @@ namespace PathToSuccess.PhoneSync
         public static void Initialize()
         {
             GetUrlFromFile();
-            Send();
+            //Send();
         }
 
         private static string ToJson(Models.TimeBinding tb)
@@ -51,7 +51,7 @@ namespace PathToSuccess.PhoneSync
             string day = "";
             for (int i = 0; i < 30; i++)
             {
-                var tbs = Models.TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year);
+                var tbs = Models.TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year,BL.Application.CurrentTree);
                 day = "";
    
                 day += "{";

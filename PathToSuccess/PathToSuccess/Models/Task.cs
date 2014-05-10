@@ -220,11 +220,14 @@ namespace PathToSuccess.Models
             var p = new List<Task>();
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach (var task in q)
-            // ReSharper restore LoopCanBeConvertedToQuery
+                // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if (GetOldestParent(task).Id == taskId)
                     p.Add(task);
             }
+            return p;
+        }
+
         public void UpdateUrgency()
         {
             int maxvalue = Urgency.GetMaxValue();

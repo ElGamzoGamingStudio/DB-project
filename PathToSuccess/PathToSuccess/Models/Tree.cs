@@ -91,7 +91,7 @@ namespace PathToSuccess.Models
             return DAL.SqlRepository.Trees
                 .Cast<Tree>()
                 .Where(x => x.TreeUser.Login == user.Login)
-                .ToList<Tree>();
+                .ToList();
         }
 
         public static Tree FindTreeWithRoot(Task mainTask)

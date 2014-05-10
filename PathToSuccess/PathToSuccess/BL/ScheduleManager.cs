@@ -170,7 +170,7 @@ namespace PathToSuccess.BL
                 bool isFine = true;
                 for (int i = 0; i < intervals.Count; i++)
                 {
-                    var tbs = TimeBinding.GetTBofDay(intervalDates[i].Day, intervalDates[i].Month, intervalDates[i].Year);
+                    var tbs = TimeBinding.GetTBofDay(intervalDates[i].Day, intervalDates[i].Month, intervalDates[i].Year,BL.Application.CurrentTree);
                     if (tbs.Count != 0)
                     {
                         foreach (var tb in tbs)

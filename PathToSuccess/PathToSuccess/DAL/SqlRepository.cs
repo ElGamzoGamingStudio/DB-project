@@ -51,7 +51,7 @@ namespace PathToSuccess.DAL
             Tasks = DBContext.GetDbSet<Task>();
             TimeBindings = DBContext.GetDbSet<TimeBinding>();
             Intervals = DBContext.GetDbSet<Interval>();
-
+            BL.Application.CurrentUser = (User)Users.Find("login");
             BL.Application.CurrentTree = (Tree)Trees.Find(2);
             //BL.DbTest.Seed();
         }
