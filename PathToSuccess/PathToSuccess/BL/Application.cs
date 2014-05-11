@@ -25,5 +25,10 @@ namespace PathToSuccess.BL
             //DbTest.Seed();
 
         }
+
+        public static uint Hash(string toHash)
+        {
+            return toHash.Aggregate<char, uint>(0, (current, c) => (current*1664525) + (uint) (c) + 1013904223);
+        }
     }
 }
