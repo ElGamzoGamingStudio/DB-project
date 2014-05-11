@@ -14,11 +14,11 @@ namespace PathToSuccess
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-// ReSharper disable RedundantExtendsListEntry
+    // ReSharper disable RedundantExtendsListEntry
     public partial class MainWindow : Window
-// ReSharper restore RedundantExtendsListEntry
+    // ReSharper restore RedundantExtendsListEntry
     {
-        
+
         private double _realCanvasWidth;
         private TaskVisual _parent;
         private Grid _stepChanger;
@@ -27,7 +27,7 @@ namespace PathToSuccess
             InitializeComponent();
             BL.Application.SetUp();
             _realCanvasWidth = 0;
-            
+
             //var tree = new CreateLoadTreeDialog();
             //tree.ShowDialog();
             //var sc = new ScheduleVisualiser();
@@ -35,7 +35,7 @@ namespace PathToSuccess
             //var timeline = new ScheduleTimeline();
             //timeline.ShowDialog();
 
-            Adding.Visibility=Visibility.Collapsed;
+            Adding.Visibility = Visibility.Collapsed;
             //var log = new LoginWindow();
             //log.ShowDialog();
             //if (log.RightPass == null)
@@ -46,15 +46,15 @@ namespace PathToSuccess
                                    : "";
             foreach (var urgency in DAL.SqlRepository.Urgencies.Cast<Urgency>())
             {
-                Urg.Items.Add(new ComboBoxItem {Content = urgency.UrgencyName});
+                Urg.Items.Add(new ComboBoxItem { Content = urgency.UrgencyName });
             }
             foreach (var importance in DAL.SqlRepository.Importancies.Cast<Importance>())
             {
-                Imp.Items.Add(new ComboBoxItem {Content = importance.ImportanceName});
+                Imp.Items.Add(new ComboBoxItem { Content = importance.ImportanceName });
             }
             foreach (var entity in DAL.SqlRepository.Schedules.Cast<Models.Schedule>())
             {
-                Graphs.Items.Add(new ComboBoxItem {Content = entity.Id});
+                Graphs.Items.Add(new ComboBoxItem { Content = entity.Id });
             }
         }
 
@@ -63,7 +63,7 @@ namespace PathToSuccess
             TreeCanvas.MinWidth = _realCanvasWidth >= TreeCanvas.Width
                                     ? _realCanvasWidth
                                     : TreeField.MaxWidth;
-           
+
         }
 
         private void AddTask(object sender, RoutedEventArgs e)
@@ -84,10 +84,10 @@ namespace PathToSuccess
 
         private void Update(object sender, EventArgs e)
         {
-            double widthDifference,heightDifference;
+            double widthDifference, heightDifference;
             if (WindowState == WindowState.Maximized)
             {
-                widthDifference = SystemParameters.PrimaryScreenWidth - MinWidth ;
+                widthDifference = SystemParameters.PrimaryScreenWidth - MinWidth;
                 heightDifference = SystemParameters.PrimaryScreenHeight - MinHeight - 40;
             }
             else
@@ -129,13 +129,13 @@ namespace PathToSuccess
 
         private void SaveChanges(object sender, RoutedEventArgs e)
         {
-            if(BL.Application.CurrentTree==null) return;
-            DAL.SqlRepository.Save();
+            if (BL.Application.CurrentTree == null) return;
+            BL.ChangesBuffer.SaveChanges();
         }
 
         private void All_OnSelected(object sender, RoutedEventArgs e)
         {
-            if(RawView==null)return;
+            if (RawView == null) return;
             foreach (var result in RawView.Items.Cast<ListBoxItem>())
             {
                 result.Background = Brushes.White;
@@ -149,25 +149,27 @@ namespace PathToSuccess
 
         private void RemoveTask(object sender, RoutedEventArgs e)
         {
-            
-            var targetTask = DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == _parent.Desc.Text);
+
+            var targetTask = BL.ChangesBuffer.CurrentState.TaskBuffer.First(task => task.Description == _parent.Desc.Text);
             Task.CascadeRemoving(targetTask);
             if (targetTask.ParentId == -1)
             {
                 TreeCanvas.Children.Clear();
                 return;
             }
-            UpdateTree(DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Id == targetTask.ParentId), MoveDirections.Down);
+            UpdateTree(BL.ChangesBuffer.CurrentState.TaskBuffer.First(task => task.Id == targetTask.ParentId), MoveDirections.Down);
+            ByName.IsSelected = false;
+            ByName.IsSelected = true;
         }
 
         private void EditTask(object sender, RoutedEventArgs e)
         {
-            var targetTask = DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == _parent.Desc.Text);
-            Adding.Visibility=Visibility.Visible;
+            var targetTask = BL.ChangesBuffer.CurrentState.TaskBuffer.First(task => task.Description == _parent.Desc.Text);
+            Adding.Visibility = Visibility.Visible;
             Adding.IsEnabled = true;
             InAnimation();
             Labl.Content = "Редактирование";
-            Chos.Visibility=Visibility.Collapsed;
+            Chos.Visibility = Visibility.Collapsed;
             DescBox.Text = targetTask.Description;
             Begin.SelectedDate = targetTask.BeginDate;
             End.SelectedDate = targetTask.EndDate;
@@ -186,7 +188,8 @@ namespace PathToSuccess
 
         private void ApplyEditing(object sender, RoutedEventArgs e)
         {
-            var targetTask = DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == _parent.Desc.Text);
+            var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
+            var targetTask = buff.TaskBuffer.First(task => task.Description == _parent.Desc.Text);
             targetTask.Description = DescBox.Text;
             targetTask.ImportanceName = (Imp.SelectedItem as ComboBoxItem).Content.ToString();
             targetTask.Importance =
@@ -196,18 +199,20 @@ namespace PathToSuccess
             targetTask.Urgency =
                 DAL.SqlRepository.Urgencies.Cast<Urgency>()
                    .First(imp => imp.UrgencyName == targetTask.UrgencyName);
-            
-            targetTask.BeginDate = Begin.SelectedDate != null ? (DateTime) Begin.SelectedDate : DateTime.MinValue;
+
+            targetTask.BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.MinValue;
             targetTask.EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : DateTime.MaxValue;
+            BL.ChangesBuffer.CaptureChanges(buff);
             Discard_Click(sender, e);
         }
 
-        private void UpdateTree(Task displayTask,MoveDirections dir)
+        private void UpdateTree(Task displayTask, MoveDirections dir)
         {
             TreeCanvas.Children.Clear();
             var children = displayTask.SelectChildrenTasks();
             var visual = new TaskVisual { Height = 150, Width = 150 };
             LevelUp.IsEnabled = displayTask.ParentId != -1;
+            visual.Removing.IsEnabled = LevelUp.IsEnabled;
             visual.Desc.Text = displayTask.Description;
             visual.Date.Text = "С " + displayTask.BeginDate.ToShortDateString() + " по " +
                                displayTask.EndDate.ToShortDateString();
@@ -223,14 +228,14 @@ namespace PathToSuccess
                 visual.Add.Click += AddStep;
             else
                 visual.Add.Click += AddTask;
-            bool evenCount = children.Count%2 == 0;
-            int center = children.Count/2;
-            var centerLeft = (double) visual.GetValue(Canvas.LeftProperty);
-            int module=(i-1)/2;
-            var anim = new ThicknessAnimation(dir==MoveDirections.Down?new Thickness(0, -1000, 0, 200):new Thickness(0,200,0,-1000), new Thickness(0, 0, 0, 0),
+            bool evenCount = children.Count % 2 == 0;
+            int center = children.Count / 2;
+            var centerLeft = (double)visual.GetValue(Canvas.LeftProperty);
+            int module = (i - 1) / 2;
+            var anim = new ThicknessAnimation(dir == MoveDirections.Down ? new Thickness(0, -1000, 0, 200) : new Thickness(0, 200, 0, -1000), new Thickness(0, 0, 0, 0),
                                                   new Duration(TimeSpan.FromSeconds(1)));
-            if(dir!=MoveDirections.None)
-                visual.BeginAnimation(MarginProperty,anim);
+            if (dir != MoveDirections.None)
+                visual.BeginAnimation(MarginProperty, anim);
             visual.Background = !displayTask.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange;
             visual.Removing.Click += RemoveTask;
             visual.Edit.Click += EditTask;
@@ -240,62 +245,62 @@ namespace PathToSuccess
                     {
                         Height = 150,
                         Width = 150,
-                        Desc = {Text = task.Description},
+                        Desc = { Text = task.Description },
                         Date =
                             {
                                 Text = "С " + task.BeginDate.ToShortDateString() + " по " +
                                        task.EndDate.ToShortDateString()
                             },
-                        CritDesc = {Text = task.Criteria.Unit},
+                        CritDesc = { Text = task.Criteria.Unit },
                         Progress =
                             {
                                 Text = task.Criteria.CurrentValue.ToString() + "/" +
                                        task.Criteria.TargetValue.ToString()
                             },
-                        Field = {Background = !task.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange}
+                        Field = { Background = !task.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange }
                     };
-                child.Removing.Visibility=Visibility.Collapsed;
-                child.Edit.Visibility=Visibility.Collapsed;
+                child.Removing.Visibility = Visibility.Collapsed;
+                child.Edit.Visibility = Visibility.Collapsed;
                 TreeCanvas.Children.Add(child);
                 i--;
                 double offset = !evenCount
                                     ? (i == center + 1
                                            ? centerLeft
                                            : (i > center + 1
-                                                  ? centerLeft + (visual.Width + visual.Width/children.Count)*module
-                                                  : centerLeft - (visual.Width + visual.Width/2)*i))
+                                                  ? centerLeft + (visual.Width + visual.Width / children.Count) * module
+                                                  : centerLeft - (visual.Width + visual.Width / 2) * i))
                                     : (i > center
-                                           ? centerLeft + visual.Width/2 + visual.Width / children.Count / 2 +
-                                             (visual.Width/children.Count + visual.Width)*(module-1)
+                                           ? centerLeft + visual.Width / 2 + visual.Width / children.Count / 2 +
+                                             (visual.Width / children.Count + visual.Width) * (module - 1)
                                            : centerLeft - visual.Width / 2 - visual.Width / children.Count / 2 -
-                                             (visual.Width/children.Count + visual.Width)*(i - 1));
+                                             (visual.Width / children.Count + visual.Width) * (i - 1));
                 module--;
-                
-                
+
+
                 child.SetValue(Canvas.LeftProperty, offset);
                 child.SetValue(Canvas.TopProperty, visual.Height + 180);
-                child.Add.Visibility=Visibility.Collapsed;
+                child.Add.Visibility = Visibility.Collapsed;
                 var lane = new Line
                     {
                         StrokeThickness = 5,
                         Fill = Brushes.DarkCyan,
-                        X1 = (double) visual.GetValue(Canvas.LeftProperty) + visual.Width/2,
+                        X1 = (double)visual.GetValue(Canvas.LeftProperty) + visual.Width / 2,
                         Y1 = 20 + visual.Height,
                         Stroke = Brushes.DarkCyan,
-                        X2 = (double) child.GetValue(Canvas.LeftProperty) + child.Width/2,
-                        Y2 = (double) child.GetValue(Canvas.TopProperty),
+                        X2 = (double)child.GetValue(Canvas.LeftProperty) + child.Width / 2,
+                        Y2 = (double)child.GetValue(Canvas.TopProperty),
                         SnapsToDevicePixels = true
                     };
-                lane.SetValue(RenderOptions.EdgeModeProperty,EdgeMode.Aliased);
+                lane.SetValue(RenderOptions.EdgeModeProperty, EdgeMode.Aliased);
                 TreeCanvas.Children.Add(lane);
-                
+
                 if (dir != MoveDirections.None)
                 {
                     child.BeginAnimation(MarginProperty, anim);
-                    lane.BeginAnimation(MarginProperty,anim);
+                    lane.BeginAnimation(MarginProperty, anim);
                 }
                 child.PreviewMouseLeftButtonUp += SelectChild;
-                
+
             }
             if (TreeCanvas.Children.Count == 1)
             {
@@ -306,11 +311,11 @@ namespace PathToSuccess
                 var steps = displayTask.SelectChildrenSteps();
                 var list = new ListBox
                     {
-                    Margin = new Thickness(10.0, visual.Progress.Margin.Top + 30, 20.0, 0.0),
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Width = visual.Width*0.8
-                };
+                        Margin = new Thickness(10.0, visual.Progress.Margin.Top + 30, 20.0, 0.0),
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        Width = visual.Width * 0.8
+                    };
                 foreach (var step in steps)
                 {
                     var item = new ListBoxItem
@@ -328,9 +333,9 @@ namespace PathToSuccess
                 visual.Add.Click += AddStep;
                 visual.Field.Children.Add(list);
             }
-            
+
         }
-        
+
         private void ClearStepChanger(object sender, RoutedEventArgs e)
         {
             if (_stepChanger != null)
@@ -348,7 +353,7 @@ namespace PathToSuccess
             }
             int id = Convert.ToInt32((sender as ListBoxItem).Name.Substring(1));
             var step = DAL.SqlRepository.Steps.Cast<Step>().First(st => st.Id == id);
-            var valueSetter = new Grid() {Width = 120, Height = 80, Background = Brushes.CornflowerBlue};
+            var valueSetter = new Grid() { Width = 120, Height = 80, Background = Brushes.CornflowerBlue };
             valueSetter.Children.Add(new Label
                 {
                     Content = "Фиксация прогресса",
@@ -369,12 +374,12 @@ namespace PathToSuccess
                     Height = 25,
                     Content = "Q"
                 };
-           
+
             valueSetter.Children.Add(b);
             TreeCanvas.Children.Add(valueSetter);
             var p = Mouse.GetPosition(TreeCanvas);
-            valueSetter.SetValue(Canvas.LeftProperty,p.X);
-            valueSetter.SetValue(Canvas.TopProperty,p.Y);
+            valueSetter.SetValue(Canvas.LeftProperty, p.X);
+            valueSetter.SetValue(Canvas.TopProperty, p.Y);
             _stepChanger = valueSetter;
         }
 
@@ -382,23 +387,15 @@ namespace PathToSuccess
         {
             var child = sender as TaskVisual;
             TreeCanvas.Children.Clear();
-            UpdateTree(DAL.SqlRepository.Tasks.Cast<Task>().First(x=>x.Description==child.Desc.Text),MoveDirections.Up);
+            UpdateTree(BL.ChangesBuffer.CurrentState.TaskBuffer.First(x => x.Description == child.Desc.Text), MoveDirections.Up);
         }
 
         private void TreeLoaded()
         {
-            var q = DAL.SqlRepository.Tasks.Cast<Task>();
-            var p = new List<Task>();
-// ReSharper disable LoopCanBeConvertedToQuery
-            foreach (var task in q)
-// ReSharper restore LoopCanBeConvertedToQuery
-            {
-                if(Task.GetOldestParent(task).Id == BL.Application.CurrentTree.MainTaskId)
-                    p.Add(task);
-            }
+            var p = Task.SelectAllTreeTask(BL.Application.CurrentTree.MainTaskId);
             foreach (var task in p)
             {
-                RawView.Items.Add(new ListBoxItem {Content = task.Description, Height = 20});
+                RawView.Items.Add(new ListBoxItem { Content = task.Description, Height = 20 });
             }
             var m = p.Max(task1 => task1.Urgency.Value);
             foreach (var task1 in p)
@@ -449,7 +446,7 @@ namespace PathToSuccess
 
         }
 
-       
+
 
         private void OutAnimation()
         {
@@ -460,17 +457,19 @@ namespace PathToSuccess
 
         private void HideThisShit(object sender, EventArgs e)
         {
-            Adding.Visibility=Visibility.Collapsed;
+            Adding.Visibility = Visibility.Collapsed;
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            var list = new List<Task>();
-            foreach (var entity in DAL.SqlRepository.Tasks.Cast<Task>())
+            if (
+                BL.ChangesBuffer.CurrentState.TaskBuffer.Any(
+                    entity =>
+                    Task.GetOldestParent(entity).Id == BL.Application.CurrentTree.MainTaskId &&
+                    entity.Description == DescBox.Text))
             {
-                if (Task.GetOldestParent(entity).Id == BL.Application.CurrentTree.MainTaskId &&
-                       entity.Description == DescBox.Text)
-                    list.Add(entity);
+                MessageBox.Show("Такая цель уже есть в этом дереве!", "Warning", MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
             }
             var crit = new Criteria
                 {
@@ -483,6 +482,7 @@ namespace PathToSuccess
                    .First(x => ((ComboBoxItem)Imp.SelectedItem).Content.ToString() == x.ImportanceName);
             var urg =
                 DAL.SqlRepository.Urgencies.Cast<Urgency>().First(x => ((ComboBoxItem)Urg.SelectedItem).Content.ToString() == x.UrgencyName);
+            var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
             if (StepButton.IsChecked == true)
             {
                 var tr = new TimeRule
@@ -493,10 +493,10 @@ namespace PathToSuccess
                                .First(x => x.Id == Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())),
                         ScheduleId = Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())
                     };
-                var t = DAL.SqlRepository.Tasks.Cast<Task>().First(x => x.Description == _parent.Desc.Text);
+                var t = BL.ChangesBuffer.CurrentState.TaskBuffer.First(x => x.Description == _parent.Desc.Text);
                 if (
-                    DAL.SqlRepository.Steps.Cast<Step>()
-                       .FirstOrDefault(x => x.TaskId == t.Id && x.Description == DescBox.Text) != null)
+                    BL.ChangesBuffer.CurrentState.StepBuffer
+                       .Any(x => x.TaskId == t.Id && x.Description == DescBox.Text))
                 {
                     MessageBox.Show("Такой шаг у цели уже есть!", "Warning", MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
@@ -517,12 +517,14 @@ namespace PathToSuccess
                         ParentTask = t,
                         TaskId = t.Id
                     };
-                DAL.SqlRepository.Steps.Add(st);
+                
+                buff.StepBuffer.Add(st);
+                BL.ChangesBuffer.CaptureChanges(buff);
                 UpdateTree(t,MoveDirections.None);
             }
             else
             {
-                var p = DAL.SqlRepository.Tasks.Cast<Task>().First(x => x.Description == _parent.Desc.Text);
+                var p = BL.ChangesBuffer.CurrentState.TaskBuffer.First(x => x.Description == _parent.Desc.Text);
                 var t = new Task
                     {
                     BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.Now,
@@ -537,8 +539,8 @@ namespace PathToSuccess
                     Parent = p,
                     ParentId = p.Id
                 };
-                DAL.SqlRepository.Tasks.Add(t);
-
+                buff.TaskBuffer.Add(t);
+                BL.ChangesBuffer.CaptureChanges(buff);
                 UpdateTree(p,MoveDirections.None);
                 
             }
@@ -566,10 +568,10 @@ namespace PathToSuccess
         private void LevelUp_Click(object sender, RoutedEventArgs e)
         {
             var parent =
-                DAL.SqlRepository.Tasks.Cast<Task>().First(x => x.Description == _parent.Desc.Text);
+                BL.ChangesBuffer.CurrentState.TaskBuffer.First(x => x.Description == _parent.Desc.Text);
             TreeCanvas.Children.Clear();
-            
-            UpdateTree(parent.Parent,MoveDirections.Down);
+
+            UpdateTree(parent.Parent, MoveDirections.Down);
         }
 
 
@@ -590,13 +592,13 @@ namespace PathToSuccess
             if (RawView.Items.Count == 0) return;
             var displayedItems = RawView.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList();
             var sorted =
-                DAL.SqlRepository.Tasks.Cast<Task>()
+                BL.ChangesBuffer.CurrentState.TaskBuffer
                    .Where(x => displayedItems.Contains(x.Description))
                    .OrderByDescending(task => task.Urgency.Value);
             RawView.Items.Clear();
             foreach (var task in sorted)
             {
-                RawView.Items.Add(new ListBoxItem {Content = task.Description});
+                RawView.Items.Add(new ListBoxItem { Content = task.Description });
             }
         }
 
@@ -605,7 +607,7 @@ namespace PathToSuccess
             if (RawView.Items.Count == 0) return;
             var displayedItems = RawView.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList();
             var sorted =
-                DAL.SqlRepository.Tasks.Cast<Task>()
+                BL.ChangesBuffer.CurrentState.TaskBuffer
                    .Where(x => displayedItems.Contains(x.Description))
                    .OrderByDescending(task => task.Importance.Value);
             RawView.Items.Clear();
@@ -617,10 +619,10 @@ namespace PathToSuccess
 
         private void OrderByDescription(object sender, RoutedEventArgs e)
         {
-            if(RawView.Items.Count==0)return;
+            if (RawView.Items.Count == 0) return;
             var displayedItems = RawView.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList();
             var sorted =
-                DAL.SqlRepository.Tasks.Cast<Task>()
+                BL.ChangesBuffer.CurrentState.TaskBuffer
                    .Where(x => displayedItems.Contains(x.Description))
                    .OrderBy(task => task.Description.ToLower());
             RawView.Items.Clear();
@@ -632,14 +634,14 @@ namespace PathToSuccess
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if(SearchBox.Text.Length==0)return;
-            var result = DAL.SqlRepository.Tasks.Cast<Task>().Where(task => task.Description.Contains(SearchBox.Text));
+            if (SearchBox.Text.Length == 0) return;
+            var result = BL.ChangesBuffer.CurrentState.TaskBuffer.Where(task => task.Description.Contains(SearchBox.Text));
             RawView.Items.Clear();
             foreach (var task in result)
             {
-                RawView.Items.Add(new ListBoxItem {Content = task.Description});
+                RawView.Items.Add(new ListBoxItem { Content = task.Description });
             }
-            Disc.Visibility=Visibility.Visible;
+            Disc.Visibility = Visibility.Visible;
             ByName.IsSelected = false;
             ByName.IsSelected = true;
         }
@@ -648,9 +650,9 @@ namespace PathToSuccess
         {
             RawView.Items.Clear();
             var treeList = new List<Task>();
-// ReSharper disable LoopCanBeConvertedToQuery
-            foreach (var entity in DAL.SqlRepository.Tasks.Cast<Task>())
-// ReSharper restore LoopCanBeConvertedToQuery
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach (var entity in BL.ChangesBuffer.CurrentState.TaskBuffer)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if (Task.GetOldestParent(entity).Id == BL.Application.CurrentTree.MainTaskId)
                 {
@@ -659,20 +661,32 @@ namespace PathToSuccess
             }
             foreach (var source in treeList)
             {
-                RawView.Items.Add(new ListBoxItem {Content = source.Description});
+                RawView.Items.Add(new ListBoxItem { Content = source.Description });
             }
             ByName.IsSelected = false;
             ByName.IsSelected = true;
-            Disc.Visibility=Visibility.Hidden;
+            Disc.Visibility = Visibility.Hidden;
         }
 
         private void TaskSelected(object sender, RoutedEventArgs e)
         {
             var source = sender as ListBoxItem;
             var selectedTask =
-                DAL.SqlRepository.Tasks.Cast<Task>().First(task => task.Description == source.Content.ToString());
-            UpdateTree(selectedTask,MoveDirections.None);
+                BL.ChangesBuffer.CurrentState.TaskBuffer.First(task => task.Description == source.Content.ToString());
+            UpdateTree(selectedTask, MoveDirections.None);
 
+        }
+
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
+        {
+            BL.ChangesBuffer.Undo();
+            UpdateTree(BL.Application.CurrentTree.MainTask,MoveDirections.None);
+        }
+
+        private void RedoButton_Click(object sender, RoutedEventArgs e)
+        {
+            BL.ChangesBuffer.Redo();
+            UpdateTree(BL.Application.CurrentTree.MainTask,MoveDirections.None);
         }
     }
 }

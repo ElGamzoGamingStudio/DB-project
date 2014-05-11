@@ -129,44 +129,35 @@ namespace PathToSuccess.Models
 
         public static List<Task> Select(Func<Task, bool> predicate)
         {
-            var set = DAL.SqlRepository.Tasks.Cast<Models.Task>().ToList();
-            return set.Where(predicate).ToList();
+            return BL.ChangesBuffer.CurrentState.TaskBuffer.Where(predicate).ToList();
         }
 
         public List<Task> SelectChildrenTasks()
         {
-            //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
-            //var childrenSet = set.Cast<Task>().Where(x => x.Parent == this);
-            return DAL.SqlRepository.Tasks.Cast<Task>().ToList().Where(x => x.ParentId == this.Id).ToList();
+            return BL.ChangesBuffer.CurrentState.TaskBuffer.Where(x => x.ParentId == Id).ToList();
         }
         public List<Task> SelectChildrenTasks(Func<Task, bool> predicate)
         {
-            //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
-            var childrenSet = DAL.SqlRepository.Tasks.Cast<Task>().Where(x => x.ParentId == this.Id);
-            return childrenSet.Where(predicate).ToList();
+            return BL.ChangesBuffer.CurrentState.TaskBuffer.Where(x => x.ParentId == Id).Where(predicate).ToList();
         }
         
         public List<Step> SelectChildrenSteps()
         {
-            return DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask.Id == this.Id).ToList();
+            return BL.ChangesBuffer.CurrentState.StepBuffer.Where(x => x.ParentTask.Id == Id).ToList();
         }
         public List<Step> SelectChildrenStep(Func<Step, bool> predicate)
         {
-            //var set = DAL.SqlRepository.DBContext.GetDbSet<Task>();
-            var childrenSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.ParentTask.Id == this.Id);
-            return childrenSet.Where(predicate).ToList();
+            return BL.ChangesBuffer.CurrentState.StepBuffer.Where(x => x.ParentTask.Id == Id).Where(predicate).ToList();
         }
 
         public bool ChildrenAreSteps()
         {
-            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.TaskId == this.Id);
-            //var childrenTaskSet = DAL.SqlRepository.DBContext.GetDbSet<Task>().Cast<Task>().Where(x => x.Parent == this);
-            return childrenStepSet.Any();
+            return BL.ChangesBuffer.CurrentState.StepBuffer.Any(x => x.TaskId == Id);
         }
 
         public bool HasUncompletedSteps()
         {
-            var childrenStepSet = DAL.SqlRepository.Steps.Cast<Step>().Where(x => x.TaskId == this.Id).ToList();
+            var childrenStepSet = BL.ChangesBuffer.CurrentState.StepBuffer.Where(x => x.TaskId == Id).ToList();
             foreach (var step in childrenStepSet)
             {
                 if (!step.Criteria.IsCompleted())
@@ -176,9 +167,7 @@ namespace PathToSuccess.Models
         }
         public static List<Task> GetLowestTasks()
         {
-            //TODO: should return all tasks with uncompleted steps
-            var tasksWithStepsChildren = DAL.SqlRepository.Tasks.Cast<Task>().ToList().Where(t => t.ChildrenAreSteps()).ToList();
-            return tasksWithStepsChildren.Where(t => t.HasUncompletedSteps()).ToList();
+            return BL.ChangesBuffer.CurrentState.TaskBuffer.Where(t => t.ChildrenAreSteps() && t.HasUncompletedSteps()).ToList();
         }
 
         public static Task GetOldestParent(Task child)
@@ -188,7 +177,7 @@ namespace PathToSuccess.Models
 
         public bool HasUncomplitedTasks()
         {
-            var list = DAL.SqlRepository.Tasks.Cast<Task>().Where(t => t.ParentId == Id).ToList();
+            var list = BL.ChangesBuffer.CurrentState.TaskBuffer.Where(t => t.ParentId == Id).ToList();
             bool res=HasUncompletedSteps();
             if (res) return true;
             foreach (var task1 in list)
@@ -200,23 +189,29 @@ namespace PathToSuccess.Models
         }
         public static void CascadeRemoving(Task targetTask)
         {
-            
+            var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
+            RecursiveRemoving(buff,targetTask);
+            BL.ChangesBuffer.CaptureChanges(buff);
+        }
+
+        private static void RecursiveRemoving(BL.Buffer buff, Task targetTask)
+        {
             var children = targetTask.SelectChildrenTasks();
             var steps = targetTask.SelectChildrenSteps();
             foreach (var step in steps)
             {
-                DAL.SqlRepository.Steps.Remove(step);
+                buff.StepBuffer.Remove(step);
             }
             foreach (var child in children)
             {
-                CascadeRemoving(child);
+                RecursiveRemoving(buff,child);
             }
-            DAL.SqlRepository.Tasks.Remove(targetTask);
+            buff.TaskBuffer.Remove(targetTask);
         }
 
         public static List<Task> SelectAllTreeTask(int taskId)
         {
-            var q = DAL.SqlRepository.Tasks.Cast<Task>();
+            var q = BL.ChangesBuffer.CurrentState.TaskBuffer;
             var p = new List<Task>();
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach (var task in q)
