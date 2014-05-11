@@ -324,7 +324,7 @@ namespace PathToSuccess
                         Margin = new Thickness(10.0, visual.Progress.Margin.Top + 30, 20.0, 0.0),
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
-                        Width = visual.Width * 0.8
+                        Width = visual.Width - 100
                     };
                 foreach (var step in steps)
                 {
