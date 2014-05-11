@@ -79,10 +79,19 @@ namespace PathToSuccess.Models
         }
         public static List<TimeBinding> GetTBofDay(int day, int month, int year,Tree tree)
         {
-            return DAL.SqlRepository.TimeBindings
-                .Cast<TimeBinding>()
-                .Where(x => x.Year == year && x.Month == month && x.Day == day)
-                .ToList();
+            var tasks = Task.SelectAllTreeTask(tree.MainTaskId).Where(x => x.ChildrenAreSteps());
+            var steps = new List<Step>();
+            foreach (var tsk in tasks)
+            {
+                steps.Add(Step.GetFirstUndoneStepByTaskID(tsk.Id));
+            }
+            var tbs = new List<TimeBinding>();
+            foreach (var st in steps)
+            {
+                tbs.AddRange(TimeBinding.GetTBbyStepID(st.Id));
+            }
+            return tbs
+                .Where(x => x.Year == year && x.Month == month && x.Day == day).ToList();
         }
         public static List<TimeBinding> GetTBbyStepID(int stepid)
         {
