@@ -203,6 +203,7 @@ namespace PathToSuccess
             targetTask.BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.MinValue;
             targetTask.EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : DateTime.MaxValue;
             BL.ChangesBuffer.CaptureChanges(buff);
+            UpdateTree(targetTask,MoveDirections.None);
             Discard_Click(sender, e);
         }
 
