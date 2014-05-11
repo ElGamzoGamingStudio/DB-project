@@ -60,8 +60,8 @@ namespace PathToSuccess.Models
             Id = toCopy.Id;
             Description = toCopy.Description;
             ParentId = toCopy.ParentId;
-            Parent = new Task(toCopy.Parent);
-            Criteria = new Criteria(toCopy.Criteria);
+            Parent = toCopy.Parent;
+            Criteria = toCopy.Criteria;
             CriteriaId = toCopy.CriteriaId;
             Urgency = toCopy.Urgency;
             UrgencyName = toCopy.UrgencyName;

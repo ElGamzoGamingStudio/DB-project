@@ -96,7 +96,7 @@
             </StackPanel>
             <TextBox Name="DescBox" HorizontalAlignment="Left" Height="59" Margin="10,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="398"/>
             <Label Content="Описание" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="166"/>
-            <CheckBox Name="Periodic" Content="Периодичный" HorizontalAlignment="Left" Margin="527,158,0,0" VerticalAlignment="Top" Width="129"/>
+            <CheckBox Name="Periodic" Content="Периодичный" Click="Periodic_OnChecked" HorizontalAlignment="Left" Margin="527,158,0,0" VerticalAlignment="Top" Width="129"/>
 
             <Label Content="Критерий выполнения" Name="CritLabel" HorizontalAlignment="Left" Margin="10,319,0,0" VerticalAlignment="Top" Height="32" Width="141"/>
             <TextBox Name="UnitBox" HorizontalAlignment="Left" Height="23" Margin="150,356,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
@@ -111,7 +111,7 @@
             <Label Content="По" HorizontalAlignment="Left" Margin="162,274,0,0" VerticalAlignment="Top"/>
             <Button Content="ОК" HorizontalAlignment="Left" Margin="627,476,0,0" Name="OkButton" VerticalAlignment="Top" Width="54" Height="34" Click="Add_Click" />
             <Button Content="Отмена" HorizontalAlignment="Left" Margin="722,476,0,0" VerticalAlignment="Top" Width="54" Height="34" Click="Discard_Click"/>
-            <ComboBox Name="Graphs" HorizontalAlignment="Left" Margin="527,193,0,0" VerticalAlignment="Top" Width="154"/>
+            <ComboBox Name="Graphs" IsEnabled="False" HorizontalAlignment="Left" Margin="527,193,0,0" VerticalAlignment="Top" Width="154"/>
             <ComboBox  HorizontalAlignment="Left" Name="Imp" Margin="527,299,0,0" VerticalAlignment="Top" Width="154"/>
             <ComboBox HorizontalAlignment="Left" Name="Urg" Margin="527,377,0,0" VerticalAlignment="Top" Width="154"/>
             <Label Content="Важность" HorizontalAlignment="Left" Margin="527,268,0,0" VerticalAlignment="Top" Width="108"/>

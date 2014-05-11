@@ -65,13 +65,13 @@ namespace PathToSuccess.Models
         public Step(Step toCopy)
         {
             Order = toCopy.Order;
-            ParentTask = new Task(toCopy.ParentTask);
+            ParentTask = toCopy.ParentTask;
             TaskId = toCopy.TaskId;
             Description = toCopy.Description;
-            TimeRule = new TimeRule(toCopy.TimeRule);
+            TimeRule = toCopy.TimeRule;
             TimeRuleId = toCopy.TimeRuleId;
             CriteriaId = toCopy.CriteriaId;
-            Criteria = new Criteria(toCopy.Criteria);
+            Criteria = toCopy.Criteria;
             Importance = toCopy.Importance;
             ImportanceName = toCopy.ImportanceName;
             Urgency = toCopy.Urgency;

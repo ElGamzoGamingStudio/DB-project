@@ -10,6 +10,8 @@ namespace PathToSuccess.BL
     {
         public readonly List<Task> TaskBuffer;
         public readonly List<Step> StepBuffer;
+        public List<Criteria> CriteriaBuffer;
+        public List<TimeRule> TimeRuleBuffer; 
 
         public Buffer(List<Task> tasks, List<Step> steps)
         {
@@ -17,10 +19,20 @@ namespace PathToSuccess.BL
             StepBuffer = steps;
         }
 
+        public Buffer(List<Task> tasks, List<Step> steps, List<Criteria> criterias, List<TimeRule> timeRules)
+        {
+            TaskBuffer = tasks;
+            StepBuffer = steps;
+            CriteriaBuffer = criterias;
+            TimeRuleBuffer = timeRules;
+        }
+
         public Buffer(Buffer bufferToCopy)
         {
             TaskBuffer = bufferToCopy.TaskBuffer.ToList();
             StepBuffer = bufferToCopy.StepBuffer.ToList();
+            CriteriaBuffer = bufferToCopy.CriteriaBuffer.ToList();
+            TimeRuleBuffer = bufferToCopy.TimeRuleBuffer.ToList();
         }
     }
 
@@ -35,7 +47,9 @@ namespace PathToSuccess.BL
         {
             _buffer=new List<Buffer>();
             var state = new Buffer(DAL.SqlRepository.Tasks.Cast<Task>().ToList(),
-                                   DAL.SqlRepository.Steps.Cast<Step>().ToList());
+                                   DAL.SqlRepository.Steps.Cast<Step>().ToList(),
+                                   DAL.SqlRepository.Criterias.Cast<Criteria>().ToList(),
+                                   DAL.SqlRepository.TimeRules.Cast<TimeRule>().ToList());
             _buffer.Add(state);
             CurrentState = state;
         }
@@ -50,7 +64,7 @@ namespace PathToSuccess.BL
         public static void CaptureChanges(Buffer buf)
         {
             int index = _buffer.IndexOf(CurrentState);
-            if (index != _buffer.Count - 1) _buffer.RemoveRange(index + 1, _buffer.Count - index);
+            if (index != _buffer.Count - 1) _buffer.RemoveRange(index + 1, _buffer.Count - index - 1);
             _buffer.Add(buf);
             CurrentState = buf;
         }
@@ -61,6 +75,8 @@ namespace PathToSuccess.BL
             DAL.SqlRepository.Tasks.AddRange(CurrentState.TaskBuffer);
             DAL.SqlRepository.Steps.RemoveRange(DAL.SqlRepository.Steps.Cast<Step>().ToList());
             DAL.SqlRepository.Steps.AddRange(CurrentState.StepBuffer);
+            DAL.SqlRepository.Criterias.RemoveRange(DAL.SqlRepository.Criterias.Cast<Criteria>().ToList());
+            DAL.SqlRepository.Criterias.AddRange(CurrentState.CriteriaBuffer);
             DAL.SqlRepository.Save();
         }
 

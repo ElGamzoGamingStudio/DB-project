@@ -27,7 +27,6 @@ namespace PathToSuccess
             InitializeComponent();
             BL.Application.SetUp();
             _realCanvasWidth = 0;
-
             //var tree = new CreateLoadTreeDialog();
             //tree.ShowDialog();
             //var sc = new ScheduleVisualiser();
@@ -158,6 +157,7 @@ namespace PathToSuccess
                 return;
             }
             UpdateTree(BL.ChangesBuffer.CurrentState.TaskBuffer.First(task => task.Id == targetTask.ParentId), MoveDirections.Down);
+            UpdateRawView();
             ByName.IsSelected = false;
             ByName.IsSelected = true;
         }
@@ -189,7 +189,8 @@ namespace PathToSuccess
         private void ApplyEditing(object sender, RoutedEventArgs e)
         {
             var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
-            var targetTask = buff.TaskBuffer.First(task => task.Description == _parent.Desc.Text);
+            var tas = buff.TaskBuffer.First(task => task.Description == _parent.Desc.Text);
+            var targetTask = new Task(tas);
             targetTask.Description = DescBox.Text;
             targetTask.ImportanceName = (Imp.SelectedItem as ComboBoxItem).Content.ToString();
             targetTask.Importance =
@@ -199,11 +200,19 @@ namespace PathToSuccess
             targetTask.Urgency =
                 DAL.SqlRepository.Urgencies.Cast<Urgency>()
                    .First(imp => imp.UrgencyName == targetTask.UrgencyName);
-
+            OkButton.Click -= ApplyEditing;
             targetTask.BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.MinValue;
             targetTask.EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : DateTime.MaxValue;
+            buff.TaskBuffer.Remove(tas);
+            buff.TaskBuffer.Add(targetTask);
+            foreach (var step in buff.StepBuffer)
+            {
+                if (step.TaskId == tas.Id)
+                    step.ParentTask = targetTask;
+            }
             BL.ChangesBuffer.CaptureChanges(buff);
             UpdateTree(targetTask,MoveDirections.None);
+            UpdateRawView();
             Discard_Click(sender, e);
         }
 
@@ -353,7 +362,7 @@ namespace PathToSuccess
                 TreeCanvas.Children.Remove(_stepChanger);
             }
             int id = Convert.ToInt32((sender as ListBoxItem).Name.Substring(1));
-            var step = DAL.SqlRepository.Steps.Cast<Step>().First(st => st.Id == id);
+            var step = BL.ChangesBuffer.CurrentState.StepBuffer.First(st => st.Id == id);
             var valueSetter = new Grid() { Width = 120, Height = 80, Background = Brushes.CornflowerBlue };
             valueSetter.Children.Add(new Label
                 {
@@ -365,7 +374,10 @@ namespace PathToSuccess
                 {
                     Text = step.Criteria.CurrentValue.ToString(),
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Right
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    Width = 40,
+                    MaxLength = step.Criteria.TargetValue.ToString().Length,
+                    Name = "ValueChanger"
                 });
             var b = new Button()
                 {
@@ -373,15 +385,138 @@ namespace PathToSuccess
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Width = 25,
                     Height = 25,
-                    Content = "Q"
+                    Content = "Q",
+                    Name = "Q" + id.ToString()
                 };
-
+            var b1 = new Button()
+            {
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Width = 25,
+                Height = 25,
+                Margin = new Thickness(26,0,0,0),
+                Content = "R",
+                Name = "R" + id.ToString()
+            };
+            var ok = new Button()
+            {
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Width = 40,
+                Height = 25,
+                Content = "OK",
+                Name = "O" + step.Id.ToString()
+            };
             valueSetter.Children.Add(b);
+            valueSetter.Children.Add(b1);
+            valueSetter.Children.Add(ok);
+            b1.Click += RemoveStep;
+            b.Click += EditStep;
+            ok.Click += ChangeCurrentValueOfStep;
             TreeCanvas.Children.Add(valueSetter);
             var p = Mouse.GetPosition(TreeCanvas);
             valueSetter.SetValue(Canvas.LeftProperty, p.X);
             valueSetter.SetValue(Canvas.TopProperty, p.Y);
             _stepChanger = valueSetter;
+        }
+
+        private void RemoveStep(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Name.Substring(1));
+            var step = BL.ChangesBuffer.CurrentState.StepBuffer.First(st => st.Id == id);
+            var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
+            buff.StepBuffer.Remove(step);
+            BL.ChangesBuffer.CaptureChanges(buff);
+            var task = BL.ChangesBuffer.CurrentState.TaskBuffer.First(t => t.Description == _parent.Desc.Text);
+            UpdateTree(task,MoveDirections.None);
+        }
+
+        private void EditStep(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Name.Substring(1));
+            var targetStep = new Step(BL.ChangesBuffer.CurrentState.StepBuffer.First(step => step.Id == id));
+            Adding.Visibility = Visibility.Visible;
+            Adding.IsEnabled = true;
+            InAnimation();
+            Labl.Content = "Редактирование";
+            Chos.Visibility = Visibility.Collapsed;
+            DescBox.Text = targetStep.Description;
+            Begin.SelectedDate = targetStep.BeginDate;
+            End.SelectedDate = targetStep.EndDate;
+            Periodic.IsChecked = targetStep.TimeRule.IsPeriodic;
+            Graphs.SelectedItem = targetStep.TimeRule.IsPeriodic
+                                      ? Graphs.Items.Cast<ComboBoxItem>()
+                                              .First(
+                                                  i => i.Content.ToString() == targetStep.TimeRule.ScheduleId.ToString())
+                                      : null;
+            Imp.SelectedItem =
+                Imp.Items.Cast<ComboBoxItem>().First(item => item.Content.ToString() == targetStep.ImportanceName);
+            Urg.SelectedItem =
+                Urg.Items.Cast<ComboBoxItem>().First(item => item.Content.ToString() == targetStep.UrgencyName);
+            TargetVal.Text = targetStep.Criteria.TargetValue.ToString();
+            UnitBox.Text = targetStep.Criteria.Unit;
+            DescBox.Name = "S" + targetStep.Id.ToString();
+            UnitBox.Name = "C" + targetStep.CriteriaId.ToString();
+            OkButton.Click -= Add_Click;
+            OkButton.Click += ApplyStep;
+        }
+
+        private void ApplyStep(object sender, RoutedEventArgs e)
+        {
+            var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
+            int id = Convert.ToInt32(DescBox.Name.Substring(1));
+            var step = BL.ChangesBuffer.CurrentState.StepBuffer.First(s => s.Id == id);
+            var newStep = new Step(step);
+            var crit =
+                BL.ChangesBuffer.CurrentState.CriteriaBuffer.First(
+                    c => c.Id == Convert.ToInt32(UnitBox.Name.Substring(1)));
+            var newCrit = new Criteria(crit);
+            buff.CriteriaBuffer.Remove(crit);
+            buff.CriteriaBuffer.Add(newCrit);
+            buff.StepBuffer.Remove(step);
+            newStep.Criteria = newCrit;
+            newStep.Description = DescBox.Text;
+            var tr = BL.ChangesBuffer.CurrentState.TimeRuleBuffer.First(t => t.Id == step.TimeRuleId);
+            var newtr = new TimeRule(tr);
+            if (Periodic.IsChecked.HasValue && Periodic.IsChecked.Value)
+            {
+                newtr.IsPeriodic = true;
+                newtr.Schedule =
+                    DAL.SqlRepository.Schedules.Cast<Models.Schedule>().ToList()
+                       .First(sc => sc.Id == Convert.ToInt32((Graphs.SelectedItem as ComboBoxItem).Content.ToString()));
+                newtr.ScheduleId = newtr.Schedule.Id;
+            }
+            else
+            {
+                newtr.IsPeriodic = false;
+
+            }
+            buff.TimeRuleBuffer.Remove(tr);
+            buff.TimeRuleBuffer.Add(newtr);
+            newStep.TimeRule = newtr;
+            buff.StepBuffer.Add(newStep);
+            BL.ChangesBuffer.CaptureChanges(buff);
+            UpdateTree(BL.ChangesBuffer.CurrentState.TaskBuffer.First(task=>task.Description==_parent.Desc.Text),MoveDirections.None);
+            OkButton.Click -= ApplyStep;
+            Discard_Click(sender, e);
+        }
+
+        private void ChangeCurrentValueOfStep(object sender, RoutedEventArgs e)
+        {
+            int id = Convert.ToInt32((sender as Button).Name.Substring(1));
+            var step = BL.ChangesBuffer.CurrentState.StepBuffer.First(s => s.Id == id);
+            var crit = BL.ChangesBuffer.CurrentState.CriteriaBuffer.First(c => step.CriteriaId == c.Id);
+            var newStep = new Step(step);
+            var newCrit = new Criteria(crit);
+            newCrit.CurrentValue = Convert.ToInt32((_stepChanger.Children[1] as TextBox).Text);
+            var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
+            buff.CriteriaBuffer.Remove(crit);
+            buff.CriteriaBuffer.Add(newCrit);
+            newStep.Criteria = newCrit;
+            buff.StepBuffer.Remove(step);
+            buff.StepBuffer.Add(newStep);
+            BL.ChangesBuffer.CaptureChanges(buff);
+            UpdateTree(BL.ChangesBuffer.CurrentState.TaskBuffer.First(t=>t.Description==_parent.Desc.Text),MoveDirections.None);
         }
 
         private void SelectChild(object sender, RoutedEventArgs e)
@@ -409,6 +544,16 @@ namespace PathToSuccess
                         true;
                     break;
                 }
+            }
+        }
+
+        private void UpdateRawView()
+        {
+            var p = Task.SelectAllTreeTask(BL.Application.CurrentTree.MainTaskId);
+            RawView.Items.Clear();
+            foreach (var task in p)
+            {
+                RawView.Items.Add(new ListBoxItem { Content = task.Description, Height = 20 });
             }
         }
 
@@ -545,6 +690,7 @@ namespace PathToSuccess
                 UpdateTree(p,MoveDirections.None);
                 
             }
+            UpdateRawView();
             Discard_Click(sender,e);
         }
 
@@ -561,7 +707,7 @@ namespace PathToSuccess
                 TargetLabel.Visibility =
                 TargetVal.Visibility = TrLabel.Visibility = Periodic.Visibility = Graphs.Visibility = Chos.Visibility = Visibility.Visible;
             OkButton.Click += Add_Click;
-            OkButton.Click -= ApplyEditing;
+            
             OutAnimation();
             Adding.IsEnabled = false;
         }
@@ -688,6 +834,11 @@ namespace PathToSuccess
         {
             BL.ChangesBuffer.Redo();
             UpdateTree(BL.Application.CurrentTree.MainTask,MoveDirections.None);
+        }
+
+        private void Periodic_OnChecked(object sender, RoutedEventArgs e)
+        {
+            Graphs.IsEnabled = Periodic.IsChecked.HasValue&&Periodic.IsChecked.Value;
         }
     }
 }
