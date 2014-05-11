@@ -18,6 +18,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using LinqToDB;
+using LinqToDB.Common;
 using PathToSuccess.DAL;
 using PathToSuccess.Models;
 
@@ -315,8 +316,9 @@ namespace PathToSuccess
         private void LoadTreesToLoadTabItem(object sender, RoutedEventArgs e)
         {
             var trees = Models.Tree.FindTreesForUser(BL.Application.CurrentUser);
-           // var defaultTrees = Models.Tree.FindTreesForUser(User.PIOS());
-           // trees.AddRange(defaultTrees);
+            var defaultTrees = Models.Tree.FindTreesForUser(User.PIOS());
+            if(!defaultTrees.IsNullOrEmpty())
+             trees.AddRange(defaultTrees);
             //concat these trees with default user tree
             foreach (var tree in trees)
             {
