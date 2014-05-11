@@ -104,9 +104,16 @@ namespace PathToSuccess.PhoneSync
                 {
                     {"user", "stub"},
                     {"password_hash", "0"},
-                    {"jsondata", json},
-                    {"referer", "me"}
+                    {"jsondata", json },
+                    {"referer", "desktop"}
                 };
+                //var postData = new NameValueCollection()
+                //{
+                //    {"user", "stub"},
+                //    {"password_hash", "0"},
+                //    {"referer", "mobile"},
+                //    {"auth", "true"} //false to get json, true to get success/fail result
+                //};
                 result = Encoding.UTF8.GetString(wc.UploadValues(Url, postData));
             }
             

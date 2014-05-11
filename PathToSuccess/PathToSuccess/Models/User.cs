@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using PathToSuccess.DAL;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace PathToSuccess.Models
 {
