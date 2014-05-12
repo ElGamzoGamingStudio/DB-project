@@ -23,5 +23,21 @@ namespace PathToSuccess
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string result = PathToSuccess.BL.RawSqlPusher.PushQuery(QueryTextBox.Text);
+            QueryTextBox.Text = result;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            QueryTextBox.Text = "";
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

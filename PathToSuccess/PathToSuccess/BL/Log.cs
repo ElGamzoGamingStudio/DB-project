@@ -71,5 +71,15 @@ namespace PathToSuccess.BL
         {
             Messages.Clean();
         }
+
+        public static void SaveToFile()
+        {
+            var file = System.IO.File.Create("log.txt");
+            while (MessagesLeft())
+            {
+                var s = NextMessage();
+                file.Write(System.Text.Encoding.UTF8.GetBytes(s), 0, System.Text.Encoding.UTF8.GetByteCount(s));
+            }
+        }
     }
 }
