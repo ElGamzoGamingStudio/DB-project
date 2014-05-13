@@ -18,7 +18,7 @@ namespace PathToSuccess.BL
             DAL.SqlRepository.Initialize();
             ChangesBuffer.Initialize();
             Log.Initialize();
-            RawSqlPusher.Initialize();
+            //RawSqlPusher.Initialize();
             PhoneSync.InfoSender.Initialize();
             //ScheduleManager.Initialize();
             //DbTest.Try();

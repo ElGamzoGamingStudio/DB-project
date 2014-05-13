@@ -11,6 +11,27 @@ namespace PathToSuccess.Models
     [Table("time_binding", Schema = "public")]
     public class TimeBinding
     {
+        protected bool Equals(TimeBinding other)
+        {
+            return Id == other.Id && StepId == other.StepId && Equals(Step, other.Step) && Time.Equals(other.Time) &&
+                   Day == other.Day && Month == other.Month && Year == other.Year;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Id;
+                hashCode = (hashCode*397) ^ StepId;
+                hashCode = (hashCode*397) ^ (Step != null ? Step.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ Time.GetHashCode();
+                hashCode = (hashCode*397) ^ Day;
+                hashCode = (hashCode*397) ^ Month;
+                hashCode = (hashCode*397) ^ Year;
+                return hashCode;
+            }
+        }
+
         [Key]
         [Column("tb_id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -124,6 +145,13 @@ namespace PathToSuccess.Models
                 .OrderBy(x => x.GetNormalTime())
                 .ToList();
                
+        }
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TimeBinding) obj);
         }
     }
 }

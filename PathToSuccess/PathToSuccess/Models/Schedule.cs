@@ -9,6 +9,41 @@ namespace PathToSuccess.Models
     [Table("schedule", Schema="public")]
     public class Schedule
     {
+        protected bool Equals(Schedule other)
+        {
+            return Id == other.Id && MondayIntervalId == other.MondayIntervalId &&
+                   Equals(MondayInterval, other.MondayInterval) && TuesdayIntervalId == other.TuesdayIntervalId &&
+                   Equals(TuesdayInterval, other.TuesdayInterval) && WednesdayIntervalId == other.WednesdayIntervalId &&
+                   Equals(WednesdayInterval, other.WednesdayInterval) && ThursdayIntervalId == other.ThursdayIntervalId &&
+                   Equals(ThursdayInterval, other.ThursdayInterval) && FridayIntervalId == other.FridayIntervalId &&
+                   Equals(FridayInterval, other.FridayInterval) && SaturdayIntervalId == other.SaturdayIntervalId &&
+                   Equals(SaturdayInterval, other.SaturdayInterval) && SundayIntervalId == other.SundayIntervalId &&
+                   Equals(SundayInterval, other.SundayInterval);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Id;
+                hashCode = (hashCode*397) ^ MondayIntervalId;
+                hashCode = (hashCode*397) ^ (MondayInterval != null ? MondayInterval.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ TuesdayIntervalId;
+                hashCode = (hashCode*397) ^ (TuesdayInterval != null ? TuesdayInterval.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ WednesdayIntervalId;
+                hashCode = (hashCode*397) ^ (WednesdayInterval != null ? WednesdayInterval.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ ThursdayIntervalId;
+                hashCode = (hashCode*397) ^ (ThursdayInterval != null ? ThursdayInterval.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ FridayIntervalId;
+                hashCode = (hashCode*397) ^ (FridayInterval != null ? FridayInterval.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ SaturdayIntervalId;
+                hashCode = (hashCode*397) ^ (SaturdayInterval != null ? SaturdayInterval.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ SundayIntervalId;
+                hashCode = (hashCode*397) ^ (SundayInterval != null ? SundayInterval.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         [Key]
         [Column("id")]
         [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
@@ -168,7 +203,13 @@ namespace PathToSuccess.Models
         //            return true;
             return false;
         }
-
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Schedule) obj);
+        }
         //public void LoadIntervals()
         //{
         //    MondayInterval = (Interval)DAL.SqlRepository.Intervals.Find(MondayIntervalId);
@@ -186,4 +227,6 @@ namespace PathToSuccess.Models
         public DayOfWeek dayOfWeek;
         public int intervalID;
     }
+
+    
 }

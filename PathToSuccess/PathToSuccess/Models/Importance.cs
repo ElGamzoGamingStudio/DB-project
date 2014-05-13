@@ -8,6 +8,19 @@ namespace PathToSuccess.Models
     [Table("importance", Schema="public")]
     public class Importance
     {
+        protected bool Equals(Importance other)
+        {
+            return string.Equals(ImportanceName, other.ImportanceName) && Value == other.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((ImportanceName != null ? ImportanceName.GetHashCode() : 0)*397) ^ Value;
+            }
+        }
+
         [Key]
         [Column("importance_name")]
         public string ImportanceName { get; set; }
@@ -82,6 +95,13 @@ namespace PathToSuccess.Models
                 .Cast<Importance>()
                 .FirstOrDefault(x => x.ImportanceName == name);
             return item == null ? -1 : item.Value;
+        }
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Importance) obj);
         }
     }
 }

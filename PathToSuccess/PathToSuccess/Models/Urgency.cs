@@ -8,6 +8,19 @@ namespace PathToSuccess.Models
     [Table("urgency", Schema="public")]
     public class Urgency
     {
+        protected bool Equals(Urgency other)
+        {
+            return string.Equals(UrgencyName, other.UrgencyName) && Value == other.Value;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((UrgencyName != null ? UrgencyName.GetHashCode() : 0)*397) ^ Value;
+            }
+        }
+
         [Key]
         [Column("urgency_name")]
         public string UrgencyName { get; set; }
@@ -19,9 +32,7 @@ namespace PathToSuccess.Models
 
         public static Urgency CreateUrgency(int value, string name)
         {
-            var u = new Urgency();
-            u.Value = value;
-            u.UrgencyName = name;
+            var u = new Urgency {Value = value, UrgencyName = name};
             DAL.SqlRepository.Urgencies.Add(u);
             DAL.SqlRepository.Save();
             return u;
@@ -39,20 +50,20 @@ namespace PathToSuccess.Models
 
         public static string GetLowestUrgencyLevelName()
         {
-            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>();
-            return urgencies.Where(x => x.Value == urgencies.Min(y => y.Value)).FirstOrDefault().UrgencyName;
+            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>().ToList();
+            return urgencies.FirstOrDefault(x => x.Value == urgencies.Min(y => y.Value)).UrgencyName;
         }
 
         public static Urgency GetLowestUrgency()
         {
-            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>();
-            return urgencies.Where(x => x.Value == urgencies.Min(y => y.Value)).FirstOrDefault();
+            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>().ToList();
+            return urgencies.FirstOrDefault(x => x.Value == urgencies.Min(y => y.Value));
         }
 
         public static Urgency GetHighestUrgency()
         {
-            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>();
-            return urgencies.Where(x => x.Value == urgencies.Max(y => y.Value)).FirstOrDefault();
+            var urgencies = DAL.SqlRepository.Urgencies.Cast<Urgency>().ToList();
+            return urgencies.FirstOrDefault(x => x.Value == urgencies.Max(y => y.Value));
         }
 
         public static List<Urgency> GetViableUrgencyLevels()
@@ -82,6 +93,14 @@ namespace PathToSuccess.Models
                 .Cast<Urgency>()
                 .FirstOrDefault(x => x.UrgencyName == name);
             return item == null ? -1 : item.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Urgency) obj);
         }
     }
 }

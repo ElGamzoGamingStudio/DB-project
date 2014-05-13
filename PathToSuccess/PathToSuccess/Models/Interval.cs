@@ -11,6 +11,22 @@ namespace PathToSuccess.Models
     [Table("interval", Schema="public")]
     public class Interval
     {
+        protected bool Equals(Interval other)
+        {
+            return Id == other.Id && BeginTime.Equals(other.BeginTime) && EndTime.Equals(other.EndTime);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Id;
+                hashCode = (hashCode*397) ^ BeginTime.GetHashCode();
+                hashCode = (hashCode*397) ^ EndTime.GetHashCode();
+                return hashCode;
+            }
+        }
+
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -95,6 +111,13 @@ namespace PathToSuccess.Models
                 var interv = allInts[i];
                 SqlRepository.Intervals.Remove(interv);
             }
+        }
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Interval) obj);
         }
     }
 }

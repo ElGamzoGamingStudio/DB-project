@@ -6,6 +6,23 @@ namespace PathToSuccess.Models
     [Table("criteria", Schema="public")]
     public class Criteria
     {
+        protected bool Equals(Criteria other)
+        {
+            return Id == other.Id && CurrentValue == other.CurrentValue && TargetValue == other.TargetValue && string.Equals(Unit, other.Unit);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Id;
+                hashCode = (hashCode*397) ^ CurrentValue;
+                hashCode = (hashCode*397) ^ TargetValue;
+                hashCode = (hashCode*397) ^ (Unit != null ? Unit.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
@@ -62,6 +79,14 @@ namespace PathToSuccess.Models
         public bool IsCompleted()
         {
             return CurrentValue >= TargetValue;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Criteria) obj);
         }
     }
 }

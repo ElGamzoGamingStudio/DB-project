@@ -11,6 +11,25 @@ namespace PathToSuccess.Models
     [Table("timerule", Schema = "public")]
     public class TimeRule
     {
+        protected bool Equals(TimeRule other)
+        {
+            return Id == other.Id && IsPeriodic.Equals(other.IsPeriodic) && ScheduleId == other.ScheduleId &&
+                   Equals(Schedule, other.Schedule) && IsUserApproved.Equals(other.IsUserApproved);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Id;
+                hashCode = (hashCode*397) ^ IsPeriodic.GetHashCode();
+                hashCode = (hashCode*397) ^ ScheduleId;
+                hashCode = (hashCode*397) ^ (Schedule != null ? Schedule.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ IsUserApproved.GetHashCode();
+                return hashCode;
+            }
+        }
+
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -43,12 +62,14 @@ namespace PathToSuccess.Models
         public static TimeRule CreateTimeRule(bool isPeriodic, int scheduleId, Schedule schedule)
         {
             var set = DAL.SqlRepository.DBContext.GetDbSet<TimeRule>();
-            var tr = new TimeRule();
+            var tr = new TimeRule
+                {
+                    IsPeriodic = isPeriodic,
+                    ScheduleId = scheduleId,
+                    Schedule = schedule,
+                    IsUserApproved = schedule.IsPios()
+                };
 
-            tr.IsPeriodic = isPeriodic;
-            tr.ScheduleId = scheduleId;
-            tr.Schedule = schedule;
-            tr.IsUserApproved = schedule.IsPios();
             set.Add(tr);
             DAL.SqlRepository.Save();
             return tr;
@@ -86,6 +107,14 @@ namespace PathToSuccess.Models
                 .Cast<TimeRule>()
                 .Where(x => x.IsUserApproved == true)
                 .ToList();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((TimeRule) obj);
         }
     }
 }

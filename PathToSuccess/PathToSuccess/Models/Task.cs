@@ -10,6 +10,36 @@ namespace PathToSuccess.Models
     [Table("task", Schema = "public")]
     public class Task //todo
     {
+        protected bool Equals(Task other)
+        {
+            return Id == other.Id && BeginDate.Equals(other.BeginDate) && EndDate.Equals(other.EndDate) &&
+                   string.Equals(UrgencyName, other.UrgencyName) && Equals(Urgency, other.Urgency) &&
+                   string.Equals(ImportanceName, other.ImportanceName) && Equals(Importance, other.Importance) &&
+                   CriteriaId == other.CriteriaId && Equals(Criteria, other.Criteria) &&
+                   string.Equals(Description, other.Description) && ParentId == other.ParentId &&
+                   Equals(Parent, other.Parent);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Id;
+                hashCode = (hashCode*397) ^ BeginDate.GetHashCode();
+                hashCode = (hashCode*397) ^ EndDate.GetHashCode();
+                hashCode = (hashCode*397) ^ (UrgencyName != null ? UrgencyName.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (Urgency != null ? Urgency.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (ImportanceName != null ? ImportanceName.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (Importance != null ? Importance.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ CriteriaId;
+                hashCode = (hashCode*397) ^ (Criteria != null ? Criteria.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (Description != null ? Description.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ ParentId;
+                hashCode = (hashCode*397) ^ (Parent != null ? Parent.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -233,6 +263,14 @@ namespace PathToSuccess.Models
                 .FirstOrDefault(x => x.Value > desiredUrgencyValue); // first urgency with value above desired
             this.Urgency = urg;
             this.UrgencyName = urg.UrgencyName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Task) obj);
         }
     }
 }

@@ -71,12 +71,121 @@ namespace PathToSuccess.BL
 
         public static void SaveChanges()
         {
-            DAL.SqlRepository.Tasks.RemoveRange(DAL.SqlRepository.Tasks.Cast<Task>().ToList());
-            DAL.SqlRepository.Tasks.AddRange(CurrentState.TaskBuffer);
-            DAL.SqlRepository.Steps.RemoveRange(DAL.SqlRepository.Steps.Cast<Step>().ToList());
-            DAL.SqlRepository.Steps.AddRange(CurrentState.StepBuffer);
-            DAL.SqlRepository.Criterias.RemoveRange(DAL.SqlRepository.Criterias.Cast<Criteria>().ToList());
-            DAL.SqlRepository.Criterias.AddRange(CurrentState.CriteriaBuffer);
+            foreach (var task in CurrentState.CriteriaBuffer)
+            {
+                var t = (Criteria)DAL.SqlRepository.Criterias.Find(task.Id);
+                if (t == null)
+                    DAL.SqlRepository.Criterias.Add(task);
+                else
+                {
+                    if (t.Equals(task))
+                        continue;
+                    t.CurrentValue = task.CurrentValue;
+                    t.TargetValue = task.TargetValue;
+                    t.Unit = task.Unit;
+                }
+            }
+            var temp2 = new List<Criteria>();
+            foreach (var entity in DAL.SqlRepository.Criterias.Cast<Criteria>())
+            {
+                if (!CurrentState.CriteriaBuffer.Contains(entity))
+                {
+                    temp2.Add(entity);
+                }
+            }
+            DAL.SqlRepository.Criterias.RemoveRange(temp2);
+
+            foreach (var task in CurrentState.TimeRuleBuffer)
+            {
+                var t = (TimeRule)DAL.SqlRepository.TimeRules.Find(task.Id);
+                if (t == null)
+                    DAL.SqlRepository.TimeRules.Add(task);
+                else
+                {
+                    if (t.Equals(task))
+                        continue;
+                    t.IsPeriodic = task.IsPeriodic;
+                    t.IsUserApproved = task.IsUserApproved;
+                    t.ScheduleId = task.ScheduleId;
+                    t.Schedule = task.Schedule;
+                }
+            }
+            var temp3 = new List<TimeRule>();
+            foreach (var entity in DAL.SqlRepository.TimeRules.Cast<TimeRule>())
+            {
+                if (!CurrentState.TimeRuleBuffer.Contains(entity))
+                {
+                    temp3.Add(entity);
+                }
+            }
+            DAL.SqlRepository.Criterias.RemoveRange(temp3);
+
+            foreach (var task in CurrentState.TaskBuffer)
+            {
+                var t =(Task) DAL.SqlRepository.Tasks.Find(task.Id);
+                if (t == null)
+                    DAL.SqlRepository.Tasks.Add(task);
+                else
+                {
+                    if(t.Equals(task))
+                        continue;
+                    t.ImportanceName = task.ImportanceName;
+                    t.Importance = task.Importance;
+                    t.ParentId = task.ParentId;
+                    t.Parent = task.Parent;
+                    t.UrgencyName = task.UrgencyName;
+                    t.Urgency = task.Urgency;
+                    t.BeginDate = task.BeginDate;
+                    t.EndDate = task.EndDate;
+                    t.Description = task.Description;
+                }
+            }
+            var temp = new List<Task>();
+            foreach (var entity in DAL.SqlRepository.Tasks.Cast<Task>())
+            {
+                if (Task.GetOldestParent(entity).Id==Application.CurrentTree.MainTaskId && !CurrentState.TaskBuffer.Contains(entity))
+                {
+                    temp.Add(entity);
+                }
+            }
+            DAL.SqlRepository.Tasks.RemoveRange(temp);
+
+            foreach (var step in CurrentState.StepBuffer)
+            {
+                var t = (Step)DAL.SqlRepository.Steps.Find(step.Id);
+                if (t == null)
+                    DAL.SqlRepository.Steps.Add(step);
+                else
+                {
+                    if (t.Equals(step))
+                        continue;
+                    t.ImportanceName = step.ImportanceName;
+                    t.Importance = step.Importance;
+                    t.TaskId = step.TaskId;
+                    t.ParentTask = step.ParentTask;
+                    t.UrgencyName = step.UrgencyName;
+                    t.Urgency = step.Urgency;
+                    t.BeginDate = step.BeginDate;
+                    t.EndDate = step.EndDate;
+                    t.Description = step.Description;
+                    t.CriteriaId = step.CriteriaId;
+                    t.Criteria = step.Criteria;
+                    t.TimeRuleId = step.TimeRuleId;
+                    t.TimeRule = step.TimeRule;
+                }
+            }
+            var temp1 = new List<Step>();
+            foreach (var entity in DAL.SqlRepository.Steps.Cast<Step>())
+            {
+                if (Task.GetOldestParent(entity.ParentTask).Id == Application.CurrentTree.MainTaskId && !CurrentState.StepBuffer.Contains(entity))
+                {
+                    temp1.Add(entity);
+                }
+            }
+            DAL.SqlRepository.Steps.RemoveRange(temp1);
+
+            
+
             DAL.SqlRepository.Save();
         }
 

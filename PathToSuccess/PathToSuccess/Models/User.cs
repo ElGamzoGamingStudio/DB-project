@@ -11,6 +11,25 @@ namespace PathToSuccess.Models
     [Table("users", Schema = "public")]
     public class User
     {
+        protected bool Equals(User other)
+        {
+            return string.Equals(Login, other.Login) && string.Equals(Name, other.Name) &&
+                   DateOfBirth.Equals(other.DateOfBirth) && Password == other.Password && DateReg.Equals(other.DateReg);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Login != null ? Login.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ (Name != null ? Name.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ DateOfBirth.GetHashCode();
+                hashCode = (hashCode*397) ^ Password;
+                hashCode = (hashCode*397) ^ DateReg.GetHashCode();
+                return hashCode;
+            }
+        }
+
         [Key]
         [Column("login")]
         public string Login { get; set; }
@@ -114,6 +133,14 @@ namespace PathToSuccess.Models
         public static bool CheckLoginIsUnique(string login)
         {
             return DAL.SqlRepository.Users.Find(login) == null;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((User) obj);
         }
     }
 }
