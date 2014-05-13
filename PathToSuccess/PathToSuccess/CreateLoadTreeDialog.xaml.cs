@@ -316,9 +316,9 @@ namespace PathToSuccess
         private void LoadTreesToLoadTabItem(object sender, RoutedEventArgs e)
         {
             var trees = Models.Tree.FindTreesForUser(BL.Application.CurrentUser);
-            var defaultTrees = Models.Tree.FindTreesForUser(User.PIOS());
-            if(!defaultTrees.IsNullOrEmpty())
-             trees.AddRange(defaultTrees);
+            //var defaultTrees = Models.Tree.FindTreesForUser(User.PIOS());
+            //if(!defaultTrees.IsNullOrEmpty())
+             //trees.AddRange(defaultTrees);
             //concat these trees with default user tree
             foreach (var tree in trees)
             {

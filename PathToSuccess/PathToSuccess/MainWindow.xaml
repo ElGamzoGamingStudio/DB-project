@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" MinHeight="600" Height="600"    MinWidth="1024" Width="1024" SizeChanged="Update" >
-    
-    <Grid Background="Gainsboro">
+
+    <Grid Background="#FFF1CD43">
         <ScrollViewer MinWidth="830" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Name="TreeField" MinHeight="520" MaxHeight="520" MaxWidth="830" HorizontalAlignment="Left" VerticalAlignment="Bottom">
             <Canvas   Background="White" Name="TreeCanvas" HorizontalAlignment="Left" VerticalAlignment="Bottom" MinHeight="520" MinWidth="830" Height="498">
                 <Canvas.Resources>
@@ -69,12 +69,12 @@
                     </Setter>
                 </Style>
             </StackPanel.Resources>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="New" Width="40" Click="CreateTree"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Open" Width="40" Click="LoadTree"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Save" Width="40" Click="SaveChanges"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource New}" Width="40" Click="CreateTree"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Load}" Width="40" Click="LoadTree"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Save}" Width="40" Click="SaveChanges"/>
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="SQL" Width="40" Click="OpenQuery"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Time" Width="40" Click="ShowScheduleTimeline"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="Schedule" Width="40" Click="ShowSchedule"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Time}" Width="40" Click="ShowScheduleTimeline"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Schedule}" Width="40" Click="ShowSchedule"/>
         </StackPanel>
 
         <ComboBox HorizontalAlignment="Right" Margin="0,146,10,0" Name="Filter" VerticalAlignment="Top" Width="150">
@@ -137,7 +137,7 @@
         <Label HorizontalAlignment="Right" Content="Фильтрация"  Margin="0,114,83,0" VerticalAlignment="Top" Width="77" Height="27"/>
         <Label HorizontalAlignment="Right" Content="Поиск"  Margin="0,5,83,0" VerticalAlignment="Top" Width="77" Height="27"/>
         <Button Content="X" Background="White" Foreground="Red" FontWeight="ExtraBold" Name="Disc" Click="Disc_OnClick" Visibility="Hidden" HorizontalAlignment="Right" Margin="0,173,159,0" VerticalAlignment="Top" Width="22"/>
-        <Button Content="Button" Name="UndoButton" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Top" Width="23" Click="UndoButton_Click"/>
-        <Button Content="Button" Name="RedoButton" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Width="23" Click="RedoButton_Click"/>
+        <Button Content="{StaticResource Undo}" Name="UndoButton" HorizontalAlignment="Right" Margin="0,0,28,0" VerticalAlignment="Top" Width="25" Click="UndoButton_Click"/>
+        <Button Content="{StaticResource Redo}" Name="RedoButton" HorizontalAlignment="Right" Margin="0,0,0,0" VerticalAlignment="Top" Width="25" Click="RedoButton_Click"/>
     </Grid>
 </Window>

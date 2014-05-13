@@ -249,6 +249,7 @@ namespace PathToSuccess
             visual.Background = !displayTask.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange;
             visual.Removing.Click += RemoveTask;
             visual.Edit.Click += EditTask;
+            
             foreach (var task in children)
             {
                 var child = new TaskVisual
@@ -260,12 +261,6 @@ namespace PathToSuccess
                             {
                                 Text = "С " + task.BeginDate.ToShortDateString() + " по " +
                                        task.EndDate.ToShortDateString()
-                            },
-                        CritDesc = { Text = task.Criteria.Unit },
-                        Progress =
-                            {
-                                Text = task.Criteria.CurrentValue.ToString() + "/" +
-                                       task.Criteria.TargetValue.ToString()
                             },
                         Field = { Background = !task.HasUncomplitedTasks() ? Brushes.LimeGreen : Brushes.Orange }
                     };
@@ -321,7 +316,7 @@ namespace PathToSuccess
                 var steps = displayTask.SelectChildrenSteps();
                 var list = new ListBox
                     {
-                        Margin = new Thickness(10.0, visual.Progress.Margin.Top + 30, 20.0, 0.0),
+                        Margin = new Thickness(10.0, 30, 20.0, 0.0),
                         HorizontalAlignment = HorizontalAlignment.Center,
                         VerticalAlignment = VerticalAlignment.Center,
                         Width = visual.Width - 100
@@ -385,7 +380,7 @@ namespace PathToSuccess
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Width = 25,
                     Height = 25,
-                    Content = "Q",
+                    Content = FindResource("Edit"),
                     Name = "Q" + id.ToString()
                 };
             var b1 = new Button()
@@ -617,12 +612,7 @@ namespace PathToSuccess
                 MessageBox.Show("Такая цель уже есть в этом дереве!", "Warning", MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
             }
-            var crit = new Criteria
-                {
-                CurrentValue = 0,
-                TargetValue = Convert.ToInt32(TargetVal.Text),
-                Unit = UnitBox.Text
-            };
+            
             var imp =
                 DAL.SqlRepository.Importancies.Cast<Importance>()
                    .First(x => ((ComboBoxItem)Imp.SelectedItem).Content.ToString() == x.ImportanceName);
@@ -647,6 +637,12 @@ namespace PathToSuccess
                     MessageBox.Show("Такой шаг у цели уже есть!", "Warning", MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
                 }
+                var crit = new Criteria
+                {
+                    CurrentValue = 0,
+                    TargetValue = Convert.ToInt32(TargetVal.Text),
+                    Unit = UnitBox.Text
+                };
                 var st = new Step
                     {
                         BeginDate = Begin.SelectedDate != null ? (DateTime) Begin.SelectedDate : DateTime.Now,
@@ -670,6 +666,12 @@ namespace PathToSuccess
             }
             else
             {
+                var crit = new Criteria
+                {
+                    CurrentValue = 0,
+                    TargetValue = 1,
+                    Unit = "default"
+                };
                 var p = BL.ChangesBuffer.CurrentState.TaskBuffer.First(x => x.Description == _parent.Desc.Text);
                 var t = new Task
                     {
