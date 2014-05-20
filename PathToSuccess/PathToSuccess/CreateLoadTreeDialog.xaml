@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PathToSuccess.CreateLoadTreeDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="CreateLoadTreeDiaolg" MinHeight="410" Height="410" WindowStyle="SingleBorderWindow"  MinWidth="500" Width="500" SizeChanged="Update">
+         MinHeight="410" Height="410" WindowStyle="SingleBorderWindow"  MinWidth="500" Width="500" SizeChanged="Update">
     <Grid>
         <Grid Name="MainGrid">
             <Grid.Resources>
@@ -43,8 +43,8 @@
             <TabControl Name="StepChanger" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <TabItem Name="ChoosingTabItem" Visibility="Collapsed">
                     <Grid Name ="Choose">
-                        <Button Name="Create" Click="CreateClick" Content="Create"/>
-                        <Button Name="Load" Click="LoadClick" Content="Load"/>
+                        <Button Name="Create" Click="CreateClick" Content="Создать"/>
+                        <Button Name="Load" Click="LoadClick" Content="Загрузить"/>
                     </Grid>
                 </TabItem>
                 <TabItem Name="SecondTabItem" Loaded="PanelinoStackerino" Visibility="Collapsed">

@@ -134,9 +134,6 @@
     </Compile>
     <Compile Include="Schedule\TimeLine.cs" />
     <Compile Include="Schedule\TimeLineManager.cs" />
-    <Compile Include="SearchEngine.xaml.cs">
-      <DependentUpon>SearchEngine.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TableVisualiserPattern.xaml.cs">
       <DependentUpon>TableVisualiserPattern.xaml</DependentUpon>
     </Compile>
@@ -181,10 +178,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Schedule\ScheduleVisualizer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SearchEngine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

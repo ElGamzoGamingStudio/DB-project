@@ -22,11 +22,13 @@ namespace PathToSuccess
         private double _realCanvasWidth;
         private TaskVisual _parent;
         private Grid _stepChanger;
+        private bool _addFlag;
         public MainWindow()
         {
             InitializeComponent();
             BL.Application.SetUp();
             _realCanvasWidth = 0;
+            _addFlag = true;
             //var tree = new CreateLoadTreeDialog();
             //tree.ShowDialog();
             //var sc = new ScheduleVisualiser();
@@ -35,10 +37,10 @@ namespace PathToSuccess
             //timeline.ShowDialog();
 
             Adding.Visibility = Visibility.Collapsed;
-            //var log = new LoginWindow();
-            //log.ShowDialog();
-            //if (log.RightPass == null)
-            //    Application.Current.Shutdown();
+            var log = new LoginWindow();
+            log.ShowDialog();
+            if (log.RightPass == null)
+                Application.Current.Shutdown();
 
             UserInfo.Content = BL.Application.CurrentUser != null
                                    ? "Вы вошли как " + BL.Application.CurrentUser.Name
@@ -69,6 +71,10 @@ namespace PathToSuccess
         {
             Adding.IsEnabled = true;
             Adding.Visibility = Visibility.Visible;
+            var t = BL.ChangesBuffer.CurrentState.TaskBuffer.Find(x => _parent.Desc.Text == x.Description);
+            Begin.DisplayDateStart = End.DisplayDateStart = t.BeginDate;
+            End.DisplayDateEnd = Begin.DisplayDateEnd = t.EndDate;
+            TaskButton.IsChecked = true;
             InAnimation();
         }
 
@@ -134,10 +140,11 @@ namespace PathToSuccess
 
         private void All_OnSelected(object sender, RoutedEventArgs e)
         {
-            if (RawView == null) return;
-            foreach (var result in RawView.Items.Cast<ListBoxItem>())
+            if(BL.Application.CurrentTree==null)return;
+            RawView.Items.Clear();
+            foreach (var result in Task.SelectAllTreeTask(BL.Application.CurrentTree.MainTaskId))
             {
-                result.Background = Brushes.White;
+                RawView.Items.Add(new ListBoxItem {Content = result.Description});
             }
         }
 
@@ -183,6 +190,7 @@ namespace PathToSuccess
                 TargetLabel.Visibility =
                 TargetVal.Visibility = TrLabel.Visibility = Periodic.Visibility = Graphs.Visibility = Visibility.Hidden;
             OkButton.Click -= Add_Click;
+            _addFlag = true;
             OkButton.Click += ApplyEditing;
         }
 
@@ -197,9 +205,7 @@ namespace PathToSuccess
                 DAL.SqlRepository.Importancies.Cast<Importance>()
                    .First(imp => imp.ImportanceName == targetTask.ImportanceName);
             targetTask.UrgencyName = (Urg.SelectedItem as ComboBoxItem).Content.ToString();
-            targetTask.Urgency =
-                DAL.SqlRepository.Urgencies.Cast<Urgency>()
-                   .First(imp => imp.UrgencyName == targetTask.UrgencyName);
+            targetTask.UpdateUrgency();
             OkButton.Click -= ApplyEditing;
             targetTask.BeginDate = Begin.SelectedDate != null ? (DateTime)Begin.SelectedDate : DateTime.MinValue;
             targetTask.EndDate = End.SelectedDate != null ? (DateTime)End.SelectedDate : DateTime.MaxValue;
@@ -235,7 +241,9 @@ namespace PathToSuccess
             visual.PreviewMouseLeftButtonDown += ClearStepChanger;
             _parent = visual;
             if (displayTask.ChildrenAreSteps())
+            {
                 visual.Add.Click += AddStep;
+            }
             else
                 visual.Add.Click += AddTask;
             bool evenCount = children.Count % 2 == 0;
@@ -380,7 +388,7 @@ namespace PathToSuccess
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Width = 25,
                     Height = 25,
-                    Content = FindResource("Edit"),
+                    Content = FindResource("Edit1"),
                     Name = "Q" + id.ToString()
                 };
             var b1 = new Button()
@@ -390,7 +398,7 @@ namespace PathToSuccess
                 Width = 25,
                 Height = 25,
                 Margin = new Thickness(26,0,0,0),
-                Content = "R",
+                Content = FindResource("Remove1"),
                 Name = "R" + id.ToString()
             };
             var ok = new Button()
@@ -453,6 +461,7 @@ namespace PathToSuccess
             DescBox.Name = "S" + targetStep.Id.ToString();
             UnitBox.Name = "C" + targetStep.CriteriaId.ToString();
             OkButton.Click -= Add_Click;
+            _addFlag = true;
             OkButton.Click += ApplyStep;
         }
 
@@ -493,6 +502,7 @@ namespace PathToSuccess
             BL.ChangesBuffer.CaptureChanges(buff);
             UpdateTree(BL.ChangesBuffer.CurrentState.TaskBuffer.First(task=>task.Description==_parent.Desc.Text),MoveDirections.None);
             OkButton.Click -= ApplyStep;
+            
             Discard_Click(sender, e);
         }
 
@@ -523,12 +533,14 @@ namespace PathToSuccess
 
         private void TreeLoaded()
         {
+            BL.ChangesBuffer.Initialize();
             var p = Task.SelectAllTreeTask(BL.Application.CurrentTree.MainTaskId);
             foreach (var task in p)
             {
                 RawView.Items.Add(new ListBoxItem { Content = task.Description, Height = 20 });
             }
             var m = p.Max(task1 => task1.Urgency.Value);
+            
             foreach (var task1 in p)
             {
                 if (Task.GetOldestParent(task1).Id == BL.Application.CurrentTree.MainTaskId &&
@@ -554,23 +566,23 @@ namespace PathToSuccess
 
         private void Tasks_OnSelected(object sender, RoutedEventArgs e)
         {
-            var tasks = Task.Select(x => !x.ChildrenAreSteps());
-            foreach (var result in RawView.Items.Cast<ListBoxItem>())
+            if (BL.Application.CurrentTree == null) return;
+            RawView.Items.Clear();
+            foreach (var result in Task.SelectAllTreeTask(BL.Application.CurrentTree.MainTaskId))
             {
-                result.Background = tasks.FirstOrDefault(x => x.Description == result.Content.ToString()) != null
-                                        ? Brushes.CornflowerBlue
-                                        : Brushes.White;
+                if(!result.ChildrenAreSteps())
+                    RawView.Items.Add(new ListBoxItem { Content = result.Description });
             }
         }
 
         private void TaskSt_OnSelected(object sender, RoutedEventArgs e)
         {
-            var tasks = Task.Select(x => x.ChildrenAreSteps());
-            foreach (var result in RawView.Items.Cast<ListBoxItem>())
+            if (BL.Application.CurrentTree == null) return;
+            RawView.Items.Clear();
+            foreach (var result in Task.SelectAllTreeTask(BL.Application.CurrentTree.MainTaskId))
             {
-                result.Background = tasks.FirstOrDefault(x => x.Description == result.Content.ToString()) != null
-                                        ? Brushes.CornflowerBlue
-                                        : Brushes.White;
+                if(result.ChildrenAreSteps())
+                    RawView.Items.Add(new ListBoxItem { Content = result.Description });
             }
         }
 
@@ -587,18 +599,22 @@ namespace PathToSuccess
 
         }
 
-
-
         private void OutAnimation()
         {
             var anim = new ThicknessAnimation(new Thickness(-1000, 0, 0, 0), new Duration(TimeSpan.FromSeconds(1)));
             anim.Completed += HideThisShit;
+            
             Adding.BeginAnimation(MarginProperty, anim);
         }
 
         private void HideThisShit(object sender, EventArgs e)
         {
             Adding.Visibility = Visibility.Collapsed;
+            if (!_addFlag)
+            {
+                OkButton.Click += Add_Click;
+                _addFlag = true;
+            }
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -616,18 +632,16 @@ namespace PathToSuccess
             var imp =
                 DAL.SqlRepository.Importancies.Cast<Importance>()
                    .First(x => ((ComboBoxItem)Imp.SelectedItem).Content.ToString() == x.ImportanceName);
-            var urg =
-                DAL.SqlRepository.Urgencies.Cast<Urgency>().First(x => ((ComboBoxItem)Urg.SelectedItem).Content.ToString() == x.UrgencyName);
             var buff = new BL.Buffer(BL.ChangesBuffer.CurrentState);
             if (StepButton.IsChecked == true)
             {
                 var tr = new TimeRule
                     {
                         IsPeriodic = Periodic.IsChecked == true,
-                        Schedule =
+                        Schedule = 
                             DAL.SqlRepository.Schedules.Cast<Models.Schedule>().ToList()
-                               .First(x => x.Id == Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())),
-                        ScheduleId = Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())
+                               .First(x => Periodic.IsChecked == true ? x.Id == Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString()):x.Id==11),
+                        ScheduleId = Periodic.IsChecked == true ? Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString()):11
                     };
                 var t = BL.ChangesBuffer.CurrentState.TaskBuffer.First(x => x.Description == _parent.Desc.Text);
                 if (
@@ -652,14 +666,12 @@ namespace PathToSuccess
                         Description = DescBox.Text,
                         Importance = imp,
                         ImportanceName = imp.ImportanceName,
-                        Urgency = urg,
-                        UrgencyName = urg.UrgencyName,
                         TimeRule = tr,
                         TimeRuleId = tr.Id,
                         ParentTask = t,
                         TaskId = t.Id
                     };
-                
+                st.UpdateUrgency();
                 buff.StepBuffer.Add(st);
                 BL.ChangesBuffer.CaptureChanges(buff);
                 UpdateTree(t,MoveDirections.None);
@@ -682,11 +694,10 @@ namespace PathToSuccess
                     Description = DescBox.Text,
                     Importance = imp,
                     ImportanceName = imp.ImportanceName,
-                    Urgency = urg,
-                    UrgencyName = urg.UrgencyName,
                     Parent = p,
                     ParentId = p.Id
                 };
+                t.UpdateUrgency();
                 buff.TaskBuffer.Add(t);
                 BL.ChangesBuffer.CaptureChanges(buff);
                 UpdateTree(p,MoveDirections.None);
@@ -708,7 +719,7 @@ namespace PathToSuccess
                 UnitBox.Visibility =
                 TargetLabel.Visibility =
                 TargetVal.Visibility = TrLabel.Visibility = Periodic.Visibility = Graphs.Visibility = Chos.Visibility = Visibility.Visible;
-            OkButton.Click += Add_Click;
+
             
             OutAnimation();
             Adding.IsEnabled = false;
@@ -722,7 +733,6 @@ namespace PathToSuccess
 
             UpdateTree(parent.Parent, MoveDirections.Down);
         }
-
 
         private void ShowScheduleTimeline(object sender, RoutedEventArgs e)
         {
@@ -783,38 +793,26 @@ namespace PathToSuccess
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SearchBox.Text.Length == 0) return;
-            var result = BL.ChangesBuffer.CurrentState.TaskBuffer.Where(task => task.Description.Contains(SearchBox.Text));
-            RawView.Items.Clear();
-            foreach (var task in result)
+            if (SearchBox.Text.Length == 0 || RawView.Items.Count == 0) return;
+            var result = Task.SelectAllTreeTask(BL.Application.CurrentTree.MainTaskId).Where(task => task.Description.Contains(SearchBox.Text));
+            
+            foreach (var task in RawView.Items.Cast<ListBoxItem>())
             {
-                RawView.Items.Add(new ListBoxItem { Content = task.Description });
+                var enumerable = result as IList<Task> ?? result.ToList();
+                task.Background = enumerable.FirstOrDefault(x => x.Description == task.Content.ToString()) != null
+                                      ? Brushes.CornflowerBlue
+                                      : Brushes.White;
             }
             Disc.Visibility = Visibility.Visible;
-            ByName.IsSelected = false;
-            ByName.IsSelected = true;
         }
 
         private void Disc_OnClick(object sender, RoutedEventArgs e)
         {
-            RawView.Items.Clear();
-            var treeList = new List<Task>();
-            // ReSharper disable LoopCanBeConvertedToQuery
-            foreach (var entity in BL.ChangesBuffer.CurrentState.TaskBuffer)
-            // ReSharper restore LoopCanBeConvertedToQuery
+            foreach (var item in RawView.Items.Cast<ListBoxItem>())
             {
-                if (Task.GetOldestParent(entity).Id == BL.Application.CurrentTree.MainTaskId)
-                {
-                    treeList.Add(entity);
-                }
+                item.Background = Brushes.White;
             }
-            foreach (var source in treeList)
-            {
-                RawView.Items.Add(new ListBoxItem { Content = source.Description });
-            }
-            ByName.IsSelected = false;
-            ByName.IsSelected = true;
-            Disc.Visibility = Visibility.Hidden;
+            Disc.Visibility=Visibility.Collapsed;
         }
 
         private void TaskSelected(object sender, RoutedEventArgs e)
@@ -841,6 +839,34 @@ namespace PathToSuccess
         private void Periodic_OnChecked(object sender, RoutedEventArgs e)
         {
             Graphs.IsEnabled = Periodic.IsChecked.HasValue&&Periodic.IsChecked.Value;
+        }
+
+        private void TaskButton_OnChecked(object sender, RoutedEventArgs e)
+        {
+            CritLabel.Visibility =
+                UnitLabel.Visibility =
+                UnitBox.Visibility =
+                TargetLabel.Visibility =
+                TargetVal.Visibility = TrLabel.Visibility = Periodic.Visibility = Graphs.Visibility = Visibility.Hidden;
+        }
+
+        private void StepButton_OnChecked(object sender, RoutedEventArgs e)
+        {
+            CritLabel.Visibility =
+                UnitLabel.Visibility =
+                UnitBox.Visibility =
+                TargetLabel.Visibility =
+                TargetVal.Visibility = TrLabel.Visibility = Periodic.Visibility = Graphs.Visibility = Visibility.Visible;
+        }
+
+        private void Begin_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            End.DisplayDateStart = Begin.SelectedDate;
+        }
+
+        private void End_OnSelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Begin.DisplayDateEnd = End.SelectedDate;
         }
     }
 }

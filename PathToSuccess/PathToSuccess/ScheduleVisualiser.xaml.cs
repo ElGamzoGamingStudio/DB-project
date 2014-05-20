@@ -153,7 +153,7 @@ namespace PathToSuccess
             if (IsOk(ThursdayFrom.Text, out numberThursdayFrom) && IsOk(ThursdayTo.Text, out numberThursdayTo))
             {
                 thursday = Interval.CreateInterval(new DateTime(300, 5, 3, numberThursdayFrom, 0, 0),
-                    new DateTime(0, 0, 0, numberThursdayTo, 0, 0));
+                    new DateTime(300, 5, 3, numberThursdayTo, 0, 0));
                 intervals.Add(thursday);
             }
             else

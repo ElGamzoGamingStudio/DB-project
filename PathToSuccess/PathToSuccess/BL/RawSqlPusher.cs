@@ -26,11 +26,16 @@ namespace PathToSuccess.BL
             try
             {
                 NpgsqlDataReader dr = command.ExecuteReader();
+                for (int i = 0; i < dr.FieldCount; i++)
+                {
+                    sb.AppendFormat("{0} \t\t", dr.GetName(i));
+                }
+                sb.Append("\n\n");
                 while (dr.Read())
                 {
                     for (int i = 0; i < dr.FieldCount; i++)
                     {
-                        sb.AppendFormat("{0} \t", dr[i]);
+                        sb.AppendFormat("{0} \t\t  ", dr[i]);
                     }
                     sb.Append("\n");
                 }
@@ -50,7 +55,7 @@ namespace PathToSuccess.BL
                                       ";Database=" + doc.Root.Attribute("dbname").Value + ";";
 
             Conn = new NpgsqlConnection(connectionString);
-   
+
             Conn.Open();
             Ctx = new PathToSuccess.DAL.Context(Conn);
         }
