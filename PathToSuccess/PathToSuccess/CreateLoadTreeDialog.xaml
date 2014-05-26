@@ -50,9 +50,9 @@
                 <TabItem Name="SecondTabItem" Loaded="PanelinoStackerino" Visibility="Collapsed">
                     <Grid Name="SecondStep">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Name="TreeNamePanel" Width="300">
-                            <TextBlock Text="Tree Name" Name="Tree" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Название дерева" Name="Tree" HorizontalAlignment="Center"/>
                             <TextBox Name="NameBox"/>
-                            <TextBlock Text="Description" Name="Description" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Описание" Name="Description" HorizontalAlignment="Center"/>
                             <TextBox Name="DescriptionBox" Height="40"/>
 
                         </StackPanel>
@@ -72,15 +72,15 @@
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
                             <StackPanel Name="AddPanel" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="SteelBlue">
                                 <StackPanel Name="AddTaskPanel" VerticalAlignment="Top" Background="SeaGreen">
-                                    <TextBlock Text="What do you want to achieve" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Чего Вы хотите достичь" FontSize="14" HorizontalAlignment="Center"/>
                                     <TextBox Name="DescBox" HorizontalAlignment="Center" Height="60" TextWrapping="Wrap" Width="350"/>
-                                    <TextBlock Text="Unit of measure" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Единица измерения" FontSize="14" HorizontalAlignment="Center"/>
                                     <TextBox Name="UnitBox" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                                    <TextBlock Text="Target value (only int)" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Целевое значение (число)" FontSize="14" HorizontalAlignment="Center"/>
                                     <TextBox Name="TargetVal" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                                    <TextBlock Text="From" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="С" FontSize="14" HorizontalAlignment="Center"/>
                                     <DatePicker Name="Begin" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                                    <TextBlock Text="To" FontSize="14" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="По" FontSize="14" HorizontalAlignment="Center"/>
                                     <DatePicker Name="End" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                 </StackPanel>
                             </StackPanel>
