@@ -17,7 +17,7 @@ namespace PathToSuccess.BL
 
         public static void Initialize()
         {
-            List<PathToSuccess.Models.Task> tsk = PathToSuccess.Models.Task.GetLowestTasks();
+            List<PathToSuccess.Models.Task> tsk = PathToSuccess.Models.Task.SelectAllTreeTask(PathToSuccess.BL.Application.CurrentTree.MainTaskId);
             foreach (var ts in tsk)
             {
                 Step s = Step.GetFirstUndoneStepByTaskID(ts.Id);

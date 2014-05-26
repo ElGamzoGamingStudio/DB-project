@@ -18,7 +18,7 @@ namespace PathToSuccess.Models
                    Equals(ThursdayInterval, other.ThursdayInterval) && FridayIntervalId == other.FridayIntervalId &&
                    Equals(FridayInterval, other.FridayInterval) && SaturdayIntervalId == other.SaturdayIntervalId &&
                    Equals(SaturdayInterval, other.SaturdayInterval) && SundayIntervalId == other.SundayIntervalId &&
-                   Equals(SundayInterval, other.SundayInterval);
+                   Equals(SundayInterval, other.SundayInterval) && other.Name.Equals(Name);
         }
 
         public override int GetHashCode()
@@ -83,11 +83,12 @@ namespace PathToSuccess.Models
         public int SundayIntervalId { get; set; }
         [ForeignKey("SundayIntervalId")]
         public Interval SundayInterval { get; set; }
-
+        [Column("name")]
+        public string Name { get; set; }
 
         public Schedule() { }
 
-        public static Schedule CreateSchedule(Interval monday, Interval tuesday, Interval wednesday, Interval thursday, Interval friday, Interval saturday, Interval sunday)
+        public static Schedule CreateSchedule(Interval monday, Interval tuesday, Interval wednesday, Interval thursday, Interval friday, Interval saturday, Interval sunday, string name)
         {
             var set = DAL.SqlRepository.Schedules;
             var item = (Schedule)set.Create(typeof(Schedule));
@@ -99,6 +100,7 @@ namespace PathToSuccess.Models
             item.FridayInterval = friday;
             item.SaturdayInterval = saturday;
             item.SundayInterval = sunday;
+            item.Name = name;
 
             item.MondayIntervalId = monday == null ? -1 : monday.Id;
             item.TuesdayIntervalId = tuesday == null ? -1 : tuesday.Id;
