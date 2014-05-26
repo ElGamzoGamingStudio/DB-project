@@ -872,5 +872,16 @@ namespace PathToSuccess
         {
             Begin.DisplayDateEnd = End.SelectedDate;
         }
+
+        private void SendInfo(object sender, RoutedEventArgs e)
+        {
+            if (PhoneSync.InfoSender.Send())
+                MessageBox.Show("Information succesfully sent to the server.", "Synchronization");
+            else
+                MessageBox.Show("Couldn't connect to the server.", "Synchronization");
+
+        }
+
+        
     }
 }
