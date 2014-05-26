@@ -75,7 +75,7 @@
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="SQL" Width="40" Click="OpenQuery"/>
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Time}" Width="40" Click="ShowScheduleTimeline"/>
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Schedule}" Width="40" Click="ShowSchedule"/>
-            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Send}" Width="40"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Send}" Width="40" Click="SendInfo"/>
         </StackPanel>
 
         <ComboBox HorizontalAlignment="Right" Margin="0,146,10,0" Name="Filter" VerticalAlignment="Top" Width="150">

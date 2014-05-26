@@ -881,7 +881,5 @@ namespace PathToSuccess
                 MessageBox.Show("Couldn't connect to the server.", "Synchronization");
 
         }
-
-        
     }
 }

@@ -27,8 +27,8 @@ namespace PathToSuccess.PhoneSync
                 "\"description\" : \"" + tb.Step.Description + "\",\n" +
                 "\"importance\" : \"" + tb.Step.ImportanceName + "\",\n" +
                 "\"time\" : \"" + tb.Time.ToShortTimeString() + "\",\n" +
-                "\"id\" : " + tb.Id
-                + "\n}";
+                "\"id\" : \"" + tb.Id
+                + "\"\n}";
 
             return json;
         }
@@ -48,9 +48,9 @@ namespace PathToSuccess.PhoneSync
                 day = "";
    
                 day += "{";
-                day += "   \"day\" : " + dateCounter.Day + ",\n" +
-                    "   \"month\" : " + dateCounter.Month + ",\n" +
-                    "   \"year\" : " + dateCounter.Year + ",\n" +
+                day += "   \"day\" : \"" + dateCounter.Day.ToString() + "\",\n" +
+                    "   \"month\" : \"" + dateCounter.Month.ToString() + "\",\n" +
+                    "   \"year\" : \"" + dateCounter.Year.ToString() + "\",\n" +
                     "   \"steps\" : [\n";
 
                 foreach (var tb in tbs)
@@ -62,7 +62,7 @@ namespace PathToSuccess.PhoneSync
                     day = day.Remove(day.Length - 1); //remove redundant comma
 
                 day += "   ]\n";
-                day += "   },\n";
+                day += "},";
 
                 json += day;
                 dateCounter = dateCounter.AddDays(1);
@@ -76,7 +76,7 @@ namespace PathToSuccess.PhoneSync
             return json;
         }
 
-        public static void Send()
+        public static bool Send()
         {
             try
             {
@@ -85,7 +85,9 @@ namespace PathToSuccess.PhoneSync
             catch
             {
                 BL.Log.Add("Couldn't connect to server at" + DateTime.Now.ToString());
+                return false;
             }
+            return true;
         }
 
         private static void TrySend()
