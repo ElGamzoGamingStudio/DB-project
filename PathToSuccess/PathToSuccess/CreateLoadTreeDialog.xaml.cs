@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -392,5 +393,11 @@ namespace PathToSuccess
             }
             move.BeginAnimation(TranslateTransform.YProperty, anim);
         }
+
+        private void NumericValidation(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !BL.Authentication.IsNotNumericAllowed(e.Text);
+        }
+        
     }
 }

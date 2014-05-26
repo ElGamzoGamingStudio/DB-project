@@ -50,10 +50,10 @@ namespace PathToSuccess
                 };
                 var treeTaskStatistics = new TextBlock()
                 {
-                    Text = undoneTasks.Count + " / " + allTasks.Count,
+                    Text = (allTasks.Count - undoneTasks.Count) + " / " + allTasks.Count,
                     TextWrapping = TextWrapping.WrapWithOverflow,
                     HorizontalAlignment = HorizontalAlignment.Center,
-                    Foreground = undoneTasks.Count <= allTasks.Count / 2 ? new SolidColorBrush(Colors.OrangeRed) : new SolidColorBrush(Colors.Black),
+                    Foreground = undoneTasks.Count >= allTasks.Count / 2 ? new SolidColorBrush(Colors.OrangeRed) : new SolidColorBrush(Colors.Black),
                 };
                 var treeUserDateStatistics = new TextBlock()
                 {

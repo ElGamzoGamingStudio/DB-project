@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using PathToSuccess.Models;
 
@@ -40,6 +41,12 @@ namespace PathToSuccess.BL
             Application.CurrentTree = null;
             Application.CurrentUser = null;
             //login window should not be opened here.
+        }
+
+        public static bool IsNotNumericAllowed(string text)
+        {
+            var regex = new Regex("[^0-9.-]+");
+            return !regex.IsMatch(text);
         }
     }
 }
