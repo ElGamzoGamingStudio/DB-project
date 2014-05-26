@@ -80,7 +80,7 @@ namespace PathToSuccess.Models
                 user.Login = login;
                 user.Name = name;
                 user.DateOfBirth = birth;
-                user.Password = pass.GetHashCode();
+                user.Password = Convert.ToInt32(BL.Application.Hash(pass));
                 user.DateReg = dateReg;
 
                 set.Add(user);

@@ -17,7 +17,6 @@ namespace PathToSuccess.PhoneSync
         public static void Initialize()
         {
             GetUrlFromFile();
-            //Send();
         }
 
         private static string ToJson(Models.TimeBinding tb)
@@ -38,14 +37,8 @@ namespace PathToSuccess.PhoneSync
         {
             string json = "";
 
-            //json += "{" +
-            //    //"\"user\" : \"" + PathToSuccess.BL.Application.CurrentUser.Login + "\",\n" +
-            //    "\"user\" : \"stub\",\n" +
-            //    //"\"password_hash\" : " + PathToSuccess.BL.Application.CurrentUser.Password + ",\n";
-            //    "\"password_hash\" : stub,\n";
-
             json +=
-                "\"days\" : [\n";
+                "{\"days\" : [\n";
 
             DateTime dateCounter = DateTime.Now;
             string day = "";
@@ -85,6 +78,18 @@ namespace PathToSuccess.PhoneSync
 
         public static void Send()
         {
+            try
+            {
+                TrySend();
+            }
+            catch
+            {
+                BL.Log.Add("Couldn't connect to server at" + DateTime.Now.ToString());
+            }
+        }
+
+        private static void TrySend()
+        {
             string json = GetTimeTableJson();
             var request = (HttpWebRequest)WebRequest.Create(Url);
             request.ContentType = "text/json";
@@ -107,12 +112,12 @@ namespace PathToSuccess.PhoneSync
                     {"jsondata", json },
                     {"referer", "desktop"}
                 };
-                //var postData = new NameValueCollection()
+                //postData = new NameValueCollection()
                 //{
-                //    {"user", "stub"},
-                //    {"password_hash", "0"},
-                //    {"referer", "mobile"},
-                //    {"auth", "true"} //false to get json, true to get success/fail result
+                //    {"user", BL.Application.CurrentUser.Login},
+                //    {"password_hash", BL.Application.CurrentUser.Password.ToString()},
+                //    {"jsondata", json },
+                //    {"referer", "desktop"}
                 //};
                 result = Encoding.UTF8.GetString(wc.UploadValues(Url, postData));
             }
