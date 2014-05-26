@@ -315,6 +315,8 @@ namespace PathToSuccess
 
         private void LoadTreesToLoadTabItem(object sender, RoutedEventArgs e)
         {
+            BackFromLoad.Visibility = Visibility.Visible;
+            BackFromLoad.IsEnabled = true;
             var trees = Models.Tree.FindTreesForUser(BL.Application.CurrentUser);
             //var defaultTrees = Models.Tree.FindTreesForUser(User.PIOS());
             //if(!defaultTrees.IsNullOrEmpty())

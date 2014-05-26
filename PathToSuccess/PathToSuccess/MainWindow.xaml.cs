@@ -57,6 +57,12 @@ namespace PathToSuccess
             {
                 Graphs.Items.Add(new ComboBoxItem { Content = entity.Id });
             }
+
+            /*
+             * test section
+             */
+            var stat = new Statistics();
+            stat.ShowDialog();
         }
 
         private void OverflowCanvas()

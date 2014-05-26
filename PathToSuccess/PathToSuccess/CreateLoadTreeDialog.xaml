@@ -92,15 +92,16 @@
                 </TabItem>
                 <TabItem Name="LoadTabItem" Visibility="Collapsed" Loaded="LoadTreesToLoadTabItem">
                     <Grid Name ="LoadStep">
-                        <Button Name="BackFromLoad" Click="BackToChoosing" Content="{StaticResource BackArrow}" 
+                        <StackPanel Name ="CostilStackPanel">
+                            <Button Name="BackFromLoad" Click="BackToChoosing" PreviewMouseUp="BackToChoosing" Content="{StaticResource BackArrow}" 
                 Width="50" Height="50" HorizontalAlignment="Left" 
                 VerticalAlignment="Top" Margin="5,5,0,0" Visibility="Visible"/>
-                        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <WrapPanel Name="TreeVisualPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,55,0,0">
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <WrapPanel Name="TreeVisualPanel" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,55,0,0">
 
-                            </WrapPanel>
-                        </ScrollViewer>
-
+                                </WrapPanel>
+                            </ScrollViewer>
+                        </StackPanel>
                     </Grid>
                 </TabItem>
 
