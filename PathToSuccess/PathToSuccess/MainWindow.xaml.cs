@@ -74,7 +74,9 @@ namespace PathToSuccess
             var t = BL.ChangesBuffer.CurrentState.TaskBuffer.Find(x => _parent.Desc.Text == x.Description);
             Begin.DisplayDateStart = End.DisplayDateStart = t.BeginDate;
             End.DisplayDateEnd = Begin.DisplayDateEnd = t.EndDate;
+            TaskButton.IsChecked = false;
             TaskButton.IsChecked = true;
+            StepButton.IsEnabled = t.ChildrenAreSteps();
             InAnimation();
         }
 
@@ -84,6 +86,7 @@ namespace PathToSuccess
             StepButton.IsChecked = true;
             TaskButton.IsEnabled = false;
             Adding.Visibility = Visibility.Visible;
+
             InAnimation();
         }
 
@@ -695,7 +698,8 @@ namespace PathToSuccess
                     Importance = imp,
                     ImportanceName = imp.ImportanceName,
                     Parent = p,
-                    ParentId = p.Id
+                    ParentId = p.Id,
+                    Id = BL.ChangesBuffer.CurrentState.TaskBuffer.Max(taskk=>taskk.Id) + 1
                 };
                 t.UpdateUrgency();
                 buff.TaskBuffer.Add(t);

@@ -32,7 +32,7 @@
             </Canvas>
         </ScrollViewer>
 
-        <StackPanel Orientation="Horizontal" Width="310" Margin="10,0,0,0" HorizontalAlignment="Left" Height="45" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" Width="360" Margin="10,0,0,0" HorizontalAlignment="Left" Height="45" VerticalAlignment="Top">
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -75,6 +75,7 @@
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="SQL" Width="40" Click="OpenQuery"/>
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Time}" Width="40" Click="ShowScheduleTimeline"/>
             <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Schedule}" Width="40" Click="ShowSchedule"/>
+            <Button  HorizontalAlignment="Left" Height="35" Margin="10,0,0,5" Content="{StaticResource Send}" Width="40"/>
         </StackPanel>
 
         <ComboBox HorizontalAlignment="Right" Margin="0,146,10,0" Name="Filter" VerticalAlignment="Top" Width="150">
