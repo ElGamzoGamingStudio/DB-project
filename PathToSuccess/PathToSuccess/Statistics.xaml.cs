@@ -32,8 +32,8 @@ namespace PathToSuccess
             var trees = Models.Tree.FindTreesForUser(BL.Application.CurrentUser);
             foreach (var tree in trees)
             {
-                var undoneTasks = Task.Select(x => !x.Criteria.IsCompleted());
                 var allTasks = Task.SelectAllTreeTask(tree.TreeId);
+                var undoneTasks = allTasks.Select(x => !x.Criteria.IsCompleted()).ToList();
                 var treeNameText = new TextBlock()
                 {
                     Text = tree.TreeUser == BL.Application.CurrentUser ? tree.Name : "[" + tree.Name + "]",
@@ -53,6 +53,12 @@ namespace PathToSuccess
                     Text = undoneTasks.Count + " / " + allTasks.Count,
                     TextWrapping = TextWrapping.WrapWithOverflow,
                     HorizontalAlignment = HorizontalAlignment.Center,
+                    Foreground = undoneTasks.Count <= allTasks.Count / 2 ? new SolidColorBrush(Colors.OrangeRed) : new SolidColorBrush(Colors.Black),
+                };
+                var treeUserDateStatistics = new TextBlock()
+                {
+                    Text = "Last change time : \n" + tree.LastChangesTime.ToString(),
+                    Foreground = tree.LastChangesTime.CompareTo(DateTime.Now.AddDays(-7)) < 0 ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.Black),
                 };
                 var treeInfo = new StackPanel()
                 {
@@ -62,16 +68,17 @@ namespace PathToSuccess
                 };
                 treeInfo.Children.Add(treeNameText);
                 treeInfo.Children.Add(treeTaskStatistics);
+                treeInfo.Children.Add(treeUserDateStatistics);
                 //treeInfo.Children.Add(treeDescriptionText);
                 var treeElement = new Button()
                 {
-                    Background = new SolidColorBrush(Colors.Tomato),
+                    Background = new SolidColorBrush(Colors.Wheat),
                     Width = 150,
                     Height = 150,
                     Content = treeInfo,
                     Tag = tree.TreeId
                 };
-                
+
                 StatisticBlockPanel.Children.Add(treeElement);
             }
         }
