@@ -214,7 +214,11 @@ namespace PathToSuccess
                 sunday.EndTime = Interval.PIOS;
             }
 
+<<<<<<< HEAD
             var creation = Models.Schedule.CreateSchedule(monday, tuesday, wednesday, thursday, friday, saturday, sunday, ScheduleNameBox.Text);
+=======
+            var creation = Models.Schedule.CreateSchedule(monday, tuesday, wednesday, thursday, friday, saturday, sunday, ScheduleNameBox.Text.Trim());
+>>>>>>> fe5a8672320fce067ab6d776e974bbe69c224b87
             schedules.Add(creation);
             SqlRepository.Save();
             Interval.RemoveTrash();

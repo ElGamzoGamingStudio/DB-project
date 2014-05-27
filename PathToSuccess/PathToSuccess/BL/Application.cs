@@ -26,9 +26,14 @@ namespace PathToSuccess.BL
 
         }
 
-        public static uint Hash(string toHash)
+        public static int Hash(string toHash)
         {
-            return toHash.Aggregate<char, uint>(0, (current, c) => (current*1664525) + (uint) (c) + 1013904223);
+            int result = 0;
+            foreach (char c in toHash)
+            {
+                result = ((result*1664525) + (int) c + 1013904223)%int.MaxValue;
+            }
+            return Math.Abs(result);
         }
     }
 }

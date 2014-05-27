@@ -61,8 +61,10 @@ namespace PathToSuccess
             /*
              * test section
              */
-            var stat = new Statistics();
-            stat.ShowDialog();
+            //var stat = new Statistics();
+            //stat.ShowDialog();
+
+            //var hash = BL.Application.Hash("версута сын собаки");
         }
 
         private void OverflowCanvas()
