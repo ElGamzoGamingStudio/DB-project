@@ -881,6 +881,11 @@ namespace PathToSuccess
 
         private void SendInfo(object sender, RoutedEventArgs e)
         {
+            if (BL.Application.CurrentTree == null)
+            {
+                MessageBox.Show("Open a tree first.", "Synchronization");
+                return;
+            }
             if (PhoneSync.InfoSender.Send())
                 MessageBox.Show("Information succesfully sent to the server.", "Synchronization");
             else

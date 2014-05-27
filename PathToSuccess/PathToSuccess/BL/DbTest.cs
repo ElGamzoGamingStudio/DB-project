@@ -55,9 +55,9 @@ namespace PathToSuccess.BL
             };
 
             var schedules = new Models.Schedule[] {
-                Models.Schedule.CreateSchedule(intervals[0],intervals[1],intervals[2],intervals[3],intervals[4],intervals[5],intervals[0]),
-                Models.Schedule.CreateSchedule(intervals[1],intervals[2],intervals[3],intervals[4],intervals[5],intervals[0],intervals[1]),
-                Models.Schedule.CreateSchedule(intervals[2],intervals[3],intervals[4],intervals[5],intervals[0],intervals[1],intervals[0])
+                Models.Schedule.CreateSchedule(intervals[0],intervals[1],intervals[2],intervals[3],intervals[4],intervals[5],intervals[0], ""),
+                Models.Schedule.CreateSchedule(intervals[1],intervals[2],intervals[3],intervals[4],intervals[5],intervals[0],intervals[1], ""),
+                Models.Schedule.CreateSchedule(intervals[2],intervals[3],intervals[4],intervals[5],intervals[0],intervals[1],intervals[0], "")
             };
 
             var timeRules = new TimeRule[] {

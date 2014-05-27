@@ -26,7 +26,8 @@ namespace PathToSuccess.PhoneSync
             json += "{" +
                 "\"description\" : \"" + tb.Step.Description + "\",\n" +
                 "\"importance\" : \"" + tb.Step.ImportanceName + "\",\n" +
-                "\"time\" : \"" + tb.Time.ToShortTimeString() + "\",\n" +
+                "\"start_time\" : \"" + tb.Time.ToShortTimeString() + "\",\n" +
+                "\"end_time\" : \"" + tb.Time.AddHours(1).ToShortTimeString() + "\",\n" +
                 "\"id\" : \"" + tb.Id
                 + "\"\n}";
 
