@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="50dp"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+    <TextView
+        android:id="@+id/descriptionView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/importanceView"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:text="test asdas dasd asd asd  asd asd asd asd asd asd asdasdasd asd asd asd asd asd "
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/importanceView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/descriptionView"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="2dp"
+        android:minHeight="15dp"
+        android:text="super dohrena important"
+        android:textSize="12sp" />
+    
+    <TextView
+        android:id="@+id/fromTimeView"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/importanceView"
+        android:textSize="15sp"
+        android:text="from 10:15" />
+    
+    <TextView
+        android:id="@+id/toTimeView"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/importanceView"
+        android:layout_alignParentRight="true"
+        android:textSize="15sp"
+        android:text="to 12:15" />
+
+</RelativeLayout>
