@@ -45,7 +45,7 @@ namespace PathToSuccess.BL
 
         public static bool IsNotNumericAllowed(string text)
         {
-            var regex = new Regex("[^0-9.-]+");
+            var regex = new Regex("[^0-9]+");
             return !regex.IsMatch(text);
         }
     }

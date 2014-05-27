@@ -37,11 +37,12 @@ namespace PathToSuccess
             //timeline.ShowDialog();
 
             Adding.Visibility = Visibility.Collapsed;
+            int h = BL.Application.Hash("testuser");
             var log = new LoginWindow();
             log.ShowDialog();
             if (log.RightPass == null)
                 Application.Current.Shutdown();
-
+            
             UserInfo.Content = BL.Application.CurrentUser != null
                                    ? "Вы вошли как " + BL.Application.CurrentUser.Name
                                    : "";
@@ -84,7 +85,7 @@ namespace PathToSuccess
             End.DisplayDateEnd = Begin.DisplayDateEnd = t.EndDate;
             TaskButton.IsChecked = false;
             TaskButton.IsChecked = true;
-            StepButton.IsEnabled = t.ChildrenAreSteps();
+            StepButton.IsEnabled = t.SelectChildrenTasks().Count == 0;
             InAnimation();
         }
 
@@ -638,8 +639,14 @@ namespace PathToSuccess
             {
                 MessageBox.Show("Такая цель уже есть в этом дереве!", "Warning", MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
+                return;
             }
-            
+            if (DescBox.Text.Length < 3)
+            {
+                MessageBox.Show("Слишком короткое описание!", "Warning", MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                return;
+            }
             var imp =
                 DAL.SqlRepository.Importancies.Cast<Importance>()
                    .First(x => ((ComboBoxItem)Imp.SelectedItem).Content.ToString() == x.ImportanceName);
@@ -893,6 +900,35 @@ namespace PathToSuccess
             else
                 MessageBox.Show("Couldn't connect to the server.", "Synchronization");
 
+        }
+
+        private void LogOut(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            BL.Authentication.LogOut();
+            var m=new MainWindow();
+            m.Show();
+            Close();
+        }
+
+        private void DigitValidation(object sender, TextChangedEventArgs e)
+        {
+            if ((sender as TextBox).Text.Length == 0) return;
+            string s = (sender as TextBox).Text;
+            (sender as TextBox).Text = BL.Authentication.IsNotNumericAllowed(s)
+                                           ? s
+                                           : s.Length > 1 ? s.Substring(0, s.Length - 1) : string.Empty;
+            (sender as TextBox).CaretIndex = (sender as TextBox).Text.Length;
+        }
+
+        private void LetterValidation(object sender, TextChangedEventArgs e)
+        {
+            if ((sender as TextBox).Text.Length == 0) return;
+            string s = (sender as TextBox).Text;
+            (sender as TextBox).Text = !char.IsDigit(s[s.Length-1])
+                                           ? s
+                                           : s.Length > 1 ? s.Substring(0, s.Length - 1) : string.Empty;
+            (sender as TextBox).CaretIndex = (sender as TextBox).Text.Length;
         }
     }
 }
