@@ -17,7 +17,7 @@ namespace PathToSuccess.Models
                    DateOfBirth.Equals(other.DateOfBirth) && Password == other.Password && DateReg.Equals(other.DateReg);
         }
 
-        public override int GetHashCode()
+        public override int GetHashCode() // MERCY
         {
             unchecked
             {
@@ -61,13 +61,15 @@ namespace PathToSuccess.Models
             Login = login;
             Name = name;
             DateOfBirth = birth;
-            Password = pass.GetHashCode();
+            //Password = pass.GetHashCode();
+            Password = BL.Application.Hash(pass);
             DateReg = dateReg;
         }
 
         public bool ComparePass(string pass)
         {
-            return Password == pass.GetHashCode();
+            //return Password == pass.GetHashCode();
+            return Password == BL.Application.Hash(pass);
         }
 
         public static User CreateUser(string login, string name, DateTime birth, string pass, DateTime dateReg)
@@ -126,7 +128,8 @@ namespace PathToSuccess.Models
         public static void ResetPass(User user, string newPass)
         {
             var u = (User)DAL.SqlRepository.Users.Find(user.Login);
-            u.Password = newPass.GetHashCode();
+            //u.Password = newPass.GetHashCode();
+            u.Password = BL.Application.Hash(newPass);
             DAL.SqlRepository.DBContext.SaveChanges();
         }
 
