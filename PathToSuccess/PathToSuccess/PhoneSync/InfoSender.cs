@@ -108,20 +108,20 @@ namespace PathToSuccess.PhoneSync
             string result = "";
             using (WebClient wc = new WebClient())
             {
-                var postData = new NameValueCollection()
-                {
-                    {"user", "stub"},
-                    {"password_hash", "0"},
-                    {"jsondata", json },
-                    {"referer", "desktop"}
-                };
-                //postData = new NameValueCollection()
+                //var postData = new NameValueCollection()
                 //{
-                //    {"user", BL.Application.CurrentUser.Login},
-                //    {"password_hash", BL.Application.CurrentUser.Password.ToString()},
+                //    {"user", "stub"},
+                //    {"password_hash", "0"},
                 //    {"jsondata", json },
                 //    {"referer", "desktop"}
                 //};
+                var postData = new NameValueCollection()
+                {
+                    {"user", BL.Application.CurrentUser.Login},
+                    {"password_hash", BL.Application.CurrentUser.Password.ToString()},
+                    {"jsondata", json },
+                    {"referer", "desktop"}
+                };
                 result = Encoding.UTF8.GetString(wc.UploadValues(Url, postData));
             }
             
