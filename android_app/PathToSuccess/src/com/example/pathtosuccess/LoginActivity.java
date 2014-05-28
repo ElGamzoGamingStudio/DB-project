@@ -80,18 +80,6 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (!isNetworkAvailable()) {
-			AlertDialog.Builder b = new AlertDialog.Builder(this);
-			b.setTitle("Ошибка");
-			b.setMessage("Отсутствует интернет-соединение. Попробуйте еще раз.");
-			b.setNeutralButton("Выход", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					finish();
-				}
-			});
-			b.show();
-		}
 		if (isAlreadyLoggedIn()) {
 			Intent goToNextActivity = new Intent(getApplicationContext(), MainListActivity.class);
 			startActivity(goToNextActivity);
@@ -159,6 +147,20 @@ public class LoginActivity extends Activity {
 	 */
 	public void attemptLogin() {
 		if (mAuthTask != null) {
+			return;
+		}
+		
+		if (!isNetworkAvailable()) {
+			AlertDialog.Builder b = new AlertDialog.Builder(this);
+			b.setTitle("Ошибка авторизации");
+			b.setMessage("Не удалось подключиться к серверу");
+			b.setNeutralButton("Закрыть", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+				}
+			});
+			b.show();
 			return;
 		}
 

@@ -25,6 +25,8 @@ import org.apache.http.protocol.HTTP;
 
 import com.example.pathtosuccess.util.HashUtil;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -165,9 +167,11 @@ public class MainListActivity extends ListActivity {
 		startActivity(goToLoginPage);
 	}
 	
-	public void testList() {
-		//ListView listView = (ListView) findViewById(R.id.listView1);
-		
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 	
 	public void showUpdateStatus(boolean b) {
@@ -194,7 +198,20 @@ public class MainListActivity extends ListActivity {
 	        logout();
 	        return true;
 	    case R.id.update:
-	        update();
+	    	if (!isNetworkAvailable()) {
+				AlertDialog.Builder b = new AlertDialog.Builder(this);
+				b.setTitle("Ошибка");
+				b.setMessage("Отсутствует интернет-соединение. Попробуйте еще раз.");
+				b.setNeutralButton("Выход", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
+				b.show();
+			} else {
+				update();
+			}
 	        return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
