@@ -198,6 +198,13 @@ namespace PathToSuccess.Models
         public void UpdateUrgency()
         {
             int maxvalue = Urgency.GetMaxValue();
+            if (BeginDate == EndDate)
+            {
+                var ur = DAL.SqlRepository.Urgencies.Cast<Urgency>().FirstOrDefault(x => x.Value == maxvalue);
+                Urgency = ur;
+                UrgencyName = ur.UrgencyName;
+                return;
+            }
             double timePassed = (EndDate - DateTime.Now).Ticks / (EndDate - BeginDate).Ticks; // 0..1
             var desiredUrgencyValue = timePassed * maxvalue;
             var urg = timePassed > 1

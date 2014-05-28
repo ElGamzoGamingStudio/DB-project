@@ -118,7 +118,7 @@ namespace PathToSuccess.BL
                     temp3.Add(entity);
                 }
             }
-            DAL.SqlRepository.Criterias.RemoveRange(temp3);
+            DAL.SqlRepository.TimeRules.RemoveRange(temp3);
 
             foreach (var task in CurrentState.TaskBuffer)
             {
@@ -143,6 +143,7 @@ namespace PathToSuccess.BL
             var temp = new List<Task>();
             foreach (var entity in DAL.SqlRepository.Tasks.Cast<Task>())
             {
+                if(entity==null)continue;
                 if (Task.GetOldestParent(entity).Id==Application.CurrentTree.MainTaskId && !CurrentState.TaskBuffer.Contains(entity))
                 {
                     temp.Add(entity);
@@ -177,6 +178,7 @@ namespace PathToSuccess.BL
             var temp1 = new List<Step>();
             foreach (var entity in DAL.SqlRepository.Steps.Cast<Step>())
             {
+                if (entity == null) continue;
                 if (Task.GetOldestParent(entity.ParentTask).Id == Application.CurrentTree.MainTaskId && !CurrentState.StepBuffer.Contains(entity))
                 {
                     temp1.Add(entity);
