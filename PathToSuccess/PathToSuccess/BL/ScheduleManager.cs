@@ -56,7 +56,7 @@ namespace PathToSuccess.BL
                         {
                             var currInterv = Interval.GetIntervalByID(avlIntervals[counter].intervalID);
                             var tbs = TimeBinding.GetTBofDay(dateCounter.Day, dateCounter.Month, dateCounter.Year,Application.CurrentTree);
-                            tbs.Sort();
+                            //tbs.Sort();
                             DateTime timeCounter = new DateTime(dateCounter.Year, dateCounter.Month, dateCounter.Day,
                                 currInterv.BeginTime.Hour, currInterv.BeginTime.Minute, currInterv.BeginTime.Second);
                             if (step.TimeRule.IsUserApproved)
@@ -98,13 +98,13 @@ namespace PathToSuccess.BL
                                     withTB.Add(step);
                                     continue;
                                 }
-                                for (int i = 1; i < tbs.Count - 1 && !flag; i++)
+                                for (int i = 1; i < tbs.Count && !flag; i++)
                                 {
                                     delta = tbs[i].GetNormalTime() - tbs[i - 1].GetNormalTime();
                                     if (Math.Abs(delta.Hours) > 2)
                                     {
                                         timeCounter = new DateTime(tbs[i].Year, tbs[i].Month, tbs[i].Day, tbs[i].Time.Hour - 1, tbs[i].Time.Minute, 0);
-                                        if (timeCounter > currInterv.EndTime)
+                                        if (timeCounter < currInterv.EndTime)
                                             break;
                                         flag = true;
                                         var newTB = TimeBinding.CreateTimeBinding(0, step.Id, step, timeCounter, timeCounter.Day, timeCounter.Month, timeCounter.Year);
