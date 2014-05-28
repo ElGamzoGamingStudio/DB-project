@@ -166,7 +166,7 @@ namespace PathToSuccess
             Interval friday;
             if (IsOk(FridayFrom.Text, out numberFridayFrom) && IsOk(FridayTo.Text, out numberFridayTo))
             {
-                friday = Interval.CreateInterval(new DateTime(300, 5, 3, numberThursdayFrom, 0, 0),
+                friday = Interval.CreateInterval(new DateTime(300, 5, 3, numberFridayFrom, 0, 0),
                     new DateTime(300, 5, 3, numberFridayTo, 0, 0));
                 intervals.Add(friday);
             }
@@ -192,7 +192,7 @@ namespace PathToSuccess
             int numberSundayFrom;
             int numberSundayTo;
             Interval sunday;
-            if (IsOk(FridayFrom.Text, out numberSundayFrom) && IsOk(FridayTo.Text, out numberSundayTo))
+            if (IsOk(FridayFrom.Text, out numberSundayFrom) && IsOk(SundayTo.Text, out numberSundayTo))
             {
                 sunday = Interval.CreateInterval(new DateTime(300, 5, 3, numberSundayFrom, 0, 0),
                     new DateTime(300, 5, 3, numberSundayTo, 0, 0));
@@ -291,7 +291,7 @@ namespace PathToSuccess
             Interval friday;
             if (IsOk(FridayFrom.Text, out numberFridayFrom) && IsOk(FridayTo.Text, out numberFridayTo))
             {
-                friday = Interval.CreateInterval(new DateTime(300, 5, 3, numberThursdayFrom, 0, 0),
+                friday = Interval.CreateInterval(new DateTime(300, 5, 3, numberFridayFrom, 0, 0),
                     new DateTime(300, 5, 3, numberFridayTo, 0, 0));
                 intervals.Add(friday);
             }
