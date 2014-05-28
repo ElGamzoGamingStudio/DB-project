@@ -658,9 +658,10 @@ namespace PathToSuccess
                         IsPeriodic = Periodic.IsChecked == true,
                         Schedule = 
                             DAL.SqlRepository.Schedules.Cast<Models.Schedule>().ToList()
-                               .First(x => Periodic.IsChecked == true ? x.Id == Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString()):x.Id==11),
-                        ScheduleId = Periodic.IsChecked == true ? Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString()):11
+                               .First(x => Periodic.IsChecked != true || x.Id == Convert.ToInt32(((ComboBoxItem)Graphs.SelectedItem).Content.ToString())),
+                        
                     };
+                tr.ScheduleId = tr.Schedule.Id;
                 var t = BL.ChangesBuffer.CurrentState.TaskBuffer.First(x => x.Description == _parent.Desc.Text);
                 if (
                     BL.ChangesBuffer.CurrentState.StepBuffer
