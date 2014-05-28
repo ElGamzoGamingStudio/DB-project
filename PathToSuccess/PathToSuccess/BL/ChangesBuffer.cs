@@ -85,15 +85,6 @@ namespace PathToSuccess.BL
                     t.Unit = task.Unit;
                 }
             }
-            var temp2 = new List<Criteria>();
-            foreach (var entity in DAL.SqlRepository.Criterias.Cast<Criteria>())
-            {
-                if (!CurrentState.CriteriaBuffer.Contains(entity))
-                {
-                    temp2.Add(entity);
-                }
-            }
-            DAL.SqlRepository.Criterias.RemoveRange(temp2);
 
             foreach (var task in CurrentState.TimeRuleBuffer)
             {
@@ -110,15 +101,6 @@ namespace PathToSuccess.BL
                     t.Schedule = task.Schedule;
                 }
             }
-            var temp3 = new List<TimeRule>();
-            foreach (var entity in DAL.SqlRepository.TimeRules.Cast<TimeRule>())
-            {
-                if (!CurrentState.TimeRuleBuffer.Contains(entity))
-                {
-                    temp3.Add(entity);
-                }
-            }
-            DAL.SqlRepository.TimeRules.RemoveRange(temp3);
 
             foreach (var task in CurrentState.TaskBuffer)
             {
